@@ -56,6 +56,8 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         if (pieceType == PieceType.KING) {
             return kingMoves(board, myPosition);
+        } else if (pieceType == PieceType.PAWN) {
+            return pawnMoves(board, myPosition);
         }
         return new ArrayList<>();
     }
@@ -76,7 +78,7 @@ public class ChessPiece {
     }
 
     private Collection<ChessMove> kingMoves(ChessBoard board, ChessPosition myPosition) {
-        ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
+        ArrayList<ChessMove> moves = new ArrayList<>();
         for (int i = -1; i < 2; i++) {
             for (int k = -1; k < 2; k++) {
                 if (i == 0 && k == 0) { continue; }
@@ -86,11 +88,20 @@ public class ChessPiece {
                 }
             }
         }
-        System.out.print("Possible moves: ");
-        for (ChessMove move : moves) {
-            System.out.print("(" + move.getEndPosition().getRow() + ", " + move.getEndPosition().getColumn() + "), ");
+        return moves;
+    }
+
+    private Collection<ChessMove> pawnMoves(ChessBoard board, ChessPosition myPosition) {
+        ArrayList<ChessMove> moves = new ArrayList<>();
+        int moveDirection = pieceColor == ChessGame.TeamColor.WHITE ? 1 : -1;
+        for (int i = -1; i < 2; i++) {
+            ChessPosition currPosition = new ChessPosition(myPosition.getRow() + moveDirection, myPosition.getColumn() + i);
+            if (isPositionValid(board, currPosition)) {
+                if ((i != 0 && board.getPiece(currPosition) != null) || (i == 0 && board.getPiece(currPosition) == null)) {
+                    moves.add(new ChessMove(myPosition, currPosition, null));
+                }
+            }
         }
-        System.out.print("\b\b");
         return moves;
     }
 
