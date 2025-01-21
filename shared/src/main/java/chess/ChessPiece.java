@@ -117,6 +117,9 @@ public class ChessPiece {
                         if (currPosition.getRow() == 8 && pieceColor == ChessGame.TeamColor.WHITE ||
                                 currPosition.getRow() == 1 && pieceColor == ChessGame.TeamColor.BLACK) {
                             moves.add(new ChessMove(myPosition, currPosition, PieceType.QUEEN));
+                            moves.add(new ChessMove(myPosition, currPosition, PieceType.KNIGHT));
+                            moves.add(new ChessMove(myPosition, currPosition, PieceType.BISHOP));
+                            moves.add(new ChessMove(myPosition, currPosition, PieceType.ROOK));
                             continue;
                         }
                         if (i == 1  && board.getPiece(new ChessPosition(myPosition.getRow() + moveDirection, myPosition.getColumn())) != null) {
