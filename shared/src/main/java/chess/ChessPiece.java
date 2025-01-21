@@ -91,14 +91,39 @@ public class ChessPiece {
         return moves;
     }
 
+    // Pawn currently always promotes to Queen. Will change in the future.
     private Collection<ChessMove> pawnMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> moves = new ArrayList<>();
-        int moveDirection = pieceColor == ChessGame.TeamColor.WHITE ? 1 : -1;
-        for (int i = -1; i < 2; i++) {
-            ChessPosition currPosition = new ChessPosition(myPosition.getRow() + moveDirection, myPosition.getColumn() + i);
-            if (isPositionValid(board, currPosition)) {
-                if ((i != 0 && board.getPiece(currPosition) != null) || (i == 0 && board.getPiece(currPosition) == null)) {
-                    moves.add(new ChessMove(myPosition, currPosition, null));
+        int moveDirection;
+        int numRowsToCheck = 1;
+        int startingRow = myPosition.getRow();
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+            moveDirection = 1;
+            if (startingRow == 2) {
+                numRowsToCheck = 2;
+            }
+        } else {
+            moveDirection = -1;
+            if (myPosition.getRow() == 7) {
+                numRowsToCheck = 2;
+            }
+        }
+        for (int i = 0; i < numRowsToCheck; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (i == 1 && (j == -1 || j == 1)) { continue; }
+                ChessPosition currPosition = new ChessPosition(myPosition.getRow() + moveDirection*(i+1), myPosition.getColumn() + j);
+                if (isPositionValid(board, currPosition)) {
+                    if ((j != 0 && board.getPiece(currPosition) != null) || (j == 0 && board.getPiece(currPosition) == null)) {
+                        if (currPosition.getRow() == 8 && pieceColor == ChessGame.TeamColor.WHITE ||
+                                currPosition.getRow() == 1 && pieceColor == ChessGame.TeamColor.BLACK) {
+                            moves.add(new ChessMove(myPosition, currPosition, PieceType.QUEEN));
+                            continue;
+                        }
+                        if (i == 1  && board.getPiece(new ChessPosition(myPosition.getRow() + moveDirection, myPosition.getColumn())) != null) {
+                            continue;
+                        }
+                        moves.add(new ChessMove(myPosition, currPosition, null));
+                    }
                 }
             }
         }
