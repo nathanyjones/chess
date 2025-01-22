@@ -64,6 +64,8 @@ public class ChessPiece {
             return getBishopMoves(board, myPosition);
         } else if (pieceType == PieceType.QUEEN) {
             return getQueenMoves(board, myPosition);
+        } else if (pieceType == PieceType.KNIGHT) {
+            return getKnightMoves(board, myPosition);
         }
         return new ArrayList<>();
     }
@@ -180,6 +182,21 @@ public class ChessPiece {
         return getLineMoves(board, myPosition, PieceType.QUEEN);
     }
 
+    private Collection<ChessMove> getKnightMoves(ChessBoard board, ChessPosition myPosition) {
+        ArrayList<ChessMove> moves = new ArrayList<>();
+        int[][] knightMovementOptions = { {2,1}, {1,2}, {-1,2}, {-2,1}, {-2,-1}, {-1,-2}, {1,-2}, {2,-1} };
+        for (int[] movement : knightMovementOptions) {
+            int currRow = myPosition.getRow();
+            int currCol = myPosition.getColumn();
+            currRow += movement[0];
+            currCol += movement[1];
+            ChessPosition currPosition = new ChessPosition(currRow, currCol);
+            if (isPositionValid(board, currPosition)) {
+                moves.add(new ChessMove(myPosition, currPosition, null));
+            }
+        }
+        return moves;
+    }
 
     @Override
     public boolean equals(Object o) {
