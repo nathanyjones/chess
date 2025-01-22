@@ -60,6 +60,8 @@ public class ChessPiece {
             return pawnMoves(board, myPosition);
         } else if (pieceType == PieceType.ROOK) {
             return rookMoves(board, myPosition);
+        } else if (pieceType == PieceType.BISHOP) {
+            return bishopMoves(board, myPosition);
         }
         return new ArrayList<>();
     }
@@ -73,10 +75,7 @@ public class ChessPiece {
         if (position.getRow() > 8 || position.getRow() < 1 ||
                 position.getColumn() > 8 || position.getColumn() < 1) {
             return false;
-        } else if (board.getPiece(position) != null && pieceColor == board.getPiece(position).pieceColor) {
-            return false;
-        }
-        return true;
+        } else return board.getPiece(position) == null || pieceColor != board.getPiece(position).pieceColor;
     }
 
     private Collection<ChessMove> kingMoves(ChessBoard board, ChessPosition myPosition) {
@@ -146,6 +145,39 @@ public class ChessPiece {
             } else {
                 colVelocity = i - 1;
                 rowVelocity = 0;
+            }
+            while (true) {
+                currRow = currRow + rowVelocity;
+                currCol = currCol + colVelocity;
+                ChessPosition currPosition = new ChessPosition(currRow, currCol);
+                if (!isPositionValid(board, currPosition)) {
+                    break;
+                } else if (board.getPiece(currPosition) == null) {
+                    moves.add(new ChessMove(myPosition, currPosition, null));
+                } else {
+                    moves.add(new ChessMove(myPosition, currPosition, null));
+                    break;
+                }
+            }
+        }
+        return moves;
+    }
+
+    private Collection<ChessMove> bishopMoves(ChessBoard board, ChessPosition myPosition) {
+        ArrayList<ChessMove> moves = new ArrayList<>();
+        int currRow, currCol, rowVelocity, colVelocity;
+        for (int i = 0; i < 4; i++) {
+            currRow = myPosition.getRow();
+            currCol = myPosition.getColumn();
+            if (i % 2 == 1) {
+                rowVelocity = 1;
+            } else {
+                rowVelocity = -1;
+            }
+            if (i < 2) {
+                colVelocity = 1;
+            } else {
+                colVelocity = -1;
             }
             while (true) {
                 currRow = currRow + rowVelocity;
