@@ -58,12 +58,14 @@ public class ChessPiece {
             return kingMoves(board, myPosition);
         } else if (pieceType == PieceType.PAWN) {
             return pawnMoves(board, myPosition);
+        } else if (pieceType == PieceType.ROOK) {
+            return rookMoves(board, myPosition);
         }
         return new ArrayList<>();
     }
 
     /**
-     * Determines if a given move is valid.
+     * Returns true if the position is on the board, and if there is not a piece of the same color at that position
      *
      * @return Boolean for given move
      */
@@ -91,7 +93,6 @@ public class ChessPiece {
         return moves;
     }
 
-    // Pawn currently always promotes to Queen. Will change in the future.
     private Collection<ChessMove> pawnMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> moves = new ArrayList<>();
         int moveDirection;
@@ -132,6 +133,37 @@ public class ChessPiece {
         }
         return moves;
     }
+
+    private Collection<ChessMove> rookMoves(ChessBoard board, ChessPosition myPosition) {
+        ArrayList<ChessMove> moves = new ArrayList<>();
+        int currRow, currCol, rowVelocity, colVelocity;
+        for (int i = 0; i < 4; i++) {
+            currRow = myPosition.getRow();
+            currCol = myPosition.getColumn();
+            if (i % 2 == 1) {
+                rowVelocity = i - 2;
+                colVelocity = 0;
+            } else {
+                colVelocity = i - 1;
+                rowVelocity = 0;
+            }
+            while (true) {
+                currRow = currRow + rowVelocity;
+                currCol = currCol + colVelocity;
+                ChessPosition currPosition = new ChessPosition(currRow, currCol);
+                if (!isPositionValid(board, currPosition)) {
+                    break;
+                } else if (board.getPiece(currPosition) == null) {
+                    moves.add(new ChessMove(myPosition, currPosition, null));
+                } else {
+                    moves.add(new ChessMove(myPosition, currPosition, null));
+                    break;
+                }
+            }
+        }
+        return moves;
+    }
+
 
     @Override
     public boolean equals(Object o) {
