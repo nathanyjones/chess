@@ -39,7 +39,6 @@ public class ChessBoardTests {
         Assertions.assertEquals(expectedBoard, actualBoard);
     }
 
-
     @Test
     @DisplayName("Piece Move on All Pieces")
     public void pieceMoveAllPieces() {
