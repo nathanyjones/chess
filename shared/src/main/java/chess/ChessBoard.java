@@ -10,9 +10,11 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessBoard {
-    private final ChessPiece[][] squares = new ChessPiece[8][8];
+
+    ChessPiece[][] squares = new ChessPiece[8][8];
+
     public ChessBoard() {
-        
+
     }
 
     /**
@@ -22,7 +24,7 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        squares[8-position.getRow()][position.getColumn()-1] = piece;
+        squares[8 - position.getRow()][position.getColumn() - 1] = piece;
     }
 
     /**
@@ -33,7 +35,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return squares[8-position.getRow()][position.getColumn()-1];
+        return squares[8 - position.getRow()][position.getColumn() - 1];
     }
 
     /**
@@ -41,31 +43,29 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
+        ChessPiece.PieceType type;
         ChessGame.TeamColor color;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (i < 2) {
-                    color = ChessGame.TeamColor.BLACK;
+        for (int i = 1; i < 9; i++) {
+            for (int j = 1; j < 9; j++) {
+                ChessPosition position = new ChessPosition(i, j);
+                color = i <= 2 ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
+                if (i >= 3 && i <= 6) {
+                    addPiece(position, null);
+                    continue;
+                } else if (i == 2 || i == 7) {
+                    type = ChessPiece.PieceType.PAWN;
+                } else if (j == 1 || j == 8) {
+                    type = ChessPiece.PieceType.ROOK;
+                } else if (j == 2 || j == 7) {
+                    type = ChessPiece.PieceType.KNIGHT;
+                } else if (j == 3 || j == 6) {
+                    type = ChessPiece.PieceType.BISHOP;
+                } else if (j == 4) {
+                    type = ChessPiece.PieceType.QUEEN;
                 } else {
-                    color = ChessGame.TeamColor.WHITE;
+                    type = ChessPiece.PieceType.KING;
                 }
-                if (i == 0 || i == 7) {
-                    if (j == 0 || j == 7) {
-                        squares[i][j] = new ChessPiece(color, ChessPiece.PieceType.ROOK);
-                    } else if (j == 1 || j == 6) {
-                        squares[i][j] = new ChessPiece(color, ChessPiece.PieceType.KNIGHT);
-                    } else if (j == 2 || j == 5) {
-                        squares[i][j] = new ChessPiece(color, ChessPiece.PieceType.BISHOP);
-                    } else if (j == 3) {
-                        squares[i][j] = new ChessPiece(color, ChessPiece.PieceType.QUEEN);
-                    } else {
-                        squares[i][j] = new ChessPiece(color, ChessPiece.PieceType.KING);
-                    }
-                } else if (i == 1 || i == 6) {
-                    squares[i][j] = new ChessPiece(color, ChessPiece.PieceType.PAWN);
-                } else {
-                    squares[i][j] = null;
-                }
+                addPiece(position, new ChessPiece(color, type));
             }
         }
     }
@@ -83,22 +83,4 @@ public class ChessBoard {
     public int hashCode() {
         return Arrays.deepHashCode(squares);
     }
-
-    @Override
-    public String toString() {
-        StringBuilder boardString = new StringBuilder("Chess Board:\n");
-        for (ChessPiece[] row : squares) {
-            boardString.append("[");
-            for (ChessPiece piece : row) {
-                if (piece != null) {
-                    boardString.append(piece);
-                } else {
-                    boardString.append(" ");
-                }
-            }
-            boardString.append("]\n");
-        }
-        return boardString.toString();
-    }
-
 }
