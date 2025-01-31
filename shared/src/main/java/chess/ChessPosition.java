@@ -34,6 +34,11 @@ public class ChessPosition {
         return col;
     }
 
+    public static boolean inRange(ChessPosition position) {
+        return (position.getRow() <= 8 && position.getRow() >= 1 &&
+                position.getColumn() <= 8 && position.getColumn() >= 1);
+    }
+
     @Override
     public String toString() {
         return "ChessPosition{" +

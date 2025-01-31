@@ -91,7 +91,97 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        ChessPosition kingPosition = getKingPosition(teamColor);
+        if (kingPosition == null) {
+            return false;
+        }
+
+        // Checks if the king is in check by an opponent's pawn
+        int movementDirection = teamColor == TeamColor.WHITE ? 1 : -1;
+        for (int i = -1; i < 2; i+=2) {
+            ChessPosition currPosition = new ChessPosition(kingPosition.getRow()+movementDirection,
+                    kingPosition.getColumn()+i);
+            ChessPiece pieceAtCurrPos = board.getPiece(currPosition);
+            if (pieceAtCurrPos.getPieceType() == ChessPiece.PieceType.PAWN &&
+                    pieceAtCurrPos.pieceColor != teamColor) {
+                return true;
+            }
+        }
+
+        // Checks if the king is in check by a knight
+        int[][] knightCoordinates = {{1,2}, {2,1}, {-1,2}, {-2,1}, {-2,-1}, {-1,-2}, {1,-2}, {2,-1}};
+        for (int[] coordinates : knightCoordinates) {
+            ChessPosition currPosition = new ChessPosition(kingPosition.getRow() + coordinates[0],
+                    kingPosition.getColumn() + coordinates[1]);
+            if (ChessPosition.inRange(currPosition)) {
+                ChessPiece pieceAtCurrPos = board.getPiece(currPosition);
+                if (pieceAtCurrPos != null && pieceAtCurrPos.getPieceType() == ChessPiece.PieceType.KNIGHT &&
+                        pieceAtCurrPos.pieceColor != teamColor) {
+                    return true;
+                }
+            }
+        }
+
+        // Checks if the king is in check by a queen, rook, or bishop.
+        int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}, {1,1}, {-1,1}, {1,-1}, {-1,-1}};
+        for (int[] direction : directions) {
+            int currRow = kingPosition.getRow();
+            int currCol = kingPosition.getColumn();
+            int rowVelocity = direction[0];
+            int colVelocity = direction[1];
+            while (true) {
+                currRow += rowVelocity;
+                currCol += colVelocity;
+                boolean diagonalDirection = Math.abs(currRow) + Math.abs(currCol) == 1;
+                ChessPosition currPosition = new ChessPosition(currRow, currCol);
+                if (ChessPosition.inRange(currPosition)) {
+                    if (board.getPiece(currPosition) != null) {
+                        ChessPiece pieceAtPosition = board.getPiece(currPosition);
+                        if (pieceAtPosition.pieceColor != teamColor) {
+                            ChessPiece.PieceType pieceType = pieceAtPosition.getPieceType();
+                            if (pieceType == ChessPiece.PieceType.QUEEN) {
+                                return true;
+                            } else if (diagonalDirection && pieceType == ChessPiece.PieceType.BISHOP) {
+                                return true;
+                            } else if (!diagonalDirection && pieceType == ChessPiece.PieceType.ROOK) {
+                                return true;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Checks if king is in check by opponents king.
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                ChessPosition currPosition = new ChessPosition(kingPosition.getRow()+i,
+                        kingPosition.getColumn()+j);
+                if (ChessPosition.inRange(currPosition)) {
+                    if (board.getPiece(currPosition).getPieceType() == ChessPiece.PieceType.KING &&
+                            board.getPiece(currPosition).pieceColor != teamColor) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+
+    private ChessPosition getKingPosition(TeamColor kingColor) {
+        for (int i = 1; i < 9; i++) {
+            for (int j = 1; j < 9; j++) {
+                ChessPiece piece = board.getPiece(new ChessPosition(i, j));
+                if (piece.getPieceType() == ChessPiece.PieceType.KING && piece.pieceColor == kingColor) {
+                    return new ChessPosition(i, j);
+                }
+            }
+        }
+        return null;
     }
 
     /**
