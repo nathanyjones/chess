@@ -22,7 +22,11 @@ public class ChessBoard implements Cloneable {
             clone.squares = new ChessPiece[8][8];
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    clone.squares[i][j] = this.squares[i][j].clone();
+                    if (this.squares[i][j] == null) {
+                        clone.squares[i][j] = null;
+                    } else {
+                        clone.squares[i][j] = this.squares[i][j].clone();
+                    }
                 }
             }
             return clone;

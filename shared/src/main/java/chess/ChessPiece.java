@@ -84,7 +84,7 @@ public class ChessPiece implements Cloneable {
                 position.getColumn() <= 8 && position.getColumn() >= 1);
     }
 
-    public ArrayList<ChessMove> getKingMoves(ChessBoard board, ChessPosition myPosition) {
+    private ArrayList<ChessMove> getKingMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> moves = new ArrayList<>();
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
@@ -100,7 +100,7 @@ public class ChessPiece implements Cloneable {
         return moves;
     }
 
-    public ArrayList<ChessMove> getPawnMoves(ChessBoard board, ChessPosition myPosition) {
+    private ArrayList<ChessMove> getPawnMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> moves = new ArrayList<>();
         int direction = pieceColor == ChessGame.TeamColor.WHITE ? 1 : -1;
         int promotionRow = pieceColor == ChessGame.TeamColor.WHITE ? 8 : 1;
@@ -135,7 +135,7 @@ public class ChessPiece implements Cloneable {
         return moves;
     }
 
-    public ArrayList<ChessMove> getLineMoves(ChessBoard board, ChessPosition myPosition, int[][] directions) {
+    private ArrayList<ChessMove> getLineMoves(ChessBoard board, ChessPosition myPosition, int[][] directions) {
         ArrayList<ChessMove> moves = new ArrayList<>();
         int rowVelocity, colVelocity, rowPosition, colPosition;
         for (int[] direction : directions) {
@@ -164,22 +164,22 @@ public class ChessPiece implements Cloneable {
         return moves;
     }
 
-    public ArrayList<ChessMove> getRookMoves(ChessBoard board, ChessPosition myPosition) {
+    private ArrayList<ChessMove> getRookMoves(ChessBoard board, ChessPosition myPosition) {
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}};
         return getLineMoves(board, myPosition, directions);
     }
 
-    public ArrayList<ChessMove> getBishopMoves(ChessBoard board, ChessPosition myPosition) {
+    private ArrayList<ChessMove> getBishopMoves(ChessBoard board, ChessPosition myPosition) {
         int[][] directions = {{1,1}, {-1,1}, {1,-1}, {-1,-1}};
         return getLineMoves(board, myPosition, directions);
     }
 
-    public ArrayList<ChessMove> getQueenMoves(ChessBoard board, ChessPosition myPosition) {
+    private ArrayList<ChessMove> getQueenMoves(ChessBoard board, ChessPosition myPosition) {
         int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}, {1,1}, {-1,1}, {1,-1}, {-1,-1}};
         return getLineMoves(board, myPosition, directions);
     }
 
-    public ArrayList<ChessMove> getKnightMoves(ChessBoard board, ChessPosition myPosition) {
+    private ArrayList<ChessMove> getKnightMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> moves = new ArrayList<>();
         int[][] relativeCoordinates = {{1,2}, {2,1}, {2,-1}, {1,-2}, {-1,-2}, {-2,-1}, {-2,1}, {-1,2}};
         for (int[] coord : relativeCoordinates) {
