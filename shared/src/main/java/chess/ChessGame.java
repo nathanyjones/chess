@@ -16,6 +16,7 @@ public class ChessGame {
 
     public ChessGame() {
         board = new ChessBoard();
+        board.resetBoard();
         teamTurn = TeamColor.WHITE;
     }
 
@@ -67,7 +68,7 @@ public class ChessGame {
 
     /**
      *
-     * @param move
+     * @param move the move to check the validity of on the board
      * @return boolean indicating if the move is valid
      */
     public boolean isMoveValid(ChessMove move) {
@@ -79,8 +80,6 @@ public class ChessGame {
         }
         return false;
     }
-
-    // Simulates a move, and returns true if the piece was successfully moved or false otherwise.
 
     /**
      *
@@ -140,7 +139,7 @@ public class ChessGame {
                 if (currPiece != null && currPiece.getTeamColor() != teamColor) {
                     Collection<ChessMove> currPieceMoves = currPiece.pieceMoves(board, currPosition);
                     for (ChessMove move : currPieceMoves) {
-                        if (move.getStartPosition().equals(kingPosition)) {
+                        if (move.getEndPosition().equals(kingPosition)) {
                             return true;
                         }
                     }
@@ -170,6 +169,8 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
+        System.out.println(validMoves(getKingPosition(teamColor)));
+//        for (int i = 1; i < 9; )
         return (validMoves(getKingPosition(teamColor)).isEmpty() && isInCheck(teamColor));
     }
 
@@ -181,6 +182,19 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        if (isInCheck(teamColor)) {
+            return false;
+        }
+        for (int i = 1; i < 9; i++) {
+            for (int j = 1; j < 9; j++) {
+                ChessPosition currPosition = new ChessPosition(i, j);
+                ChessPiece currPiece = board.getPiece(currPosition);
+                if (currPiece != null && currPiece.getTeamColor() == teamColor &&
+                        !validMoves(currPosition).isEmpty()) {
+                    return false;
+                }
+            }
+        }
         return (validMoves(getKingPosition(teamColor)).isEmpty() && !isInCheck(teamColor));
     }
 
