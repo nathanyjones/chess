@@ -27,7 +27,7 @@ public class UserService {
             dataAccess.createAuth(new AuthData(authToken, userData.username()));
             return new RegisterResult(200, userData.username(), authToken);
         } catch (DataAccessException e) {
-            return new RegisterResult(403, e.getMessage());
+            return new RegisterResult(403, "Error: already taken");
         } catch (Exception e) {
             System.err.println("Unexpected Error: " + e.getMessage());
             return new RegisterResult(500, e.getMessage());
@@ -48,10 +48,9 @@ public class UserService {
         }
     }
 
+    public void logout(LogoutRequest logoutRequest) {
 
-
-//    public void logout(LogoutRequest logoutRequest) {
-//    }
+    }
 
     private static String generateAuthToken() {
         return UUID.randomUUID().toString();
