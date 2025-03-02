@@ -23,7 +23,7 @@ public class MemoryDataAccess implements DataAccess {
     public void createUser(UserData user) throws DataAccessException {
         String username = user.username();
         if (users.containsKey(username)) {
-            throw new DataAccessException("Error: Username already in use");
+            throw new DataAccessException("Error: already taken");
         } else {
             users.put(username, user);
         }
@@ -36,11 +36,12 @@ public class MemoryDataAccess implements DataAccess {
         }
     }
 
-    public void createGame(String gameName) throws DataAccessException {
+    public int createGame(String gameName) throws DataAccessException {
         GameData game = new GameData(nextGameId, null, null,
                 gameName, new ChessGame());
         games.put(nextGameId, game);
         nextGameId += 1;
+        return game.gameID();
     }
     public GameData getGame(int gameId) throws DataAccessException {
         if (games.containsKey(gameId)) {
