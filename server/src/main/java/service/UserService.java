@@ -17,6 +17,9 @@ public class UserService {
     }
 
     public RegisterResult register(RegisterRequest registerRequest) {
+        if (!registerRequest.validateRequest()) {
+            return new RegisterResult(400, "Error: bad request");
+        }
         UserData userData = new UserData(registerRequest.username(), registerRequest.password(),
                 registerRequest.email());
         try {
@@ -48,7 +51,7 @@ public class UserService {
 
     public LogoutResult logout(String authToken) {
         try {
-            AuthData auth = dataAccess.getAuth(authToken);
+            dataAccess.getAuth(authToken);
             dataAccess.deleteAuth(authToken);
             return new LogoutResult(200, null);
         } catch (DataAccessException e) {
