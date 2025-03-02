@@ -4,12 +4,10 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import service.request.*;
-import service.result.LoginResult;
-import service.result.RegisterResult;
+import service.result.*;
 import model.UserData;
 
 import java.util.UUID;
-//import service.request.
 
 public class UserService {
     private final DataAccess dataAccess;
@@ -30,7 +28,7 @@ public class UserService {
             return new RegisterResult(403, "Error: already taken");
         } catch (Exception e) {
             System.err.println("Unexpected Error: " + e.getMessage());
-            return new RegisterResult(500, e.getMessage());
+            return new RegisterResult(500, "Error: " + e.getMessage());
         }
     }
 
@@ -44,15 +42,24 @@ public class UserService {
             return new LoginResult(401, "Error: unauthorized");
         } catch (Exception e) {
             System.err.println("Unexpected Error: " + e.getMessage());
-            return new LoginResult(500, e.getMessage());
+            return new LoginResult(500, "Error: " + e.getMessage());
         }
     }
 
-    public void logout(LogoutRequest logoutRequest) {
-
+    public LogoutResult logout(String authToken) {
+        try {
+            AuthData auth = dataAccess.getAuth(authToken);
+            dataAccess.deleteAuth(authToken);
+            return new LogoutResult(200, null);
+        } catch (DataAccessException e) {
+            return new LogoutResult(401, "Error: unauthorized");
+        } catch (Exception e) {
+            return new LogoutResult(500, "Error: " + e.getMessage());
+        }
     }
 
     private static String generateAuthToken() {
         return UUID.randomUUID().toString();
     }
+
 }
