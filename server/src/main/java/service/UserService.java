@@ -16,9 +16,9 @@ public class UserService {
         this.dataAccess = dataAccess;
     }
 
-    public RegisterResult register(RegisterRequest registerRequest) {
+    public Object[] register(RegisterRequest registerRequest) {
         if (!registerRequest.validateRequest()) {
-            return new RegisterResult(400, "Error: bad request");
+            return new Object[] {400, new RegisterResult("Error: bad request")};
         }
         UserData userData = new UserData(registerRequest.username(), registerRequest.password(),
                 registerRequest.email());
@@ -26,38 +26,38 @@ public class UserService {
             dataAccess.createUser(userData);
             String authToken = generateAuthToken();
             dataAccess.createAuth(new AuthData(authToken, userData.username()));
-            return new RegisterResult(200, userData.username(), authToken);
+            return new Object[] {200, new RegisterResult(userData.username(), authToken)};
         } catch (DataAccessException e) {
-            return new RegisterResult(403, "Error: already taken");
+            return new Object[] {403, new RegisterResult("Error: already taken")};
         } catch (Exception e) {
             System.err.println("Unexpected Error: " + e.getMessage());
-            return new RegisterResult(500, "Error: " + e.getMessage());
+            return new Object[] {500, new RegisterResult("Error: " + e.getMessage())};
         }
     }
 
-    public LoginResult login(LoginRequest loginRequest) {
+    public Object[] login(LoginRequest loginRequest) {
         try {
             dataAccess.getUser(loginRequest.username());
             String authToken = generateAuthToken();
             dataAccess.createAuth(new AuthData(authToken, loginRequest.username()));
-            return new LoginResult(200, loginRequest.username(), authToken);
+            return new Object[] {200, new LoginResult(loginRequest.username(), authToken)};
         } catch (DataAccessException e) {
-            return new LoginResult(401, "Error: unauthorized");
+            return new Object[] {401, new LoginResult("Error: unauthorized")};
         } catch (Exception e) {
             System.err.println("Unexpected Error: " + e.getMessage());
-            return new LoginResult(500, "Error: " + e.getMessage());
+            return new Object[] {500, new LoginResult("Error: " + e.getMessage())};
         }
     }
 
-    public LogoutResult logout(String authToken) {
+    public Object[] logout(String authToken) {
         try {
             dataAccess.getAuth(authToken);
             dataAccess.deleteAuth(authToken);
-            return new LogoutResult(200, null);
+            return new Object[] {200, new LogoutResult(null)};
         } catch (DataAccessException e) {
-            return new LogoutResult(401, "Error: unauthorized");
+            return new Object[] {401, new LogoutResult("Error: unauthorized")};
         } catch (Exception e) {
-            return new LogoutResult(500, "Error: " + e.getMessage());
+            return new Object[] {500, new LogoutResult("Error: " + e.getMessage())};
         }
     }
 

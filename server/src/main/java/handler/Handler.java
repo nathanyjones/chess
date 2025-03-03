@@ -1,6 +1,9 @@
 package handler;
 
 import com.google.gson.Gson;
+import service.result.RegisterResult;
+import spark.Request;
+import spark.Response;
 
 public abstract class Handler {
 
@@ -13,4 +16,5 @@ public abstract class Handler {
     protected <T> T fromJSON(String json, Class<T> objectType) {
         return serializer.fromJson(json, objectType);
     }
+
 }
