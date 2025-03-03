@@ -2,6 +2,7 @@ package service;
 
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
+import service.result.CreateGameResult;
 import service.result.ListGamesResult;
 
 public class GameService {
@@ -22,33 +23,19 @@ public class GameService {
         }
     }
 
-//    public Object[] login(LoginRequest loginRequest) {
-//        if (!loginRequest.validateRequest()) {
-//            return new Object[] {400, new RegisterResult("Error: bad request")};
-//        }
-//        try {
-//            dataAccess.getUser(loginRequest.username());
-//            String authToken = generateAuthToken();
-//            dataAccess.createAuth(new AuthData(authToken, loginRequest.username()));
-//            return new Object[] {200, new LoginResult(loginRequest.username(), authToken)};
-//        } catch (DataAccessException e) {
-//            return new Object[] {401, new LoginResult("Error: unauthorized")};
-//        } catch (Exception e) {
-//            System.err.println("Unexpected Error: " + e.getMessage());
-//            return new Object[] {500, new LoginResult("Error: " + e.getMessage())};
-//        }
-//    }
-//
-//    public Object[] logout(String authToken) {
-//        try {
-//            dataAccess.getAuth(authToken);
-//            dataAccess.deleteAuth(authToken);
-//            return new Object[] {200, new LogoutResult(null)};
-//        } catch (DataAccessException e) {
-//            return new Object[] {401, new LogoutResult("Error: unauthorized")};
-//        } catch (Exception e) {
-//            return new Object[] {500, new LogoutResult("Error: " + e.getMessage())};
-//        }
-//    }
+    public Object[] createGame(String authToken, String gameName) {
+        if (gameName == null || gameName.isEmpty()) {
+            return new Object[] {400, new CreateGameResult("Error: bad request")};
+        }
+        try {
+            dataAccess.getAuth(authToken);
+            return new Object[] {200, new CreateGameResult(dataAccess.createGame(gameName))};
+        } catch (DataAccessException e) {
+            return new Object[] {401, new CreateGameResult("Error: unauthorized")};
+        } catch (Exception e) {
+            return new Object[] {500, new CreateGameResult("Error: " + e.getMessage())};
+        }
+    }
+
 }
 

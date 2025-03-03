@@ -18,6 +18,7 @@ public class Server {
         final LoginHandler loginHandler = new LoginHandler(userService);
         final LogoutHandler logoutHandler = new LogoutHandler(userService);
         final ListGamesHandler listGamesHandler = new ListGamesHandler(gameService);
+        final CreateGameHandler createGameHandler = new CreateGameHandler(gameService);
 
         Spark.port(desiredPort);
 
@@ -27,6 +28,7 @@ public class Server {
         Spark.post("/session", loginHandler);
         Spark.delete("/session", logoutHandler);
         Spark.get("/game", listGamesHandler);
+        Spark.post("/game", createGameHandler);
 
         Spark.awaitInitialization();
         return Spark.port();
