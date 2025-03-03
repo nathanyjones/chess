@@ -13,6 +13,7 @@ public class Server {
         final UserService userService = new UserService(dataAccess);
         final RegisterHandler registerHandler = new RegisterHandler(userService);
         final LoginHandler loginHandler = new LoginHandler(userService);
+        final LogoutHandler logoutHandler = new LogoutHandler(userService);
 
         Spark.port(desiredPort);
 
@@ -20,6 +21,7 @@ public class Server {
 
         Spark.post("/user", registerHandler);
         Spark.post("/session", loginHandler);
+        Spark.delete("/session", logoutHandler);
 
         Spark.awaitInitialization();
         return Spark.port();

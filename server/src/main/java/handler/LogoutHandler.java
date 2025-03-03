@@ -1,23 +1,21 @@
 package handler;
 
 import service.UserService;
-import service.request.RegisterRequest;
-import spark.Route;
 import spark.Request;
 import spark.Response;
+import spark.Route;
 
-public class RegisterHandler extends Handler implements Route  {
+public class LogoutHandler extends Handler implements Route  {
 
     final private UserService userService;
 
-    public RegisterHandler(UserService userService) {
+    public LogoutHandler(UserService userService) {
         this.userService = userService;
     }
 
     public String handle(Request request, Response response) {
-        String body = request.body();
-        RegisterRequest registerRequest = this.fromJSON(body, RegisterRequest.class);
-        Object[] resultArray = userService.register(registerRequest);
+        String authToken = request.headers("authorization");
+        Object[] resultArray = userService.logout(authToken);
         response.status((int) resultArray[0]);
         response.body(toJSON(resultArray[1]));
         return response.body();

@@ -36,6 +36,9 @@ public class UserService {
     }
 
     public Object[] login(LoginRequest loginRequest) {
+        if (!loginRequest.validateRequest()) {
+            return new Object[] {400, new RegisterResult("Error: bad request")};
+        }
         try {
             dataAccess.getUser(loginRequest.username());
             String authToken = generateAuthToken();
