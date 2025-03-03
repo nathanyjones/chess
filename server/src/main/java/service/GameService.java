@@ -2,7 +2,11 @@ package service;
 
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
+import model.AuthData;
+import model.GameData;
+import service.request.JoinGameRequest;
 import service.result.CreateGameResult;
+import service.result.JoinGameResult;
 import service.result.ListGamesResult;
 
 public class GameService {
@@ -37,5 +41,39 @@ public class GameService {
         }
     }
 
+    public Object[] joinGame(String authToken, JoinGameRequest joinGameRequest) {
+        String color = joinGameRequest.playerColor();
+        Integer gameID = joinGameRequest.gameID();
+        System.out.println("GameID: " + gameID);
+        try {
+            AuthData authData = dataAccess.getAuth(authToken);
+            if (color == null || (!color.equals("WHITE") && !color.equals("BLACK")) || gameID == null) {
+                return new Object[] {400, new CreateGameResult("Error: bad request")};
+            }
+            GameData gameData = dataAccess.getGame(gameID);
+            if (color.equals("WHITE")) {
+                if (gameData.whiteUsername() == null) {
+                    dataAccess.updateGame(gameData.gameID(), new GameData(gameData.gameID(), authData.username(),
+                            gameData.blackUsername(), gameData.gameName(), gameData.game()));
+                    return new Object[]{200, new JoinGameResult(null)};
+                } else {
+                    return new Object[]{403, new JoinGameResult("Error: already taken")};
+                }
+            } else {
+                if (gameData.blackUsername() == null) {
+                    dataAccess.updateGame(gameData.gameID(), new GameData(gameData.gameID(), gameData.whiteUsername(),
+                            authData.username(), gameData.gameName(), gameData.game()));
+                    return new Object[]{200, new JoinGameResult(null)};
+                } else {
+                    return new Object[]{403, new JoinGameResult("Error: already taken")};
+                }
+            }
+
+        } catch (DataAccessException e) {
+            return new Object[] {401, new CreateGameResult("Error: unauthorized")};
+        } catch (Exception e) {
+            return new Object[] {500, new CreateGameResult("Error: " + e.getMessage())};
+        }
+    }
 }
 

@@ -22,6 +22,7 @@ public class Server {
         final ListGamesHandler listGamesHandler = new ListGamesHandler(gameService);
         final CreateGameHandler createGameHandler = new CreateGameHandler(gameService);
         final ClearHandler clearHandler = new ClearHandler(clearService);
+        final JoinGameHandler  joinGameHandler = new JoinGameHandler(gameService);
 
         Spark.port(desiredPort);
 
@@ -33,6 +34,7 @@ public class Server {
         Spark.get("/game", listGamesHandler);
         Spark.post("/game", createGameHandler);
         Spark.delete("/db", clearHandler);
+        Spark.put("/game", joinGameHandler);
 
         Spark.awaitInitialization();
         return Spark.port();

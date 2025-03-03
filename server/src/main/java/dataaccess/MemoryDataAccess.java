@@ -13,7 +13,7 @@ public class MemoryDataAccess implements DataAccess {
     final private HashMap<String, AuthData> auths = new HashMap<>();
 
     @Override
-    public void clear() throws DataAccessException {
+    public void clear() {
         users.clear();
         games.clear();
         auths.clear();
@@ -36,7 +36,7 @@ public class MemoryDataAccess implements DataAccess {
         }
     }
 
-    public int createGame(String gameName) throws DataAccessException {
+    public int createGame(String gameName) {
         GameData game = new GameData(nextGameId, null, null,
                 gameName, new ChessGame());
         games.put(nextGameId, game);
@@ -50,7 +50,7 @@ public class MemoryDataAccess implements DataAccess {
             throw new DataAccessException("Error: Game " + gameId + " not found");
         }
     }
-    public Collection<GameData> listGames() throws DataAccessException {
+    public Collection<GameData> listGames() {
         return games.values();
     }
     public void updateGame(int gameId, GameData updatedGame) throws DataAccessException {
@@ -76,7 +76,7 @@ public class MemoryDataAccess implements DataAccess {
             throw new DataAccessException("Error: AuthToken " + authToken + " not found");
         }
     }
-    public void deleteAuth(String authToken) throws DataAccessException {
+    public void deleteAuth(String authToken) {
         auths.remove(authToken);
     }
 
