@@ -40,10 +40,13 @@ public class UserService {
             return new Object[] {400, new RegisterResult("Error: bad request")};
         }
         try {
-            dataAccess.getUser(loginRequest.username());
-            String authToken = generateAuthToken();
-            dataAccess.createAuth(new AuthData(authToken, loginRequest.username()));
-            return new Object[] {200, new LoginResult(loginRequest.username(), authToken)};
+            UserData userData = dataAccess.getUser(loginRequest.username());
+            if (loginRequest.password().equals(userData.password())) {
+                String authToken = generateAuthToken();
+                dataAccess.createAuth(new AuthData(authToken, loginRequest.username()));
+                return new Object[] {200, new LoginResult(loginRequest.username(), authToken)};
+            }
+            return new Object[] {401, new LoginResult("Error: unauthorized")};
         } catch (DataAccessException e) {
             return new Object[] {401, new LoginResult("Error: unauthorized")};
         } catch (Exception e) {
