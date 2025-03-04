@@ -48,7 +48,7 @@ public class GameService {
         try {
             AuthData authData = dataAccess.getAuth(authToken);
             if (color == null || (!color.equals("WHITE") && !color.equals("BLACK")) || gameID == null) {
-                return new Object[] {400, new CreateGameResult("Error: bad request")};
+                return new Object[] {400, new JoinGameResult("Error: bad request")};
             }
             GameData gameData = dataAccess.getGame(gameID);
             if (color.equals("WHITE")) {
@@ -70,9 +70,9 @@ public class GameService {
             }
 
         } catch (DataAccessException e) {
-            return new Object[] {401, new CreateGameResult("Error: unauthorized")};
+            return new Object[] {401, new JoinGameResult("Error: unauthorized")};
         } catch (Exception e) {
-            return new Object[] {500, new CreateGameResult("Error: " + e.getMessage())};
+            return new Object[] {500, new JoinGameResult("Error: " + e.getMessage())};
         }
     }
 }

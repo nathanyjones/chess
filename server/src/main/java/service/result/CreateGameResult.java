@@ -1,9 +1,5 @@
 package service.result;
 
-import model.GameData;
-
-import java.util.Collection;
-
 public class CreateGameResult {
     private Integer gameID;
     private String message;
@@ -16,7 +12,7 @@ public class CreateGameResult {
         this.message = message;
     }
 
-    public int getGameID() {
+    public Integer getGameID() {
         return this.gameID;
     }
 
