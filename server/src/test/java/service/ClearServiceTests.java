@@ -29,12 +29,12 @@ public class ClearServiceTests {
     void clearSuccess() {
         clearService.clear();
         Object[] registerResult = userService.register(new RegisterRequest("user1",
-                "123", "user1@mail.com"));
+                "12345", "user1@mail.com"));
         String authToken = ((RegisterResult) registerResult[1]).getAuthToken();
         gameService.createGame(authToken, "Game 1");
         clearService.clear();
 
-        Object[] loginResultObj = userService.login(new LoginRequest("user1", "123"));
+        Object[] loginResultObj = userService.login(new LoginRequest("user1", "12345"));
         int loginStatusCode = (int) loginResultObj[0];
         assertEquals(401, loginStatusCode);
 
