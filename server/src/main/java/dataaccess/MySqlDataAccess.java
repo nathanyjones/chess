@@ -15,6 +15,10 @@ import static java.sql.Types.NULL;
 
 public class MySqlDataAccess implements DataAccess {
 
+    public MySqlDataAccess() throws ResponseException {
+        configureDatabase();
+    }
+
     public void clear() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection();
              var stmt = conn.createStatement()) {
@@ -22,8 +26,8 @@ public class MySqlDataAccess implements DataAccess {
             stmt.executeUpdate("DELETE FROM Games");
             stmt.executeUpdate("DELETE FROM Users");
             stmt.executeUpdate("ALTER TABLE Games AUTO_INCREMENT = 1");
-        } catch (SQLException e) {
-            throw new DataAccessException("Connection failed: " + e.getMessage());
+        } catch (SQLException | ResponseException e) {
+            throw new DataAccessException("Unable to clear database: " + e.getMessage());
         }
     }
 
@@ -55,6 +59,51 @@ public class MySqlDataAccess implements DataAccess {
     }
     public void deleteAuth(String authToken) throws DataAccessException {
         throw new DataAccessException("Didn't implement yet");
+    }
+
+    private final String[] createStatements = {
+            """
+            CREATE TABLE IF NOT EXISTS users (
+                          `id` INT AUTO_INCREMENT,
+                          `username` varchar(255) NOT NULL UNIQUE,
+                          `password` varchar(255) NOT NULL,
+                          `email` varchar(255) NOT NULL,
+                          PRIMARY KEY (id),
+                          INDEX(username)
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS games (
+                          `id` INT AUTO_INCREMENT,
+                          `gameData` JSON NOT NULL,
+                          PRIMARY KEY (id)
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS auth (
+                          `authToken` INT UNIQUE NOT NULL,
+                          `username` varchar(255) NOT NULL,
+                          PRIMARY KEY (authToken),
+                          FOREIGN KEY (username) REFERENCES users(username)
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """
+    };
+
+    private void configureDatabase() throws ResponseException {
+        try {
+            DatabaseManager.createDatabase();
+        } catch (DataAccessException e) {
+            throw new ResponseException(String.format("Unable to create database: %s", e.getMessage()));
+        }
+        try (var conn = DatabaseManager.getConnection()) {
+            for (var statement : createStatements) {
+                try (var preparedStatement = conn.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException | ResponseException e) {
+            throw new ResponseException(String.format("Unable to configure database: %s", e.getMessage()));
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package server;
 import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
 import dataaccess.MySqlDataAccess;
+import dataaccess.ResponseException;
 import service.ClearService;
 import service.GameService;
 import service.UserService;
@@ -12,7 +13,13 @@ import handler.*;
 public class Server {
 
     public int run(int desiredPort) {
-        final DataAccess dataAccess = new MySqlDataAccess();
+        final DataAccess dataAccess;
+        try {
+            dataAccess = new MySqlDataAccess();
+        } catch (ResponseException e) {
+            System.err.println("Could not initialize MySQLDataAccess: " + e.getMessage());
+            return -1;
+        }
         final UserService userService = new UserService(dataAccess);
         final GameService gameService = new GameService(dataAccess);
         final ClearService clearService = new ClearService(dataAccess);
