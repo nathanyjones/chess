@@ -2,6 +2,7 @@ package server;
 
 import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
+import dataaccess.MySqlDataAccess;
 import service.ClearService;
 import service.GameService;
 import service.UserService;
@@ -11,7 +12,7 @@ import handler.*;
 public class Server {
 
     public int run(int desiredPort) {
-        final DataAccess dataAccess = new MemoryDataAccess();
+        final DataAccess dataAccess = new MySqlDataAccess();
         final UserService userService = new UserService(dataAccess);
         final GameService gameService = new GameService(dataAccess);
         final ClearService clearService = new ClearService(dataAccess);
