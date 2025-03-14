@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging DataAccess login code, Restoring files">
-      <change afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/ParentDataAccessTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/dataaccess/MemoryDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/dataaccess/MemoryDataAccess.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/dataaccess/MySqlDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/dataaccess/MySqlDataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/java/dataaccess/AuthDataAccessTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/AuthDataAccessTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/java/dataaccess/ClearDataAccessTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/ClearDataAccessTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/test/java/dataaccess/GameDataAccessTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/GameDataAccessTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/java/dataaccess/UserDataAccessTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/UserDataAccessTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/passoff/server/StandardAPITests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/passoff/server/StandardAPITests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/model/GameData.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/model/GameData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,22 +20,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "nathanyjones"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nathanyjones&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/nathanyjones/chess.git",
-    "accountId": "86112fea-7117-490c-96fb-e07acb2567b1"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nathanyjones/chess.git&quot;,
+    &quot;accountId&quot;: &quot;86112fea-7117-490c-96fb-e07acb2567b1&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 0
-}]]></component>
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2uK70osm9HPkx8yKM68oVbX5Gar" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -48,8 +49,10 @@
     "JUnit.AuthDataAccessTests.executor": "Run",
     "JUnit.DatabaseTests.executor": "Run",
     "JUnit.StandardAPITests.executor": "Run",
+    "JUnit.StandardAPITests.gamesList.executor": "Run",
     "JUnit.StandardAPITests.successLogin.executor": "Run",
     "JUnit.dataaccess in server.executor": "Run",
+    "JUnit.server in server.executor": "Run",
     "JUnit.service in server.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -62,7 +65,7 @@
       <recent name="dataaccess" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.dataaccess in server">
+  <component name="RunManager" selected="JUnit.DatabaseTests">
     <configuration name="DatabaseTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <extension name="coverage">
@@ -93,7 +96,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StandardAPITests.successLogin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StandardAPITests.gamesList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <extension name="coverage">
         <pattern>
@@ -103,8 +106,9 @@
       </extension>
       <option name="PACKAGE_NAME" value="passoff.server" />
       <option name="MAIN_CLASS_NAME" value="passoff.server.StandardAPITests" />
-      <option name="METHOD_NAME" value="successLogin" />
+      <option name="METHOD_NAME" value="gamesList" />
       <option name="TEST_OBJECT" value="method" />
+      <dir value="$PROJECT_DIR$/server/src/test/java/passoff/server" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -117,21 +121,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="service in server" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="server in server" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/server/src/test/java/service" />
+      <dir value="$PROJECT_DIR$/server/src/test/java/passoff/server" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.dataaccess in server" />
-        <item itemvalue="JUnit.StandardAPITests.successLogin" />
-        <item itemvalue="JUnit.StandardAPITests" />
-        <item itemvalue="JUnit.service in server" />
         <item itemvalue="JUnit.DatabaseTests" />
+        <item itemvalue="JUnit.StandardAPITests" />
+        <item itemvalue="JUnit.StandardAPITests.gamesList" />
+        <item itemvalue="JUnit.server in server" />
+        <item itemvalue="JUnit.dataaccess in server" />
       </list>
     </recent_temporary>
   </component>
@@ -158,5 +162,15 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Debugging DataAccess login code, Restoring files" />
     <option name="LAST_COMMIT_MESSAGE" value="Debugging DataAccess login code, Restoring files" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

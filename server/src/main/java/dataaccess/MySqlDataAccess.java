@@ -72,11 +72,14 @@ public class MySqlDataAccess implements DataAccess {
             throw new DataAccessException("Error: No game name provided.");
         }
         var statement = "INSERT INTO games (gameData) VALUES (?)";
-        GameData game = new GameData(null, null, gameName, new ChessGame());
+        GameData game = new GameData(null, null, null, gameName, new ChessGame());
         Gson serializer = new Gson();
         String gameJSON = serializer.toJson(game);
         try {
-            return executeUpdate(statement, gameJSON);
+            int gameID = executeUpdate(statement, gameJSON);
+            GameData gameDataWithID = new GameData(gameID, null, null, gameName, new ChessGame());
+            updateGame(gameID, gameDataWithID);
+            return gameID;
         } catch (ResponseException e) {
             throw new DataAccessException("Failed to create game: " + e.getMessage());
         }
@@ -102,17 +105,18 @@ public class MySqlDataAccess implements DataAccess {
     public Collection<GameData> listGames() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "SELECT gameData FROM games";
-            try (var ps = conn.prepareStatement(statement)) {
-                try (var rs = ps.executeQuery()) {
-                    Collection<GameData> games = new ArrayList<>();
-                    Gson serializer = new Gson();
-                    while (rs.next()) {
-                        GameData currGame = serializer.fromJson(rs.getString("gameData"), GameData.class);
-                        games.add(currGame);
-                    }
-                    return games;
+            var ps = conn.prepareStatement(statement);
+            var rs = ps.executeQuery();
+            Collection<GameData> games = new ArrayList<>();
+            Gson serializer = new Gson();
+            while (rs.next()) {
+                String gameDataJSON = rs.getString("gameData");
+                GameData currGame = serializer.fromJson(gameDataJSON, GameData.class);
+                if (currGame != null) {
+                    games.add(currGame);
                 }
             }
+            return games;
         } catch (ResponseException | SQLException e) {
             throw new DataAccessException("Failed to retrieve games: " + e.getMessage());
         }
@@ -177,16 +181,7 @@ public class MySqlDataAccess implements DataAccess {
     private int executeUpdate(String statement, Object... params) throws ResponseException {
         try (var conn = DatabaseManager.getConnection()) {
             try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
-                for (var i = 0; i < params.length; i++) {
-                    var param = params[i];
-                    switch (param) {
-                        case String p -> ps.setString(i + 1, p);
-                        case Integer p -> ps.setInt(i + 1, p);
-                        case null -> ps.setNull(i + 1, NULL);
-                        default -> {
-                        }
-                    }
-                }
+                setParams(ps, params);
                 ps.executeUpdate();
 
                 var rs = ps.getGeneratedKeys();
@@ -204,16 +199,7 @@ public class MySqlDataAccess implements DataAccess {
     private boolean checkExistence(String statement, Object... params) throws ResponseException {
         try (var conn = DatabaseManager.getConnection()) {
             try (var ps = conn.prepareStatement(statement)) {
-                for (var i = 0; i < params.length; i++) {
-                    var param = params[i];
-                    switch (param) {
-                        case String p -> ps.setString(i + 1, p);
-                        case Integer p -> ps.setInt(i + 1, p);
-                        case null -> ps.setNull(i + 1, NULL);
-                        default -> {
-                        }
-                    }
-                }
+                setParams(ps, params);
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
                         return rs.getInt(1) > 0;
@@ -225,6 +211,24 @@ public class MySqlDataAccess implements DataAccess {
             throw new ResponseException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
         }
     }
+
+    private void setParams(PreparedStatement ps, Object... params) throws SQLException {
+        for (var i = 0; i < params.length; i++) {
+            var param = params[i];
+            switch (param) {
+                case String p -> ps.setString(i + 1, p);
+                case Integer p -> ps.setInt(i + 1, p);
+                case null -> ps.setNull(i + 1, NULL);
+                default -> {
+                }
+            }
+        }
+    }
+
+
+
+
+
 
     private final String[] createStatements = {
             """

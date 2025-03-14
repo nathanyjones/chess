@@ -37,7 +37,7 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     public int createGame(String gameName) {
-        GameData game = new GameData(null, null,
+        GameData game = new GameData(nextGameId, null, null,
                 gameName, new ChessGame());
         games.put(nextGameId, game);
         nextGameId += 1;

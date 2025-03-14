@@ -53,7 +53,7 @@ public class GameService {
             GameData gameData = dataAccess.getGame(gameID);
             if (color.equals("WHITE")) {
                 if (gameData.whiteUsername() == null) {
-                    dataAccess.updateGame(gameID, new GameData(authData.username(),
+                    dataAccess.updateGame(gameID, new GameData(gameID, authData.username(),
                             gameData.blackUsername(), gameData.gameName(), gameData.game()));
                     return new Object[]{200, new JoinGameResult(null)};
                 } else {
@@ -61,7 +61,7 @@ public class GameService {
                 }
             } else {
                 if (gameData.blackUsername() == null) {
-                    dataAccess.updateGame(gameID, new GameData(gameData.whiteUsername(),
+                    dataAccess.updateGame(gameID, new GameData(gameID, gameData.whiteUsername(),
                             authData.username(), gameData.gameName(), gameData.game()));
                     return new Object[]{200, new JoinGameResult(null)};
                 } else {

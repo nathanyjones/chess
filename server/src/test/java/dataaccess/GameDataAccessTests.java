@@ -117,7 +117,7 @@ public class GameDataAccessTests extends ParentDataAccessTests {
             dataAccess.createUser(userData);
 
             GameData oldGame = dataAccess.getGame(gameId);
-            GameData updatedGame = new GameData(username, oldGame.blackUsername(), oldGame.gameName(), oldGame.game());
+            GameData updatedGame = new GameData(gameId, username, oldGame.blackUsername(), oldGame.gameName(), oldGame.game());
             dataAccess.updateGame(gameId, updatedGame);
 
             GameData retrievedGame = dataAccess.getGame(gameId);
@@ -142,7 +142,7 @@ public class GameDataAccessTests extends ParentDataAccessTests {
             dataAccess.createUser(userData);
 
             GameData oldGame = dataAccess.getGame(gameId);
-            GameData updatedGame = new GameData(username, oldGame.blackUsername(), oldGame.gameName(), oldGame.game());
+            GameData updatedGame = new GameData(gameId, username, oldGame.blackUsername(), oldGame.gameName(), oldGame.game());
             dataAccess.updateGame(gameId+1, updatedGame);
 
             fail("Updated game with invalid gameId");

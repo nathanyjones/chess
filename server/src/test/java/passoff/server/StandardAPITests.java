@@ -335,6 +335,7 @@ public class StandardAPITests {
         TestListEntry[] returnedList = listResult.getGames();
         Assertions.assertNotNull(returnedList, "List result did not contain a list of games");
         Comparator<TestListEntry> gameIdComparator = Comparator.comparingInt(TestListEntry::getGameID);
+
         Arrays.sort(expectedList, gameIdComparator);
         Arrays.sort(returnedList, gameIdComparator);
 
