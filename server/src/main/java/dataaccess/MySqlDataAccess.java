@@ -74,16 +74,29 @@ public class MySqlDataAccess implements DataAccess {
         GameData game = new GameData(null, null, gameName, new ChessGame());
         Gson serializer = new Gson();
         String gameJSON = serializer.toJson(game);
-
         try {
             return executeUpdate(statement, gameJSON);
         } catch (ResponseException e) {
             throw new DataAccessException("Failed to create game: " + e.getMessage());
         }
-
     }
     public GameData getGame(int gameId) throws DataAccessException {
-        throw new DataAccessException("Didn't implement yet");
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT gameData FROM games WHERE id = ?";
+            try (var ps = conn.prepareStatement(statement)) {
+                ps.setInt(1, gameId);
+                try (var rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        Gson serializer = new Gson();
+                        return serializer.fromJson(rs.getString("gameData"), GameData.class);
+                    } else {
+                        throw new DataAccessException("Error: " + gameId + " not found");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("Failed to get game: " + e.getMessage());
+        }
     }
     public Collection<GameData> listGames() throws DataAccessException {
         throw new DataAccessException("Didn't implement yet");

@@ -53,7 +53,7 @@ public class GameService {
             GameData gameData = dataAccess.getGame(gameID);
             if (color.equals("WHITE")) {
                 if (gameData.whiteUsername() == null) {
-                    dataAccess.updateGame(gameData.gameID(), new GameData(gameData.gameID(), authData.username(),
+                    dataAccess.updateGame(gameID, new GameData(authData.username(),
                             gameData.blackUsername(), gameData.gameName(), gameData.game()));
                     return new Object[]{200, new JoinGameResult(null)};
                 } else {
@@ -61,7 +61,7 @@ public class GameService {
                 }
             } else {
                 if (gameData.blackUsername() == null) {
-                    dataAccess.updateGame(gameData.gameID(), new GameData(gameData.gameID(), gameData.whiteUsername(),
+                    dataAccess.updateGame(gameID, new GameData(gameData.whiteUsername(),
                             authData.username(), gameData.gameName(), gameData.game()));
                     return new Object[]{200, new JoinGameResult(null)};
                 } else {
@@ -70,7 +70,11 @@ public class GameService {
             }
 
         } catch (DataAccessException e) {
-            return new Object[] {401, new JoinGameResult("Error: unauthorized")};
+            if (e.getMessage().contains("not found")) {
+                return new Object[]{401, new JoinGameResult("Error: unauthorized")};
+            } else {
+                return new Object[] {500, new JoinGameResult("Error: " + e.getMessage())};
+            }
         } catch (Exception e) {
             return new Object[] {500, new JoinGameResult("Error: " + e.getMessage())};
         }
