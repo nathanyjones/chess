@@ -48,7 +48,11 @@ public class UserService {
             }
             return new Object[] {401, new LoginResult("Error: unauthorized")};
         } catch (DataAccessException e) {
-            return new Object[] {401, new LoginResult("Error: unauthorized")};
+            if (e.getMessage().contains(" not found")) {
+                return new Object[] {401, new LoginResult("Error: unauthorized")};
+            } else {
+                return new Object[] {500, new LoginResult("Error: " + e.getMessage())};
+            }
         } catch (Exception e) {
             System.err.println("Unexpected Error: " + e.getMessage());
             return new Object[] {500, new LoginResult("Error: " + e.getMessage())};

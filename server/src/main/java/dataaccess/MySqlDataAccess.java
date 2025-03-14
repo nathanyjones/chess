@@ -33,7 +33,7 @@ public class MySqlDataAccess implements DataAccess {
         }
     }
 
-    public void createUser(UserData user) throws DataAccessException, RuntimeException {
+    public void createUser(UserData user) throws DataAccessException {
         var checkTakenStatement = "SELECT COUNT(*) FROM users WHERE username = ?";
         var statement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
         String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
@@ -48,7 +48,7 @@ public class MySqlDataAccess implements DataAccess {
         }
     }
 
-    public UserData getUser(String username) throws DataAccessException, RuntimeException {
+    public UserData getUser(String username) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "SELECT username, password, email FROM users WHERE username = ?";
             try (var ps = conn.prepareStatement(statement)) {
@@ -63,7 +63,7 @@ public class MySqlDataAccess implements DataAccess {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to get user: " + e.getMessage());
+            throw new DataAccessException("Failed to get user: " + e.getMessage());
         }
     }
 
