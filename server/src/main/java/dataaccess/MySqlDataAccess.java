@@ -41,7 +41,7 @@ public class MySqlDataAccess implements DataAccess {
         var statement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
         String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
         try {
-            if (checkExistence(checkTakenStatement, user.username())) {
+            if (!checkExistence(checkTakenStatement, user.username())) {
                 executeUpdate(statement, user.username(), hashedPassword, user.email());
             } else {
                 throw new DataAccessException("Error: already taken");
@@ -118,7 +118,19 @@ public class MySqlDataAccess implements DataAccess {
         }
     }
     public void updateGame(int gameId, GameData updatedGame) throws DataAccessException {
-        throw new DataAccessException("Didn't implement yet");
+        var statement = "UPDATE games SET gameData = ? WHERE id = ?";
+        var checkStatement = "SELECT gameData FROM games WHERE id = ?";
+        Gson serializer = new Gson();
+        String gameJSON = serializer.toJson(updatedGame);
+        try {
+            if (checkExistence(checkStatement, gameId)) {
+                executeUpdate(statement, gameJSON, gameId);
+            } else {
+                throw new DataAccessException("Error: " + gameId + " not found");
+            }
+        } catch (ResponseException e) {
+            throw new DataAccessException("Failed to update game: " + e.getMessage());
+        }
     }
 
     public void createAuth(AuthData auth) throws DataAccessException {
