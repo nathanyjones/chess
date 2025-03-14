@@ -2,31 +2,13 @@ package dataaccess;
 
 import model.AuthData;
 import model.UserData;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AuthDataAccessTests {
-    private DataAccess dataAccess;
-    private Connection connection;
-
-    @BeforeEach
-    void setup() {
-        try {
-            dataAccess = new MySqlDataAccess();
-            connection = DatabaseManager.getConnection();
-            try (var stmt = connection.createStatement()) {
-                stmt.execute("DELETE FROM auths");
-                stmt.execute("DELETE FROM users");
-            }
-        } catch (Exception e) {
-            System.err.println("Error initializing data access: " + e.getMessage());
-        }
-    }
+public class AuthDataAccessTests extends ParentDataAccessTests {
 
     @Test
     void createAuthSuccess() {

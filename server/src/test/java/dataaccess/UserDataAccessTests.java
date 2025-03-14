@@ -1,29 +1,13 @@
 package dataaccess;
 
 import model.UserData;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserDataAccessTests {
-    private DataAccess dataAccess;
-    private Connection connection;
-
-    @BeforeEach
-    void setup() {
-        try {
-            dataAccess = new MySqlDataAccess();
-            connection = DatabaseManager.getConnection();
-            try (var stmt = connection.createStatement()) {
-                stmt.execute("DELETE FROM users");
-            }
-        } catch (Exception e) {
-            System.err.println("Error initializing data access: " + e.getMessage());
-        }
-    }
+public class UserDataAccessTests extends ParentDataAccessTests {
 
     @Test
     void createUserSuccess() {

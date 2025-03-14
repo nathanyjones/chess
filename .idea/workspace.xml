@@ -4,19 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/google_code_gson.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/junit_jupiter.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/slf4j_simple.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/sparkjava_spark_core.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging DataAccess login code, Restoring files">
+      <change afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/ParentDataAccessTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/dataaccess/MySqlDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/dataaccess/MySqlDataAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/dataaccess/AuthDataAccessTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/AuthDataAccessTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/test/java/dataaccess/ClearDataAccessTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/ClearDataAccessTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/test/java/dataaccess/GameDataAccessTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/GameDataAccessTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/dataaccess/UserDataAccessTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/dataaccess/UserDataAccessTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/model/GameData.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/model/GameData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +57,12 @@
     "kotlin-language-version-configured": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.StandardAPITests.successLogin">
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="dataaccess" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.dataaccess in server">
     <configuration name="DatabaseTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <extension name="coverage">
@@ -126,11 +127,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.dataaccess in server" />
         <item itemvalue="JUnit.StandardAPITests.successLogin" />
         <item itemvalue="JUnit.StandardAPITests" />
         <item itemvalue="JUnit.service in server" />
         <item itemvalue="JUnit.DatabaseTests" />
-        <item itemvalue="JUnit.dataaccess in server" />
       </list>
     </recent_temporary>
   </component>
@@ -143,6 +144,19 @@
       <option name="presentableId" value="Default" />
       <updated>1741985192702</updated>
     </task>
+    <task id="LOCAL-00001" summary="Debugging DataAccess login code, Restoring files">
+      <option name="closed" value="true" />
+      <created>1741986287894</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1741986287894</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Debugging DataAccess login code, Restoring files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Debugging DataAccess login code, Restoring files" />
   </component>
 </project>

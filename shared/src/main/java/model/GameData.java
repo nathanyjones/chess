@@ -1,7 +1,6 @@
 package model;
 
 import chess.ChessGame;
-
 import java.util.Objects;
 
 public record GameData(String whiteUsername, String blackUsername, String gameName, ChessGame game) {
@@ -12,7 +11,8 @@ public record GameData(String whiteUsername, String blackUsername, String gameNa
             return false;
         }
         GameData gameData = (GameData) o;
-        return Objects.equals(gameName, gameData.gameName) && Objects.equals(whiteUsername, gameData.whiteUsername) && Objects.equals(blackUsername, gameData.blackUsername);
+        return Objects.equals(gameName, gameData.gameName) && Objects.equals(whiteUsername, gameData.whiteUsername)
+                && Objects.equals(blackUsername, gameData.blackUsername);
     }
 
     @Override
