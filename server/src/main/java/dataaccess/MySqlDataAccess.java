@@ -5,6 +5,7 @@ import jdk.jshell.spi.ExecutionControl;
 import model.UserData;
 import model.AuthData;
 import model.GameData;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,17 +23,29 @@ public class MySqlDataAccess implements DataAccess {
     public void clear() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection();
              var stmt = conn.createStatement()) {
-            stmt.executeUpdate("DELETE FROM Auth");
-            stmt.executeUpdate("DELETE FROM Games");
-            stmt.executeUpdate("DELETE FROM Users");
-            stmt.executeUpdate("ALTER TABLE Games AUTO_INCREMENT = 1");
+            stmt.executeUpdate("DELETE FROM auth");
+            stmt.executeUpdate("DELETE FROM games");
+            stmt.executeUpdate("DELETE FROM users");
+            stmt.executeUpdate("ALTER TABLE games AUTO_INCREMENT = 1");
+            stmt.executeUpdate("ALTER TABLE users AUTO_INCREMENT = 1");
         } catch (SQLException | ResponseException e) {
             throw new DataAccessException("Unable to clear database: " + e.getMessage());
         }
     }
 
-    public void createUser(UserData user) throws DataAccessException {
-        throw new DataAccessException("Didn't implement yet");
+    public void createUser(UserData user) throws DataAccessException, RuntimeException {
+        var checkTakenStatement = "SELECT COUNT(*) FROM users WHERE username = ?";
+        var statement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+        String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
+        try {
+            if (checkExistence(checkTakenStatement, user.username())) {
+                executeUpdate(statement, user.username(), hashedPassword, user.email());
+            } else {
+                throw new DataAccessException("Error: already taken");
+            }
+        } catch (ResponseException e) {
+            throw new RuntimeException("Failed to create user: " + e.getMessage());
+        }
     }
     public UserData getUser(String username) throws DataAccessException {
         throw new DataAccessException("Didn't implement yet");
@@ -61,10 +74,60 @@ public class MySqlDataAccess implements DataAccess {
         throw new DataAccessException("Didn't implement yet");
     }
 
+    private int executeUpdate(String statement, Object... params) throws ResponseException {
+        try (var conn = DatabaseManager.getConnection()) {
+            try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
+                for (var i = 0; i < params.length; i++) {
+                    var param = params[i];
+                    if (param instanceof String p)
+                        ps.setString(i + 1, p);
+                    else if (param instanceof Integer p)
+                        ps.setInt(i + 1, p);
+                    else if (param == null)
+                        ps.setNull(i + 1, NULL);
+                }
+                ps.executeUpdate();
+
+                var rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new ResponseException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
+        }
+    }
+
+    private boolean checkExistence(String statement, Object... params) throws ResponseException {
+        try (var conn = DatabaseManager.getConnection()) {
+            try (var ps = conn.prepareStatement(statement)) {
+                for (var i = 0; i < params.length; i++) {
+                    var param = params[i];
+                    if (param instanceof String p)
+                        ps.setString(i + 1, p);
+                    else if (param instanceof Integer p)
+                        ps.setInt(i + 1, p);
+                    else if (param == null)
+                        ps.setNull(i + 1, NULL);
+                }
+                try (var rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1) > 0;
+                    }
+                }
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new ResponseException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
+        }
+    }
+
     private final String[] createStatements = {
             """
             CREATE TABLE IF NOT EXISTS users (
-                          `id` INT AUTO_INCREMENT,
+                          `id` int AUTO_INCREMENT,
                           `username` varchar(255) NOT NULL UNIQUE,
                           `password` varchar(255) NOT NULL,
                           `email` varchar(255) NOT NULL,
@@ -74,14 +137,14 @@ public class MySqlDataAccess implements DataAccess {
             """,
             """
             CREATE TABLE IF NOT EXISTS games (
-                          `id` INT AUTO_INCREMENT,
+                          `id` int AUTO_INCREMENT,
                           `gameData` JSON NOT NULL,
                           PRIMARY KEY (id)
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """,
             """
             CREATE TABLE IF NOT EXISTS auth (
-                          `authToken` INT UNIQUE NOT NULL,
+                          `authToken` int UNIQUE NOT NULL,
                           `username` varchar(255) NOT NULL,
                           PRIMARY KEY (authToken),
                           FOREIGN KEY (username) REFERENCES users(username)
@@ -93,6 +156,7 @@ public class MySqlDataAccess implements DataAccess {
         try {
             DatabaseManager.createDatabase();
         } catch (DataAccessException e) {
+//            System.err.println("Error: " + e.getMessage());
             throw new ResponseException(String.format("Unable to create database: %s", e.getMessage()));
         }
         try (var conn = DatabaseManager.getConnection()) {
@@ -102,6 +166,7 @@ public class MySqlDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException | ResponseException e) {
+//            System.err.println("Error: " + e.getMessage());
             throw new ResponseException(String.format("Unable to configure database: %s", e.getMessage()));
         }
     }
