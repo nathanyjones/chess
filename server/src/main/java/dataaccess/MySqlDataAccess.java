@@ -68,6 +68,9 @@ public class MySqlDataAccess implements DataAccess {
     }
 
     public int createGame(String gameName) throws DataAccessException {
+        if (gameName == null) {
+            throw new DataAccessException("Error: No game name provided.");
+        }
         var statement = "INSERT INTO games (gameData) VALUES (?)";
         GameData game = new GameData(null, null, gameName, new ChessGame());
         Gson serializer = new Gson();
@@ -92,7 +95,7 @@ public class MySqlDataAccess implements DataAccess {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (ResponseException | SQLException e) {
             throw new DataAccessException("Failed to get game: " + e.getMessage());
         }
     }
