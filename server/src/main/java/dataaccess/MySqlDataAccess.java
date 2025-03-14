@@ -142,7 +142,7 @@ public class MySqlDataAccess implements DataAccess {
                 throw new DataAccessException("Error: AuthToken already exists");
             }
         } catch (ResponseException e) {
-            throw new DataAccessException("Failed to create user: " + e.getMessage());
+            throw new DataAccessException("Failed to create auth: " + e.getMessage());
         }
     }
     public AuthData getAuth(String authToken) throws DataAccessException {
@@ -158,7 +158,7 @@ public class MySqlDataAccess implements DataAccess {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (ResponseException | SQLException e) {
             throw new DataAccessException("Failed to get authToken: " + e.getMessage());
         }
     }
@@ -242,7 +242,7 @@ public class MySqlDataAccess implements DataAccess {
             """,
             """
             CREATE TABLE IF NOT EXISTS auths (
-                          `authToken` int UNIQUE NOT NULL,
+                          `authToken` varchar(255) UNIQUE NOT NULL,
                           `username` varchar(255) NOT NULL,
                           PRIMARY KEY (authToken),
                           FOREIGN KEY (username) REFERENCES users(username)
