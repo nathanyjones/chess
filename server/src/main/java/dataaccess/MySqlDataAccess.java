@@ -1,15 +1,12 @@
 package dataaccess;
 
-//import com.google.gson.Gson;
-//import jdk.jshell.spi.ExecutionControl;
-import chess.ChessGame;
 import com.google.gson.Gson;
+import chess.ChessGame;
 import model.UserData;
 import model.AuthData;
 import model.GameData;
 import org.mindrot.jbcrypt.BCrypt;
 
-//import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.sql.*;
@@ -65,7 +62,7 @@ public class MySqlDataAccess implements DataAccess {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (ResponseException | SQLException e) {
             throw new DataAccessException("Failed to get user: " + e.getMessage());
         }
     }
@@ -205,12 +202,13 @@ public class MySqlDataAccess implements DataAccess {
             try (var ps = conn.prepareStatement(statement)) {
                 for (var i = 0; i < params.length; i++) {
                     var param = params[i];
-                    if (param instanceof String p)
-                        ps.setString(i + 1, p);
-                    else if (param instanceof Integer p)
-                        ps.setInt(i + 1, p);
-                    else if (param == null)
-                        ps.setNull(i + 1, NULL);
+                    switch (param) {
+                        case String p -> ps.setString(i + 1, p);
+                        case Integer p -> ps.setInt(i + 1, p);
+                        case null -> ps.setNull(i + 1, NULL);
+                        default -> {
+                        }
+                    }
                 }
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {

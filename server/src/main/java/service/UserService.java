@@ -62,8 +62,11 @@ public class UserService {
 
     public Object[] logout(String authToken) {
         try {
+            System.out.println("Getting auth token");
             dataAccess.getAuth(authToken);
+            System.out.println("Deleting auth token");
             dataAccess.deleteAuth(authToken);
+            System.out.println("Auth token deleted!");
             return new Object[] {200, new LogoutResult(null)};
         } catch (DataAccessException e) {
             if (e.getMessage().contains(" not found")) {
