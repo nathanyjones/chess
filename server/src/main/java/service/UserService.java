@@ -48,7 +48,8 @@ public class UserService {
             }
             return new Object[] {401, new LoginResult("Error: unauthorized")};
         } catch (DataAccessException e) {
-            if (e.getMessage().contains(" not found")) {
+            if (e.getMessage().contains(" not found") ||
+                    e.getMessage().contains("Error: AuthToken already exists")) {
                 return new Object[] {401, new LoginResult("Error: unauthorized")};
             } else {
                 return new Object[] {500, new LoginResult("Error: " + e.getMessage())};

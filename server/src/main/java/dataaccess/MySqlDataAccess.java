@@ -26,7 +26,7 @@ public class MySqlDataAccess implements DataAccess {
     public void clear() throws DataAccessException {
         try (var conn = DatabaseManager.getConnection();
              var stmt = conn.createStatement()) {
-            stmt.executeUpdate("DELETE FROM auth");
+            stmt.executeUpdate("DELETE FROM auths");
             stmt.executeUpdate("DELETE FROM games");
             stmt.executeUpdate("DELETE FROM users");
             stmt.executeUpdate("ALTER TABLE games AUTO_INCREMENT = 1");
@@ -134,7 +134,19 @@ public class MySqlDataAccess implements DataAccess {
     }
 
     public void createAuth(AuthData auth) throws DataAccessException {
-        throw new DataAccessException("Didn't implement yet");
+        String authToken = auth.authToken();
+        String username = auth.username();
+        var checkForAuthStatement = "SELECT COUNT(*) FROM auths WHERE authToken = ?";
+        var statement = "INSERT INTO auths (authToken, username) VALUES (?, ?)";
+        try {
+            if (!checkExistence(checkForAuthStatement, authToken)) {
+                executeUpdate(statement, authToken, username);
+            } else {
+                throw new DataAccessException("Error: AuthToken already exists");
+            }
+        } catch (ResponseException e) {
+            throw new DataAccessException("Failed to create user: " + e.getMessage());
+        }
     }
     public AuthData getAuth(String authToken) throws DataAccessException {
         throw new DataAccessException("Didn't implement yet");
@@ -212,7 +224,7 @@ public class MySqlDataAccess implements DataAccess {
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
             """,
             """
-            CREATE TABLE IF NOT EXISTS auth (
+            CREATE TABLE IF NOT EXISTS auths (
                           `authToken` int UNIQUE NOT NULL,
                           `username` varchar(255) NOT NULL,
                           PRIMARY KEY (authToken),
@@ -225,7 +237,6 @@ public class MySqlDataAccess implements DataAccess {
         try {
             DatabaseManager.createDatabase();
         } catch (DataAccessException e) {
-//            System.err.println("Error: " + e.getMessage());
             throw new ResponseException(String.format("Unable to create database: %s", e.getMessage()));
         }
         try (var conn = DatabaseManager.getConnection()) {
@@ -235,7 +246,6 @@ public class MySqlDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException | ResponseException e) {
-//            System.err.println("Error: " + e.getMessage());
             throw new ResponseException(String.format("Unable to configure database: %s", e.getMessage()));
         }
     }
