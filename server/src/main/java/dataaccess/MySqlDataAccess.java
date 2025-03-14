@@ -1,13 +1,13 @@
 package dataaccess;
 
-import com.google.gson.Gson;
-import jdk.jshell.spi.ExecutionControl;
+//import com.google.gson.Gson;
+//import jdk.jshell.spi.ExecutionControl;
 import model.UserData;
 import model.AuthData;
 import model.GameData;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Collection;
 import java.sql.*;
 
@@ -47,8 +47,24 @@ public class MySqlDataAccess implements DataAccess {
             throw new RuntimeException("Failed to create user: " + e.getMessage());
         }
     }
-    public UserData getUser(String username) throws DataAccessException {
-        throw new DataAccessException("Didn't implement yet");
+
+    public UserData getUser(String username) throws DataAccessException, RuntimeException {
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT username, password, email FROM users WHERE username = ?";
+            try (var ps = conn.prepareStatement(statement)) {
+                ps.setString(1, username);
+                try (var rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return new UserData(rs.getString("username"),
+                                rs.getString("password"), rs.getString("email"));
+                    } else {
+                        throw new DataAccessException("Error: " + username + " not found");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get user: " + e.getMessage());
+        }
     }
 
     public int createGame(String gameName) throws DataAccessException {
