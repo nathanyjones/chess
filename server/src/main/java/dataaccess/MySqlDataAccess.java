@@ -10,6 +10,7 @@ import model.GameData;
 import org.mindrot.jbcrypt.BCrypt;
 
 //import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.sql.*;
 
@@ -99,7 +100,22 @@ public class MySqlDataAccess implements DataAccess {
         }
     }
     public Collection<GameData> listGames() throws DataAccessException {
-        throw new DataAccessException("Didn't implement yet");
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT gameData FROM games";
+            try (var ps = conn.prepareStatement(statement)) {
+                try (var rs = ps.executeQuery()) {
+                    Collection<GameData> games = new ArrayList<>();
+                    Gson serializer = new Gson();
+                    while (rs.next()) {
+                        GameData currGame = serializer.fromJson(rs.getString("gameData"), GameData.class);
+                        games.add(currGame);
+                    }
+                    return games;
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("Failed to retrieve games: " + e.getMessage());
+        }
     }
     public void updateGame(int gameId, GameData updatedGame) throws DataAccessException {
         throw new DataAccessException("Didn't implement yet");
