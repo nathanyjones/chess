@@ -67,7 +67,7 @@ public class UserService {
             return new Object[] {200, new LogoutResult(null)};
         } catch (DataAccessException e) {
             if (e.getMessage().contains(" not found")) {
-                return new Object[] {401, new LoginResult("Error: unauthorized")};
+                return new Object[] {401, new LogoutResult("Error: unauthorized")};
             } else {
                 return new Object[] {500, new LogoutResult("Error: " + e.getMessage())};
             }

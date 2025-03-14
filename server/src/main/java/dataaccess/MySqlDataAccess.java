@@ -166,7 +166,12 @@ public class MySqlDataAccess implements DataAccess {
         }
     }
     public void deleteAuth(String authToken) throws DataAccessException {
-        throw new DataAccessException("Didn't implement yet");
+        var statement = "DELETE FROM auths WHERE authToken = ?";
+        try {
+            executeUpdate(statement, authToken);
+        } catch (ResponseException e) {
+            throw new DataAccessException("Failed to delete authToken: " + e.getMessage());
+        }
     }
 
     private int executeUpdate(String statement, Object... params) throws ResponseException {
