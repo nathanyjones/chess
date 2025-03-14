@@ -7,7 +7,9 @@ public record GameData(Integer gameID, String whiteUsername, String blackUsernam
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         GameData gameData = (GameData) o;
         return Objects.equals(gameID, gameData.gameID) && Objects.equals(gameName, gameData.gameName) &&
                 Objects.equals(whiteUsername, gameData.whiteUsername) &&
