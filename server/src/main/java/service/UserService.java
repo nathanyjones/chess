@@ -3,6 +3,7 @@ package service;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import model.AuthData;
+import org.mindrot.jbcrypt.BCrypt;
 import service.request.*;
 import service.result.*;
 import model.UserData;
@@ -41,7 +42,8 @@ public class UserService {
         }
         try {
             UserData userData = dataAccess.getUser(loginRequest.username());
-            if (loginRequest.password().equals(userData.password())) {
+            var hashedPassword = userData.password();
+            if (BCrypt.checkpw(loginRequest.password(), hashedPassword)) {
                 String authToken = generateAuthToken();
                 dataAccess.createAuth(new AuthData(authToken, loginRequest.username()));
                 return new Object[] {200, new LoginResult(loginRequest.username(), authToken)};

@@ -20,6 +20,7 @@ public class ClearDataAccessTests {
             dataAccess = new MySqlDataAccess();
             connection = DatabaseManager.getConnection();
             try (var stmt = connection.createStatement()) {
+                stmt.execute("DELETE FROM games");
                 stmt.execute("DELETE FROM auths");
                 stmt.execute("DELETE FROM users");
             }
@@ -37,6 +38,7 @@ public class ClearDataAccessTests {
             dataAccess.createUser(userData);
             AuthData auth = new AuthData(authToken, username);
             dataAccess.createAuth(auth);
+            dataAccess.clear();
 
 
             var statement = "SELECT * FROM auths WHERE authToken = ?";

@@ -1,7 +1,5 @@
 package dataaccess;
 
-import chess.ChessGame;
-import model.AuthData;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +57,7 @@ public class GameDataAccessTests {
     @Test
     void createGameFailNoNameProvided() {
         try {
-            int gameId = dataAccess.createGame(null);
+            dataAccess.createGame(null);
             fail("Game created with no name provided");
         } catch (DataAccessException e) {
             assertEquals("Error: No game name provided.", e.getMessage());
@@ -86,7 +84,7 @@ public class GameDataAccessTests {
         int gameId = -1;
         try {
             gameId = dataAccess.createGame(gameName);
-            GameData retrievedGame = dataAccess.getGame(gameId + 1);
+            dataAccess.getGame(gameId + 1);
 
             fail("Retrieving nonexistent game did not throw an exception.");
 
