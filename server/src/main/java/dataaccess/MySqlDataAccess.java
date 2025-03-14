@@ -2,6 +2,8 @@ package dataaccess;
 
 //import com.google.gson.Gson;
 //import jdk.jshell.spi.ExecutionControl;
+import chess.ChessGame;
+import com.google.gson.Gson;
 import model.UserData;
 import model.AuthData;
 import model.GameData;
@@ -68,7 +70,17 @@ public class MySqlDataAccess implements DataAccess {
     }
 
     public int createGame(String gameName) throws DataAccessException {
-        throw new DataAccessException("Didn't implement yet");
+        var statement = "INSERT INTO games (gameData) VALUES (?)";
+        GameData game = new GameData(null, null, gameName, new ChessGame());
+        Gson serializer = new Gson();
+        String gameJSON = serializer.toJson(game);
+
+        try {
+            return executeUpdate(statement, gameJSON);
+        } catch (ResponseException e) {
+            throw new DataAccessException("Failed to create game: " + e.getMessage());
+        }
+
     }
     public GameData getGame(int gameId) throws DataAccessException {
         throw new DataAccessException("Didn't implement yet");

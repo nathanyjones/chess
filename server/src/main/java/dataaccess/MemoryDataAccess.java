@@ -37,11 +37,11 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     public int createGame(String gameName) {
-        GameData game = new GameData(nextGameId, null, null,
+        GameData game = new GameData(null, null,
                 gameName, new ChessGame());
         games.put(nextGameId, game);
         nextGameId += 1;
-        return game.gameID();
+        return nextGameId - 1;
     }
     public GameData getGame(int gameId) throws DataAccessException {
         if (games.containsKey(gameId)) {
