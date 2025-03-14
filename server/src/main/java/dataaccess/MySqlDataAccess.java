@@ -113,13 +113,13 @@ public class MySqlDataAccess implements DataAccess {
                     return games;
                 }
             }
-        } catch (Exception e) {
+        } catch (ResponseException | SQLException e) {
             throw new DataAccessException("Failed to retrieve games: " + e.getMessage());
         }
     }
     public void updateGame(int gameId, GameData updatedGame) throws DataAccessException {
         var statement = "UPDATE games SET gameData = ? WHERE id = ?";
-        var checkStatement = "SELECT gameData FROM games WHERE id = ?";
+        var checkStatement = "SELECT COUNT(*) FROM games WHERE id = ?";
         Gson serializer = new Gson();
         String gameJSON = serializer.toJson(updatedGame);
         try {
