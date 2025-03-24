@@ -12,7 +12,9 @@ public class Main {
         try {
             facade.clear();
             AuthData response = facade.register(user);
+            AuthData loginResponse = facade.login(user);
             System.out.println("Registration Successful! Received: " + response);
+            System.out.println("Login Successful! Received: " + loginResponse);
         } catch (ResponseException e) {
             System.out.println("Request failed: " + e.getMessage());
         }

@@ -1,7 +1,6 @@
 package server;
 
 import dataaccess.DataAccess;
-import dataaccess.MemoryDataAccess;
 import dataaccess.MySqlDataAccess;
 import dataaccess.ResponseException;
 import service.ClearService;
