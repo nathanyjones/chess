@@ -5,6 +5,7 @@ import exception.ResponseException;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
+import request.JoinGameRequest;
 
 import java.io.*;
 import java.net.*;
@@ -40,6 +41,12 @@ public class ServerFacade {
     public GameData createGame(String authToken, String gameName) throws ResponseException {
         var path = "/game";
         return this.makeRequest("POST", path, gameName, GameData.class, true, authToken);
+    }
+
+    public void joinGame(String authToken, Integer gameID, String playerColor) throws ResponseException {
+        var path = "/game";
+        JoinGameRequest joinData = new JoinGameRequest(playerColor, gameID);
+        this.makeRequest("PUT", path, joinData, null, true, authToken);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass,
