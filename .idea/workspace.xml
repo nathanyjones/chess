@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Setting up phase 5 files">
-      <change afterPath="$PROJECT_DIR$/shared/src/main/java/exception/ResponseException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/Main.java" afterDir="false" />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Setting up Server Facade, implementing register method">
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,13 +173,22 @@
       <option name="project" value="LOCAL" />
       <updated>1742794837894</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Setting up Server Facade, implementing register method">
+      <option name="closed" value="true" />
+      <created>1742799250569</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1742799250569</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Debugging DataAccess login code, Restoring files" />
     <MESSAGE value="Setting up phase 5 files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Setting up phase 5 files" />
+    <MESSAGE value="Setting up Server Facade, implementing register method" />
+    <option name="LAST_COMMIT_MESSAGE" value="Setting up Server Facade, implementing register method" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

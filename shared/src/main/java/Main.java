@@ -10,6 +10,7 @@ public class Main {
         UserData user = new UserData("testUser2", "password", "test@example.com");
 
         try {
+            facade.clear();
             AuthData response = facade.register(user);
             System.out.println("Registration Successful! Received: " + response);
         } catch (ResponseException e) {
