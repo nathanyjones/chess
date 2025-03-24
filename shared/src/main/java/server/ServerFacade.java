@@ -17,41 +17,42 @@ public class ServerFacade {
         serverUrl = url;
     }
 
+    public void clear() throws ResponseException {
+        var path = "/db";
+        this.makeRequest("DELETE", path, null, null, false, null);
+    }
+
     public AuthData register(UserData user) throws ResponseException {
         var path = "/user";
-        return this.makeRequest("POST", path, user, AuthData.class, false);
+        return this.makeRequest("POST", path, user, AuthData.class, false, null);
     }
 
     public AuthData login(UserData user) throws ResponseException {
         var path = "/session";
-        return this.makeRequest("POST", path, user, AuthData.class, false);
+        return this.makeRequest("POST", path, user, AuthData.class, false, null);
     }
 
     public void logout(String authToken) throws ResponseException {
         var path = "/session";
-
-        this.makeRequest("DELETE", path, authToken, null, true);
+        this.makeRequest("DELETE", path, null, null, true, authToken);
     }
 
-    public void clear() throws ResponseException {
-        var path = "/db";
-        this.makeRequest("DELETE", path, null, null, false);
+    public GameData createGame(String authToken, String gameName) throws ResponseException {
+        var path = "/game";
+        return this.makeRequest("POST", path, gameName, GameData.class, true, authToken);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass,
-                              boolean requestString) throws ResponseException {
+                              boolean requiresAuth, String authToken) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
-            if (requestString) {
-                if (request != null) {
-                    http.setRequestProperty("authorization", request.toString());
-                }
-            } else {
-                writeBody(request, http);
+            if (requiresAuth) {
+                http.setRequestProperty("authorization", authToken);
             }
+            writeBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);
             return readBody(http, responseClass);

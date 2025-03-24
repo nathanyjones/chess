@@ -1,5 +1,6 @@
 import exception.ResponseException;
 import model.AuthData;
+import model.GameData;
 import model.UserData;
 import server.ServerFacade;
 
@@ -17,8 +18,10 @@ public class Main {
             String authToken = loginResponse.authToken();
             System.out.println("Login Successful! Received: " + loginResponse);
             System.out.println(authToken);
-            facade.logout(authToken);
-            System.out.println("Logout Successful!");
+//            facade.logout(authToken);
+//            System.out.println("Logout Successful!");
+            GameData gameData = facade.createGame(authToken, "Game1");
+            System.out.println("Game created successfully: " + gameData.gameID());
         } catch (ResponseException e) {
             System.out.println("Request failed: " + e.getMessage());
         }
