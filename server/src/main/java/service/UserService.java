@@ -63,6 +63,7 @@ public class UserService {
     }
 
     public Object[] logout(String authToken) {
+        System.out.println("In the logout service method: " + authToken);
         try {
             System.out.println("Getting auth token");
             dataAccess.getAuth(authToken);

@@ -14,6 +14,7 @@ public class LogoutHandler extends Handler implements Route  {
     }
 
     public String handle(Request request, Response response) {
+        System.out.println("Request: " + request);
         String authToken = request.headers("authorization");
         Object[] resultArray = userService.logout(authToken);
         response.status((int) resultArray[0]);

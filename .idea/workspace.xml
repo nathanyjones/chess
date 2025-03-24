@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Setting up Server Facade, implementing register method">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing login method for ServerFacade">
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/service/request/LogoutRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/handler/LogoutHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/handler/LogoutHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,6 +78,7 @@
       <recent name="$PROJECT_DIR$/client/src/main/java/ui" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="service.request" />
       <recent name="dataaccess" />
     </key>
   </component>
@@ -181,14 +187,32 @@
       <option name="project" value="LOCAL" />
       <updated>1742799250569</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implementing clear method for ServerFacade">
+      <option name="closed" value="true" />
+      <created>1742799562521</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1742799562521</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Implementing login method for ServerFacade">
+      <option name="closed" value="true" />
+      <created>1742799781943</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1742799781943</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Debugging DataAccess login code, Restoring files" />
     <MESSAGE value="Setting up phase 5 files" />
     <MESSAGE value="Setting up Server Facade, implementing register method" />
-    <option name="LAST_COMMIT_MESSAGE" value="Setting up Server Facade, implementing register method" />
+    <MESSAGE value="Implementing clear method for ServerFacade" />
+    <MESSAGE value="Implementing login method for ServerFacade" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing login method for ServerFacade" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
