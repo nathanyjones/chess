@@ -17,20 +17,18 @@ public class Repl {
         System.out.print(client.help());
 
         Scanner scanner = new Scanner(System.in);
-//        var result = "";
-        String line = "";
-//        while (!result.equals("quit")) {
-        while (!line.equals("quit")) {
+        var result = "";
+        while (!result.equals("quit")) {
             printPrompt();
-            line = scanner.nextLine();
+            String line = scanner.nextLine();
 
-//            try {
-//                result = client.eval(line);
-//                System.out.print(BLUE + result);
-//            } catch (Throwable e) {
-//                var msg = e.toString();
-//                System.out.print(msg);
-//            }
+            try {
+                result = client.eval(line);
+                System.out.print(SET_TEXT_COLOR_BLUE + result);
+            } catch (Throwable e) {
+                var msg = e.toString();
+                System.out.print(msg);
+            }
         }
         System.out.println();
     }
