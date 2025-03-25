@@ -12,7 +12,7 @@ public class Repl {
     }
 
     public void run() {
-        System.out.println(SET_TEXT_COLOR_WHITE + WHITE_KING +
+        System.out.println(SET_TEXT_COLOR_YELLOW + WHITE_KING +
                 "Welcome to 240 Chess! Type help to get started." + WHITE_KING);
         System.out.print(client.help());
 

@@ -75,6 +75,8 @@ public class ServerFacade {
                 throw new ResponseException(403, "Error: username already taken");
             } else if (path.equals("/session") && method.equals("POST") && status == 401) {
                 throw new ResponseException(401, "Error: incorrect username or password");
+            } else if (path.equals("/game") && method.equals("PUT") && status == 403) {
+                throw new ResponseException(403, "Error: Color already taken.");
             }
             http.connect();
             throwIfNotSuccessful(http);

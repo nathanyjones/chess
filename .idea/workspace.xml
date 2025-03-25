@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging register ChessClient method">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Reimplementing error paths for ChessClient createGame, login methods.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" afterDir="false" />
@@ -277,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742935524643</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Reimplementing error paths for ChessClient createGame, login methods.">
+      <option name="closed" value="true" />
+      <created>1742938349715</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1742938349715</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -306,7 +314,8 @@
     <MESSAGE value="Setting up REPL files and initial print code." />
     <MESSAGE value="Implementing login, register, and help REPL commands." />
     <MESSAGE value="Debugging register ChessClient method" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging register ChessClient method" />
+    <MESSAGE value="Reimplementing error paths for ChessClient createGame, login methods." />
+    <option name="LAST_COMMIT_MESSAGE" value="Reimplementing error paths for ChessClient createGame, login methods." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

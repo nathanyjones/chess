@@ -33,6 +33,7 @@ public class ChessClient {
         } else {
             return switch (cmd) {
                 case "create" -> createGame(params);
+                case "join" -> joinGame(params);
                 case "logout" -> logout();
                 case "quit" -> "Exiting...";
                 case "help" -> help();
@@ -100,6 +101,33 @@ public class ChessClient {
             int gameID = server.createGame(this.authToken, gameName);
             return "Game '" + gameName + "' created with id: " + gameID + ".\nUse command 'join " + gameID
                     + " [WHITE|BLACK]' to join this game.\n";
+        } catch (Exception e) {
+            throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
+        }
+    }
+
+    public String joinGame(String... params) throws ResponseException {
+        if (params.length < 2) {
+            throw new ResponseException(400, "Insufficient information. Must provide game ID <ID> and " +
+                    "color [WHITE|BLACK].\n");
+        }
+        String color = params[1];
+        if (!color.equals("WHITE") && !color.equals("BLACK")) {
+            throw new ResponseException(400, "Invalid color type. Color must be either WHITE or BLACK");
+        }
+        try {
+            int gameID = Integer.parseInt(params[0]);
+            server.joinGame(this.authToken, gameID, color);
+            return "Game " + gameID + " joined as " + color + ".";
+        } catch (NumberFormatException e) {
+            throw new ResponseException(400, "Invalid GameID. Please provide a valid GameID (number).\nUse command " +
+                     SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " to view joinable games, or " +
+                    SET_TEXT_COLOR_BLUE + "create <NAME>" + SET_TEXT_COLOR_RED + " to create your own game.");
+        } catch (ResponseException e) {
+            if (e.StatusCode() == 403) {
+                throw new ResponseException(403, "Color already taken by another user.");
+            }
+            throw new ResponseException(401, "Game not found. Game ID may be invalid or expired.");
         } catch (Exception e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
