@@ -71,7 +71,6 @@ public class MySqlDataAccess implements DataAccess {
         if (gameName == null) {
             throw new DataAccessException("Error: No game name provided.");
         }
-        System.out.println("Game Name in Data Access: " + gameName);
         var statement = "INSERT INTO games (gameData) VALUES (?)";
         GameData game = new GameData(null, null, null, gameName, new ChessGame());
         Gson serializer = new Gson();
@@ -80,7 +79,6 @@ public class MySqlDataAccess implements DataAccess {
             int gameID = executeUpdate(statement, gameJSON);
             GameData gameDataWithID = new GameData(gameID, null, null, gameName, new ChessGame());
             updateGame(gameID, gameDataWithID);
-            System.out.println("Making sure gameName is still there: " + gameDataWithID.gameName());
             return gameID;
         } catch (ResponseException e) {
             throw new DataAccessException("Failed to create game: " + e.getMessage());

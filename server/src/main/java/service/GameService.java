@@ -44,7 +44,6 @@ public class GameService {
     public Object[] joinGame(String authToken, JoinGameRequest joinGameRequest) {
         String color = joinGameRequest.playerColor();
         Integer gameID = joinGameRequest.gameID();
-        System.out.println("GameID: " + gameID);
         try {
             AuthData authData = dataAccess.getAuth(authToken);
             if (color == null || (!color.equals("WHITE") && !color.equals("BLACK")) || gameID == null) {

@@ -1,7 +1,6 @@
 package handler;
 
 import service.GameService;
-import service.request.CreateGameRequest;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -16,13 +15,10 @@ public class CreateGameHandler extends Handler implements Route  {
 
     public String handle(Request request, Response response) {
         String authToken = request.headers("authorization");
-        System.out.println(authToken);
         String gameName = fromJSON(request.body(), String.class);
-        System.out.println(gameName);
         Object[] resultArray = gameService.createGame(authToken, gameName);
         response.status((int) resultArray[0]);
         response.body(toJSON(resultArray[1]));
-        System.out.println(response.body() + "\nSending back to the ServerFacade...");
         return response.body();
     }
 }
