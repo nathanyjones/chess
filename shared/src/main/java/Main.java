@@ -3,6 +3,8 @@ import model.GameData;
 import model.UserData;
 import server.ServerFacade;
 
+import java.util.Collection;
+
 public class Main {
     public static void main(String[] args) {
         ServerFacade facade = new ServerFacade("http://localhost:8080");
@@ -20,6 +22,8 @@ public class Main {
 
             facade.joinGame(authToken2, gameID, "WHITE");
             System.out.println("Join Game Did Not Raise Exception");
+            Collection<GameData> gameList = facade.listGames(authToken1);
+            System.out.println("Game List Acquired. Size of: " + gameList.size());
         } catch (ResponseException e) {
             System.out.println("Request failed: " + e.getMessage());
         }

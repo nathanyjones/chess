@@ -6,9 +6,11 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import request.JoinGameRequest;
+import result.ListGamesResult;
 
 import java.io.*;
 import java.net.*;
+import java.util.Collection;
 
 public class ServerFacade {
 
@@ -47,6 +49,13 @@ public class ServerFacade {
         var path = "/game";
         JoinGameRequest joinData = new JoinGameRequest(playerColor, gameID);
         this.makeRequest("PUT", path, joinData, null, true, authToken);
+    }
+
+    public Collection<GameData> listGames(String authToken) throws ResponseException {
+        var path = "/game";
+        ListGamesResult result = this.makeRequest("GET", path, null, ListGamesResult.class,
+                true, authToken);
+        return result.getGameList();
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass,

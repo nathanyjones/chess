@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing logout method for ServerFacade">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing joinGame method for ServerFacade">
+      <change afterPath="$PROJECT_DIR$/shared/src/main/java/result/ListGamesResult.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
@@ -218,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742850000364</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Implementing joinGame method for ServerFacade">
+      <option name="closed" value="true" />
+      <created>1742850990598</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1742850990598</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -239,7 +248,8 @@
     <MESSAGE value="Implementing clear method for ServerFacade" />
     <MESSAGE value="Implementing login method for ServerFacade" />
     <MESSAGE value="Implementing logout method for ServerFacade" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing logout method for ServerFacade" />
+    <MESSAGE value="Implementing joinGame method for ServerFacade" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing joinGame method for ServerFacade" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
