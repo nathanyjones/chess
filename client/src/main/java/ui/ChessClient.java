@@ -18,23 +18,23 @@ public class ChessClient {
     }
 
     public String eval(String input) throws ResponseException {
-        var tokens = input.toLowerCase().split(" ");
-        var cmd = (tokens.length > 0) ? tokens[0] : "help";
+        var tokens = input.split(" ");
+        var cmd = (tokens.length > 0) ? tokens[0].toLowerCase() : "help";
         var params = Arrays.copyOfRange(tokens, 1, tokens.length);
         if (!this.loggedIn) {
             return switch (cmd) {
                 case "register" -> register(params);
                 case "login" -> login(params);
-                case "quit" -> "quit";
+                case "quit" -> "Exiting...";
                 case "help" -> help();
                 default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
                         "Try one of these:\n" + help();
             };
         } else {
             return switch (cmd) {
-//                    case "create" -> createGame(params);
+                case "create" -> createGame(params);
                 case "logout" -> logout();
-                case "quit" -> "quit";
+                case "quit" -> "Exiting...";
                 case "help" -> help();
                 default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
                         "Try one of these:\n" + help();
@@ -51,11 +51,13 @@ public class ChessClient {
             AuthData authData = server.register(new UserData(params[0], params[1], params[2]));
             this.authToken = authData.authToken();
             this.loggedIn = true;
-            return "Successfully Registered " + params[0];
+            return "Successfully Registered " + params[0] + "\n" + help();
         } catch (ResponseException e) {
             if (e.StatusCode() == 403) {
                 throw e;
             }
+            throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
+        } catch (Exception e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
     }
@@ -68,8 +70,13 @@ public class ChessClient {
             AuthData authData = server.login(new UserData(params[0], params[1], null));
             this.authToken = authData.authToken();
             this.loggedIn = true;
-            return "Successfully Logged in as " + params[0];
+            return "Successfully Logged in as " + params[0] + "\n" + help();
         } catch (ResponseException e) {
+            if (e.StatusCode() == 401) {
+                throw e;
+            }
+            throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
+        } catch (Exception e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
     }
@@ -78,21 +85,35 @@ public class ChessClient {
         try {
             server.logout(this.authToken);
             this.authToken = null;
-            return "Successfully Registered Logged Out";
-        } catch (ResponseException e) {
+            return "Successfully Logged Out";
+        } catch (Exception e) {
+            throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
+        }
+    }
+
+    public String createGame(String... params) throws ResponseException {
+        if (params.length < 1) {
+            throw new ResponseException(400, "Insufficient information. Must provide game name <NAME>.\n");
+        }
+        try {
+            String gameName = String.join(" ", params);
+            int gameID = server.createGame(this.authToken, gameName);
+            return "Game '" + gameName + "' created with id: " + gameID + ".\nUse command 'join " + gameID
+                    + " [WHITE|BLACK]' to join this game.\n";
+        } catch (Exception e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
     }
 
     public String help() {
         if (this.loggedIn) {
-            return getSignedInString();
+            return getSignedInHelpString();
         } else {
-            return getSignedOutString();
+            return getSignedOutHelpString();
         }
     }
 
-    private static String getSignedOutString() {
+    private static String getSignedOutHelpString() {
         String template = """
                 \t{{bluet}}register <USERNAME> <PASSWORD> <EMAIL> {{whitet}}- to create an account
                 \t{{bluet}}login <USERNAME> <PASSWORD> {{whitet}}- to play chess
@@ -104,7 +125,7 @@ public class ChessClient {
         return message;
     }
 
-    private static String getSignedInString() {
+    private static String getSignedInHelpString() {
         String template = """
                     \t{{bluet}}create <NAME> {{whitet}}- a game
                     \t{{bluet}}list {{whitet}}- games

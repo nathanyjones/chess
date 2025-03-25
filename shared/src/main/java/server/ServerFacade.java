@@ -71,8 +71,10 @@ public class ServerFacade {
             }
             writeBody(request, http);
             int status = http.getResponseCode();
-            if (responseClass == AuthData.class && method.equals("POST") && status == 403) {
-                throw new ResponseException(403, "Error: already taken");
+            if (path.equals("/user") && method.equals("POST") && status == 403) {
+                throw new ResponseException(403, "Error: username already taken");
+            } else if (path.equals("/session") && method.equals("POST") && status == 401) {
+                throw new ResponseException(401, "Error: incorrect username or password");
             }
             http.connect();
             throwIfNotSuccessful(http);
