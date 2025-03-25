@@ -40,9 +40,10 @@ public class ServerFacade {
         this.makeRequest("DELETE", path, null, null, true, authToken);
     }
 
-    public GameData createGame(String authToken, String gameName) throws ResponseException {
+    public Integer createGame(String authToken, String gameName) throws ResponseException {
         var path = "/game";
-        return this.makeRequest("POST", path, gameName, GameData.class, true, authToken);
+        GameData game = this.makeRequest("POST", path, gameName, GameData.class, true, authToken);
+        return game.gameID();
     }
 
     public void joinGame(String authToken, Integer gameID, String playerColor) throws ResponseException {

@@ -17,8 +17,7 @@ public class Main {
             String authToken1 = facade.register(user1).authToken();
             String authToken2 = facade.register(user2).authToken();
 
-            GameData gameData = facade.createGame(authToken1, "Game1");
-            int gameID = gameData.gameID();
+            Integer gameID = facade.createGame(authToken1, "Game1");
 
             facade.joinGame(authToken2, gameID, "WHITE");
             System.out.println("Join Game Did Not Raise Exception");
