@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing joinGame method for ServerFacade">
-      <change afterPath="$PROJECT_DIR$/shared/src/main/java/result/ListGamesResult.java" afterDir="false" />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing ListGames method for ServerFacade, finishing ServerFacade code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/java/client/ServerFacadeTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/java/client/ServerFacadeTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,6 +54,7 @@
     "Application.Main.executor": "Run",
     "JUnit.AuthDataAccessTests.executor": "Run",
     "JUnit.DatabaseTests.executor": "Run",
+    "JUnit.ServerFacadeTests.executor": "Run",
     "JUnit.StandardAPITests.executor": "Run",
     "JUnit.StandardAPITests.gamesList.executor": "Run",
     "JUnit.StandardAPITests.successLogin.executor": "Run",
@@ -82,7 +82,7 @@
       <recent name="dataaccess" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main (1)">
+  <component name="RunManager" selected="JUnit.ServerFacadeTests">
     <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="shared" />
@@ -112,6 +112,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ServerFacadeTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="client" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="client" />
+      <option name="MAIN_CLASS_NAME" value="client.ServerFacadeTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="StandardAPITests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <extension name="coverage">
@@ -127,30 +142,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StandardAPITests.gamesList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="passoff.server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="passoff.server" />
-      <option name="MAIN_CLASS_NAME" value="passoff.server.StandardAPITests" />
-      <option name="METHOD_NAME" value="gamesList" />
-      <option name="TEST_OBJECT" value="method" />
-      <dir value="$PROJECT_DIR$/server/src/test/java/passoff/server" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ServerFacadeTests" />
         <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.DatabaseTests" />
         <item itemvalue="JUnit.StandardAPITests" />
-        <item itemvalue="JUnit.StandardAPITests.gamesList" />
       </list>
     </recent_temporary>
   </component>
@@ -227,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742850990598</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Implementing ListGames method for ServerFacade, finishing ServerFacade code">
+      <option name="closed" value="true" />
+      <created>1742863776244</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1742863776244</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -249,7 +255,8 @@
     <MESSAGE value="Implementing login method for ServerFacade" />
     <MESSAGE value="Implementing logout method for ServerFacade" />
     <MESSAGE value="Implementing joinGame method for ServerFacade" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing joinGame method for ServerFacade" />
+    <MESSAGE value="Implementing ListGames method for ServerFacade, finishing ServerFacade code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing ListGames method for ServerFacade, finishing ServerFacade code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

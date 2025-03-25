@@ -98,7 +98,6 @@ public class ServerFacade {
                     throw ResponseException.fromJson(respErr);
                 }
             }
-
             throw new ResponseException(status, "other failure: " + status);
         }
     }
