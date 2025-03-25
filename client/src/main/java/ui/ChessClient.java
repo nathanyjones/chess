@@ -4,9 +4,8 @@ import exception.ResponseException;
 import model.AuthData;
 import model.UserData;
 import server.ServerFacade;
-import spark.Response;
-import ui.EscapeSequences;
 import java.util.Arrays;
+import static ui.EscapeSequences.*;
 
 public class ChessClient {
     private final ServerFacade server;
@@ -19,28 +18,27 @@ public class ChessClient {
     }
 
     public String eval(String input) throws ResponseException {
-        try {
-            var tokens = input.toLowerCase().split(" ");
-            var cmd = (tokens.length > 0) ? tokens[0] : "help";
-            var params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            if (this.loggedIn) {
-                return switch (cmd) {
-                    case "register" -> register(params);
-                    case "login" -> login(params);
-                    case "quit" -> "quit";
-                    default -> help();
-                };
-            } else {
-                return switch (cmd) {
+        var tokens = input.toLowerCase().split(" ");
+        var cmd = (tokens.length > 0) ? tokens[0] : "help";
+        var params = Arrays.copyOfRange(tokens, 1, tokens.length);
+        if (!this.loggedIn) {
+            return switch (cmd) {
+                case "register" -> register(params);
+                case "login" -> login(params);
+                case "quit" -> "quit";
+                case "help" -> help();
+                default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
+                        "Try one of these:\n" + help();
+            };
+        } else {
+            return switch (cmd) {
 //                    case "create" -> createGame(params);
-                    case "logout" -> logout();
-                    case "quit" -> "quit";
-                    default -> help();
-                };
-            }
-
-        } catch (ResponseException ex) {
-            return ex.getMessage();
+                case "logout" -> logout();
+                case "quit" -> "quit";
+                case "help" -> help();
+                default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
+                        "Try one of these:\n" + help();
+            };
         }
     }
 
@@ -52,8 +50,12 @@ public class ChessClient {
         try {
             AuthData authData = server.register(new UserData(params[0], params[1], params[2]));
             this.authToken = authData.authToken();
+            this.loggedIn = true;
             return "Successfully Registered " + params[0];
         } catch (ResponseException e) {
+            if (e.StatusCode() == 403) {
+                throw e;
+            }
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
     }
@@ -65,6 +67,7 @@ public class ChessClient {
         try {
             AuthData authData = server.login(new UserData(params[0], params[1], null));
             this.authToken = authData.authToken();
+            this.loggedIn = true;
             return "Successfully Logged in as " + params[0];
         } catch (ResponseException e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
@@ -96,8 +99,8 @@ public class ChessClient {
                 \t{{bluet}}quit {{whitet}}- playing chess
                 \t{{bluet}}help {{whitet}}- with possible commands
                 """;
-        String message = template.replace("{{bluet}}", EscapeSequences.SET_TEXT_COLOR_BLUE);
-        message = message.replace("{{whitet}}", EscapeSequences.SET_TEXT_COLOR_WHITE);
+        String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
+        message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
         return message;
     }
 
@@ -110,8 +113,8 @@ public class ChessClient {
                     \t{{bluet}}logout {{whitet}}- when you are done
                     \t{{bluet}}help {{whitet}}- with possible commands
                     """;
-        String message = template.replace("{{bluet}}", EscapeSequences.SET_TEXT_COLOR_BLUE);
-        message = message.replace("{{whitet}}", EscapeSequences.SET_TEXT_COLOR_WHITE);
+        String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
+        message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
         return message;
     }
 }

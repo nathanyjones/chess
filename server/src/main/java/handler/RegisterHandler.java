@@ -20,6 +20,7 @@ public class RegisterHandler extends Handler implements Route  {
         Object[] resultArray = userService.register(registerRequest);
         response.status((int) resultArray[0]);
         response.body(toJSON(resultArray[1]));
+        System.out.println(response.body());
         return response.body();
     }
 }

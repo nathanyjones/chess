@@ -70,6 +70,10 @@ public class ServerFacade {
                 http.setRequestProperty("authorization", authToken);
             }
             writeBody(request, http);
+            int status = http.getResponseCode();
+            if (responseClass == AuthData.class && method.equals("POST") && status == 403) {
+                throw new ResponseException(403, "Error: already taken");
+            }
             http.connect();
             throwIfNotSuccessful(http);
             return readBody(http, responseClass);
