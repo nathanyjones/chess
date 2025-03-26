@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging password hashing logic in MemoryDataAccess">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/handler/CreateGameHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/handler/CreateGameHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/service/request/CreateGameRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/request/CreateGameRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/result/ListGamesResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/result/ListGamesResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging CreateGameHandler and usage.">
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/result/ListGamesResult.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -370,7 +366,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742957900060</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Debugging CreateGameHandler and usage.">
+      <option name="closed" value="true" />
+      <created>1742959746682</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1742959746682</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -407,7 +411,8 @@
     <MESSAGE value="Recovering ListGamesResult file." />
     <MESSAGE value="Refactoring GameService code." />
     <MESSAGE value="Debugging password hashing logic in MemoryDataAccess" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging password hashing logic in MemoryDataAccess" />
+    <MESSAGE value="Debugging CreateGameHandler and usage." />
+    <option name="LAST_COMMIT_MESSAGE" value="Debugging CreateGameHandler and usage." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
