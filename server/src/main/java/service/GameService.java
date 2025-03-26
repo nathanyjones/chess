@@ -4,11 +4,10 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
-import service.request.GetGameRequest;
 import service.request.JoinGameRequest;
 import service.result.CreateGameResult;
 import service.result.JoinGameResult;
-import service.result.ListGamesResult;
+import result.ListGamesResult;
 
 public class GameService {
     private final DataAccess dataAccess;

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Finishing implementation of drawBoard method." />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Removing unnecessary files." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,7 +86,14 @@
       <recent name="request" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ServerFacadeTests">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="GameServiceTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <extension name="coverage">
@@ -98,22 +105,6 @@
       <option name="PACKAGE_NAME" value="service" />
       <option name="MAIN_CLASS_NAME" value="service.GameServiceTests" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameServiceTests.getGameSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="service" />
-      <option name="MAIN_CLASS_NAME" value="service.GameServiceTests" />
-      <option name="METHOD_NAME" value="getGameSuccess" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -167,11 +158,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.ServerFacadeTests" />
         <item itemvalue="JUnit.ServerFacadeTests.getGameFailInvalidIDTest" />
         <item itemvalue="JUnit.GameServiceTests" />
         <item itemvalue="JUnit.GameServiceTests.listGameFailNotFound" />
-        <item itemvalue="JUnit.GameServiceTests.getGameSuccess" />
       </list>
     </recent_temporary>
   </component>
@@ -336,7 +327,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742951242944</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Removing unnecessary files.">
+      <option name="closed" value="true" />
+      <created>1742953393509</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1742953393509</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -369,7 +368,8 @@
     <MESSAGE value="Implementing joinGame ChessClient method." />
     <MESSAGE value="Partial implementation of drawBoard. Also adding a getGame Service endpoint." />
     <MESSAGE value="Finishing implementation of drawBoard method." />
-    <option name="LAST_COMMIT_MESSAGE" value="Finishing implementation of drawBoard method." />
+    <MESSAGE value="Removing unnecessary files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Removing unnecessary files." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

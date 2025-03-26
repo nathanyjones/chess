@@ -5,6 +5,7 @@ import dataaccess.MemoryDataAccess;
 import model.GameData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import result.ListGamesResult;
 import service.request.*;
 import service.result.*;
 
