@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing joinGame ChessClient method.">
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/handler/GetGameHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/service/request/GetGameRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/service/result/GetGameResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared/src/main/java/result/GetGameResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/dataaccess/MySqlDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/dataaccess/MySqlDataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/service/GameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/service/GameService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/chess/ChessBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/chess/ChessBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
-    </list>
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Partial implementation of drawBoard. Also adding a getGame Service endpoint." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -304,7 +290,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742941287819</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Partial implementation of drawBoard. Also adding a getGame Service endpoint.">
+      <option name="closed" value="true" />
+      <created>1742950871351</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1742950871351</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -335,7 +329,8 @@
     <MESSAGE value="Debugging register ChessClient method" />
     <MESSAGE value="Reimplementing error paths for ChessClient createGame, login methods." />
     <MESSAGE value="Implementing joinGame ChessClient method." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing joinGame ChessClient method." />
+    <MESSAGE value="Partial implementation of drawBoard. Also adding a getGame Service endpoint." />
+    <option name="LAST_COMMIT_MESSAGE" value="Partial implementation of drawBoard. Also adding a getGame Service endpoint." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

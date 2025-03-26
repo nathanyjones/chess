@@ -9,7 +9,6 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import server.ServerFacade;
-import spark.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -161,7 +160,7 @@ public class ChessClient {
         }
     }
 
-    private String drawBoard(int gameID, String colorOrientation) throws ResponseException {
+    private String drawBoard(int gameID, String color) throws ResponseException {
         StringBuilder boardDrawing = new StringBuilder();
         GameData gameData;
         try {
@@ -173,8 +172,10 @@ public class ChessClient {
         ChessBoard board = gameData.game().getBoard();
 
         for (int i = 1; i < 9; i += 1) {
+            int row = color.equals("BLACK") ? 9-i : i;
             for (int j = 1; j < 9; j++) {
-                ChessPosition position = new ChessPosition(i, j);
+                int col = color.equals("BLACK") ? 9-j : j;
+                ChessPosition position = new ChessPosition(row, col);
                 ChessPiece piece = board.getPiece(position);
 
                 if ((i + j) % 2 == 0) {
