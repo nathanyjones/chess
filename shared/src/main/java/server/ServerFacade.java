@@ -6,7 +6,6 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import request.JoinGameRequest;
-import result.GetGameResult;
 import result.ListGamesResult;
 
 import java.io.*;
