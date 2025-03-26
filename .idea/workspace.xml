@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Finishing implementation of drawBoard method.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/java/client/ServerFacadeTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/java/client/ServerFacadeTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/java/service/GameServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/service/GameServiceTests.java" afterDir="false" />
-    </list>
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Finishing implementation of drawBoard method." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,33 +44,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main (1).executor": "Run",
-    "Application.Main (2).executor": "Run",
-    "Application.Main.executor": "Run",
-    "JUnit.AuthDataAccessTests.executor": "Run",
-    "JUnit.DatabaseTests.executor": "Run",
-    "JUnit.GameServiceTests.executor": "Run",
-    "JUnit.GameServiceTests.getGameSuccess.executor": "Run",
-    "JUnit.GameServiceTests.listGameFailNotFound.executor": "Run",
-    "JUnit.ServerFacadeTests.clearSuccessTest.executor": "Run",
-    "JUnit.ServerFacadeTests.executor": "Run",
-    "JUnit.ServerFacadeTests.getGameFailInvalidIDTest.executor": "Run",
-    "JUnit.StandardAPITests.executor": "Run",
-    "JUnit.StandardAPITests.gamesList.executor": "Run",
-    "JUnit.StandardAPITests.successLogin.executor": "Run",
-    "JUnit.dataaccess in server.executor": "Run",
-    "JUnit.server in server.executor": "Run",
-    "JUnit.service in server.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/nathanyjones/Desktop/school/cs240/chess_p5/chess/shared/src/main/java"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (2).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthDataAccessTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DatabaseTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameServiceTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameServiceTests.getGameSuccess.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameServiceTests.listGameFailNotFound.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerFacadeTests.clearSuccessTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerFacadeTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerFacadeTests.getGameFailInvalidIDTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StandardAPITests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StandardAPITests.gamesList.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StandardAPITests.successLogin.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.dataaccess in server.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.server in server.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.service in server.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/nathanyjones/Desktop/school/cs240/chess_p5/chess/shared/src/main/java&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/shared/src/main/java" />

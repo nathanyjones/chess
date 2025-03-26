@@ -63,7 +63,7 @@ public class ChessClient {
             this.loggedIn = true;
             return "Successfully Registered " + params[0] + "\n" + help();
         } catch (ResponseException e) {
-            if (e.StatusCode() == 403) {
+            if (e.getStatusCode() == 403) {
                 throw e;
             }
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
@@ -82,7 +82,7 @@ public class ChessClient {
             this.loggedIn = true;
             return "Successfully Logged in as " + params[0] + "\n" + help();
         } catch (ResponseException e) {
-            if (e.StatusCode() == 401) {
+            if (e.getStatusCode() == 401) {
                 throw e;
             }
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
@@ -133,7 +133,7 @@ public class ChessClient {
                      SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " to view joinable games, or " +
                     SET_TEXT_COLOR_BLUE + "create <NAME>" + SET_TEXT_COLOR_RED + " to create your own game.");
         } catch (ResponseException e) {
-            if (e.StatusCode() == 403) {
+            if (e.getStatusCode() == 403) {
                 throw new ResponseException(403, "Color already taken by another user.");
             }
             throw new ResponseException(401, "Game not found. Game ID may be invalid or expired.");
