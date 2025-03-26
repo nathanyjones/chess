@@ -2,6 +2,7 @@ package dataaccess;
 
 import chess.ChessGame;
 import model.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,10 +23,11 @@ public class MemoryDataAccess implements DataAccess {
 
     public void createUser(UserData user) throws DataAccessException {
         String username = user.username();
+        String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
         if (users.containsKey(username)) {
             throw new DataAccessException("Error: already taken");
         } else {
-            users.put(username, user);
+            users.put(username, new UserData(user.username(), hashedPassword, user.email()));
         }
     }
     public UserData getUser(String username) throws DataAccessException {

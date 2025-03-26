@@ -37,6 +37,8 @@ public class MySqlDataAccess implements DataAccess {
         var checkTakenStatement = "SELECT COUNT(*) FROM users WHERE username = ?";
         var statement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
         String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
+        System.out.println("Password before adding to DB: " + user.password());
+        System.out.println("That password after hashing: " + hashedPassword);
         try {
             if (!checkExistence(checkTakenStatement, user.username())) {
                 executeUpdate(statement, user.username(), hashedPassword, user.email());

@@ -62,6 +62,9 @@ public class UserServiceTests {
         Object[] loginOutput = userService.login(loginRequest);
         int statusCode = (int) loginOutput[0];
         LoginResult result = (LoginResult) loginOutput[1];
+        System.out.println(result.getMessage());
+        System.out.println(result.getUsername());
+        System.out.println(result.getAuthToken());
         assertEquals(200, statusCode);
         assertNotNull(result.getAuthToken());
         assertEquals(username, result.getUsername());

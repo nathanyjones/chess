@@ -43,6 +43,8 @@ public class UserService {
         try {
             UserData userData = dataAccess.getUser(loginRequest.username());
             var hashedPassword = userData.password();
+            System.out.println("Hashed Password: " + hashedPassword);
+            System.out.println("Given Password " + loginRequest.password());
             if (BCrypt.checkpw(loginRequest.password(), hashedPassword)) {
                 String authToken = generateAuthToken();
                 dataAccess.createAuth(new AuthData(authToken, loginRequest.username()));
