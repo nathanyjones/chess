@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging CreateGameHandler and usage.">
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/result/ListGamesResult.java" beforeDir="false" />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Restoring ListGamesResult.java">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,41 +49,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main (1).executor": "Run",
-    "Application.Main (2).executor": "Run",
-    "Application.Main.executor": "Run",
-    "JUnit.AuthDataAccessTests.executor": "Run",
-    "JUnit.ChessBoardTests.executor": "Run",
-    "JUnit.DatabaseTests.executor": "Run",
-    "JUnit.GameServiceTests.executor": "Run",
-    "JUnit.GameServiceTests.getGameSuccess.executor": "Run",
-    "JUnit.GameServiceTests.listGameFailNotFound.executor": "Run",
-    "JUnit.ServerFacadeTests.clearSuccessTest.executor": "Run",
-    "JUnit.ServerFacadeTests.createGameSuccessTest.executor": "Run",
-    "JUnit.ServerFacadeTests.executor": "Run",
-    "JUnit.ServerFacadeTests.getGameFailInvalidIDTest.executor": "Run",
-    "JUnit.StandardAPITests.executor": "Run",
-    "JUnit.StandardAPITests.gamesList.executor": "Run",
-    "JUnit.StandardAPITests.goodCreate.executor": "Run",
-    "JUnit.StandardAPITests.successLogin.executor": "Run",
-    "JUnit.UserServiceTests.executor": "Run",
-    "JUnit.dataaccess in server.executor": "Run",
-    "JUnit.java in server.executor": "Run",
-    "JUnit.passoff.chess in shared.executor": "Run",
-    "JUnit.passoff.chess.game in shared.executor": "Run",
-    "JUnit.passoff.chess.piece in shared.executor": "Run",
-    "JUnit.server in server.executor": "Run",
-    "JUnit.service in server.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/nathanyjones/Desktop/school/cs240/chess_p5/chess/shared/src/main/java"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main (2).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthDataAccessTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChessBoardTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DatabaseTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameServiceTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameServiceTests.getGameSuccess.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameServiceTests.listGameFailNotFound.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerFacadeTests.clearSuccessTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerFacadeTests.createGameSuccessTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerFacadeTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerFacadeTests.getGameFailInvalidIDTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StandardAPITests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StandardAPITests.gamesList.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StandardAPITests.goodCreate.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StandardAPITests.successLogin.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.dataaccess in server.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in server.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.passoff.chess in shared.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.passoff.chess.game in shared.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.passoff.chess.piece in shared.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.server in server.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.service in server.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/nathanyjones/Desktop/school/cs240/chess_p5/chess/shared/src/main/java&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/shared/src/main/java" />
@@ -96,18 +99,24 @@
       <recent name="request" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.java in server">
-    <configuration name="ChessBoardTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="shared" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="passoff.chess.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="passoff.chess" />
-      <option name="MAIN_CLASS_NAME" value="passoff.chess.ChessBoardTests" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -135,40 +144,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="passoff.chess.game in shared" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="shared" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="passoff.chess.game.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="passoff.chess.game" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="passoff.chess.piece in shared" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="shared" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="passoff.chess.piece.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="passoff.chess.piece" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main (1)" />
+        <item itemvalue="Application.Main (2)" />
         <item itemvalue="JUnit.java in server" />
-        <item itemvalue="JUnit.ChessBoardTests" />
-        <item itemvalue="JUnit.passoff.chess.piece in shared" />
-        <item itemvalue="JUnit.passoff.chess.game in shared" />
         <item itemvalue="JUnit.ServerFacadeTests" />
       </list>
     </recent_temporary>
@@ -374,7 +355,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742959746682</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Restoring ListGamesResult.java">
+      <option name="closed" value="true" />
+      <created>1742960788914</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1742960788914</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -412,7 +401,8 @@
     <MESSAGE value="Refactoring GameService code." />
     <MESSAGE value="Debugging password hashing logic in MemoryDataAccess" />
     <MESSAGE value="Debugging CreateGameHandler and usage." />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging CreateGameHandler and usage." />
+    <MESSAGE value="Restoring ListGamesResult.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Restoring ListGamesResult.java" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

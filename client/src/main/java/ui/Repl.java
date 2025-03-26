@@ -14,7 +14,7 @@ public class Repl {
     public void run() {
         System.out.println(SET_TEXT_COLOR_YELLOW + WHITE_KING +
                 "Welcome to 240 Chess! Type help to get started." + WHITE_KING);
-        System.out.print(client.help());
+        System.out.println(client.help());
 
         Scanner scanner = new Scanner(System.in);
         var result = "";
@@ -24,13 +24,12 @@ public class Repl {
 
             try {
                 result = client.eval(line);
-                System.out.print(SET_TEXT_COLOR_YELLOW + result);
+                System.out.println(SET_TEXT_COLOR_YELLOW + result);
             } catch (Throwable e) {
                 var msg = e.getMessage();
-                System.out.print(SET_TEXT_COLOR_RED + msg);
+                System.out.println(SET_TEXT_COLOR_RED + msg);
             }
         }
-        System.out.println();
     }
 
     private void printPrompt() {

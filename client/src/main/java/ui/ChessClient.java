@@ -95,6 +95,7 @@ public class ChessClient {
         try {
             server.logout(this.authToken);
             this.authToken = null;
+            this.loggedIn = false;
             return "Successfully Logged Out";
         } catch (Exception e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
@@ -103,13 +104,13 @@ public class ChessClient {
 
     private String createGame(String... params) throws ResponseException {
         if (params.length < 1) {
-            throw new ResponseException(400, "Insufficient information. Must provide game name <NAME>.\n");
+            throw new ResponseException(400, "Insufficient information. Must provide game name <NAME>.");
         }
         try {
             String gameName = String.join(" ", params);
             int gameID = server.createGame(this.authToken, gameName);
-            return "Game '" + gameName + "' created with id: " + gameID + ".\nUse command 'join " + gameID
-                    + " [WHITE|BLACK]' to join this game.\n";
+            return "Game '" + gameName + "' created with id: " + gameID + ".\nUse command " + SET_TEXT_COLOR_BLUE +
+                    " join " + gameID + " [WHITE|BLACK] " + SET_TEXT_COLOR_YELLOW + " to join this game.";
         } catch (Exception e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
@@ -118,11 +119,12 @@ public class ChessClient {
     private String joinGame(String... params) throws ResponseException {
         if (params.length < 2) {
             throw new ResponseException(400, "Insufficient information. Must provide game ID <ID> and " +
-                    "color [WHITE|BLACK].\n");
+                    "color [WHITE|BLACK].");
         }
-        String color = params[1];
+        String color = params[1].toUpperCase();
         if (!color.equals("WHITE") && !color.equals("BLACK")) {
-            throw new ResponseException(400, "Invalid color type. Color must be either WHITE or BLACK");
+            throw new ResponseException(400, "Invalid color type. Color must be either " +
+                    SET_TEXT_COLOR_BLUE + "WHITE " + SET_TEXT_COLOR_RED + "or " + SET_TEXT_COLOR_BLUE + "BLACK");
         }
         try {
             int gameID = Integer.parseInt(params[0]);
@@ -136,7 +138,7 @@ public class ChessClient {
             if (e.getStatusCode() == 403) {
                 throw new ResponseException(403, "Color already taken by another user.");
             }
-            throw new ResponseException(401, "Game not found. Game ID may be invalid or expired.");
+            throw new ResponseException(401, "Game not found. Provided game ID may be invalid or expired.");
         } catch (Exception e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
@@ -144,7 +146,8 @@ public class ChessClient {
 
     private String observeGame(String... params) throws ResponseException {
         if (params.length < 1) {
-            throw new ResponseException(400, "Invalid color type. Color must be either WHITE or BLACK");
+            throw new ResponseException(400, "Invalid color type. Color must be either " +
+                    SET_TEXT_COLOR_BLUE + "WHITE " + SET_TEXT_COLOR_RED + "or " + SET_TEXT_COLOR_BLUE + "BLACK");
         }
         try {
             int gameID = Integer.parseInt(params[0]);
@@ -154,8 +157,9 @@ public class ChessClient {
             throw new ResponseException(400, "Invalid GameID. Note that <ID> should be an integer.\nUse command " +
                     SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " to view joinable games, or " +
                     SET_TEXT_COLOR_BLUE + "create <NAME>" + SET_TEXT_COLOR_RED + " to create your own game.");
+        } catch (ResponseException e) {
+            throw new ResponseException(401, "Game not found. Provided game ID may be invalid or expired.");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
     }
@@ -219,8 +223,15 @@ public class ChessClient {
         StringBuilder printedList = new StringBuilder();
         try {
             ArrayList<GameData> gameList = (ArrayList<GameData>) server.listGames(this.authToken);
+            if (gameList.isEmpty()) {
+                return "There are currently no active games.\nUse command " + SET_TEXT_COLOR_BLUE + "create <NAME> " +
+                        SET_TEXT_COLOR_YELLOW + "to create a game.";
+            }
             for (int i = 1; i <= gameList.size(); i++) {
                 String gameInfo = getGameInfoString(gameList, i);
+                if (i != gameList.size()) {
+                    gameInfo += "\n";
+                }
                 printedList.append(gameInfo);
             }
             return printedList.toString();
@@ -242,8 +253,7 @@ public class ChessClient {
                \t%s:
                \t\tID: %d
                \t\tUser Playing White: %s
-               \t\tUser Playing Black: %s
-               """.formatted(i, gameName, gameID, whitePlayer, blackPlayer);
+               \t\tUser Playing Black: %s""".formatted(i, gameName, gameID, whitePlayer, blackPlayer);
     }
 
     public String help() {
@@ -259,8 +269,7 @@ public class ChessClient {
                 \t{{bluet}}register <USERNAME> <PASSWORD> <EMAIL> {{whitet}}- to create an account
                 \t{{bluet}}login <USERNAME> <PASSWORD> {{whitet}}- to play chess
                 \t{{bluet}}quit {{whitet}}- playing chess
-                \t{{bluet}}help {{whitet}}- with possible commands
-                """;
+                \t{{bluet}}help {{whitet}}- with possible commands""";
         String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
         message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
         return message;
@@ -273,8 +282,7 @@ public class ChessClient {
                     \t{{bluet}}join <ID> [WHITE|BLACK] {{whitet}}- a game
                     \t{{bluet}}observe <ID> {{whitet}}- a game
                     \t{{bluet}}logout {{whitet}}- when you are done
-                    \t{{bluet}}help {{whitet}}- with possible commands
-                    """;
+                    \t{{bluet}}help {{whitet}}- with possible commands""";
         String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
         message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
         return message;
