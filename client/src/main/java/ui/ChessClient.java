@@ -42,7 +42,7 @@ public class ChessClient {
                 case "create" -> createGame(params);
                 case "join" -> joinGame(params);
                 case "observe" -> observeGame(params);
-                case "list" -> listGames();
+                case "list" -> listGames(params);
                 case "logout" -> logout();
                 case "quit" -> "Exiting...";
                 case "help" -> help();
@@ -53,8 +53,8 @@ public class ChessClient {
     }
 
     private String register(String... params) throws ResponseException {
-        if (params.length < 3) {
-            throw new ResponseException(400, "Insufficient information. Must provide " +
+        if (params.length != 3) {
+            throw new ResponseException(400, "Invalid input. Must provide " +
                     "<USERNAME> <PASSWORD> and <EMAIL>.");
         }
         try {
@@ -73,8 +73,8 @@ public class ChessClient {
     }
 
     private String login(String... params) throws ResponseException {
-        if (params.length < 2) {
-            throw new ResponseException(400, "Insufficient information. Must provide <USERNAME> and <PASSWORD>.");
+        if (params.length != 2) {
+            throw new ResponseException(400, "Invalid input. Must provide <USERNAME> and <PASSWORD>.");
         }
         try {
             AuthData authData = server.login(new UserData(params[0], params[1], null));
@@ -91,7 +91,11 @@ public class ChessClient {
         }
     }
 
-    private String logout() throws ResponseException {
+    private String logout(String... params) throws ResponseException {
+        if (params.length != 0) {
+            throw new ResponseException(400, "Invalid input. Do not provide additional input for " +
+                    SET_TEXT_COLOR_BLUE + "logout" + SET_TEXT_COLOR_RED + " command.");
+        }
         try {
             server.logout(this.authToken);
             this.authToken = null;
@@ -103,8 +107,8 @@ public class ChessClient {
     }
 
     private String createGame(String... params) throws ResponseException {
-        if (params.length < 1) {
-            throw new ResponseException(400, "Insufficient information. Must provide game name <NAME>.");
+        if (params.length != 1) {
+            throw new ResponseException(400, "Invalid input. Must provide game name <NAME>.");
         }
         try {
             String gameName = String.join(" ", params);
@@ -117,8 +121,8 @@ public class ChessClient {
     }
 
     private String joinGame(String... params) throws ResponseException {
-        if (params.length < 2) {
-            throw new ResponseException(400, "Insufficient information. Must provide game ID <ID> and " +
+        if (params.length != 2) {
+            throw new ResponseException(400, "Invalid input. Must provide game ID <ID> and " +
                     "color [WHITE|BLACK].");
         }
         String color = params[1].toUpperCase();
@@ -145,9 +149,9 @@ public class ChessClient {
     }
 
     private String observeGame(String... params) throws ResponseException {
-        if (params.length < 1) {
-            throw new ResponseException(400, "Invalid color type. Color must be either " +
-                    SET_TEXT_COLOR_BLUE + "WHITE " + SET_TEXT_COLOR_RED + "or " + SET_TEXT_COLOR_BLUE + "BLACK");
+        if (params.length != 1) {
+            throw new ResponseException(400, "Invalid input. Please provide a game ID " +
+                    SET_TEXT_COLOR_BLUE + "ID" + SET_TEXT_COLOR_RED + ".");
         }
         try {
             int gameID = Integer.parseInt(params[0]);
@@ -175,10 +179,28 @@ public class ChessClient {
 
         ChessBoard board = gameData.game().getBoard();
 
-        for (int i = 1; i < 9; i += 1) {
+        for (int i = 0; i < 10; i += 1) {
             int row = color.equals("BLACK") ? 9-i : i;
-            for (int j = 1; j < 9; j++) {
+            for (int j = 0; j < 10; j++) {
                 int col = color.equals("BLACK") ? 9-j : j;
+                int colLabelInt = color.equals("BLACK") ? i : (9-i);
+
+                boardDrawing.append(SET_BG_COLOR_DARK_GREY);
+                boardDrawing.append(SET_TEXT_COLOR_LIGHT_GREY);
+                if ((j == 0 || j == 9) && i > 0 && i < 9) {
+                    String rowLabel = " " + colLabelInt + " ";
+                    boardDrawing.append(rowLabel);
+                    continue;
+                } else if ((i == 0 || i == 9) && j > 0 && j < 9) {
+                    char colLabelChar = (char) ('a' + col - 1);
+                    String colLabel = " " + colLabelChar + " ";
+                    boardDrawing.append(colLabel);
+                    continue;
+                } else if (i == 0 || i == 9) {
+                    boardDrawing.append("   ");
+                    continue;
+                }
+
                 ChessPosition position = new ChessPosition(row, col);
                 ChessPiece piece = board.getPiece(position);
 
@@ -219,7 +241,11 @@ public class ChessClient {
         return boardDrawing.toString();
     }
 
-    private String listGames() throws ResponseException {
+    private String listGames(String... params) throws ResponseException {
+        if (params.length != 0) {
+            throw new ResponseException(400, "Invalid input. Do not provide additional input for " +
+                    SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " command.");
+        }
         StringBuilder printedList = new StringBuilder();
         try {
             ArrayList<GameData> gameList = (ArrayList<GameData>) server.listGames(this.authToken);
