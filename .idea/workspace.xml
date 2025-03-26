@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Refactoring GameService code.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging password hashing logic in MemoryDataAccess">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/dataaccess/MemoryDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/dataaccess/MemoryDataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/dataaccess/MySqlDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/dataaccess/MySqlDataAccess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/java/service/UserServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/service/UserServiceTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/handler/CreateGameHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/handler/CreateGameHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/service/request/CreateGameRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/request/CreateGameRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/result/ListGamesResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/result/ListGamesResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,18 +56,25 @@
     "Application.Main (2).executor": "Run",
     "Application.Main.executor": "Run",
     "JUnit.AuthDataAccessTests.executor": "Run",
+    "JUnit.ChessBoardTests.executor": "Run",
     "JUnit.DatabaseTests.executor": "Run",
     "JUnit.GameServiceTests.executor": "Run",
     "JUnit.GameServiceTests.getGameSuccess.executor": "Run",
     "JUnit.GameServiceTests.listGameFailNotFound.executor": "Run",
     "JUnit.ServerFacadeTests.clearSuccessTest.executor": "Run",
+    "JUnit.ServerFacadeTests.createGameSuccessTest.executor": "Run",
     "JUnit.ServerFacadeTests.executor": "Run",
     "JUnit.ServerFacadeTests.getGameFailInvalidIDTest.executor": "Run",
     "JUnit.StandardAPITests.executor": "Run",
     "JUnit.StandardAPITests.gamesList.executor": "Run",
+    "JUnit.StandardAPITests.goodCreate.executor": "Run",
     "JUnit.StandardAPITests.successLogin.executor": "Run",
     "JUnit.UserServiceTests.executor": "Run",
     "JUnit.dataaccess in server.executor": "Run",
+    "JUnit.java in server.executor": "Run",
+    "JUnit.passoff.chess in shared.executor": "Run",
+    "JUnit.passoff.chess.game in shared.executor": "Run",
+    "JUnit.passoff.chess.piece in shared.executor": "Run",
     "JUnit.server in server.executor": "Run",
     "JUnit.service in server.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -93,60 +100,80 @@
       <recent name="request" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UserServiceTests">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="server" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UserServiceTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
+  <component name="RunManager" selected="JUnit.java in server">
+    <configuration name="ChessBoardTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="shared" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="service.*" />
+          <option name="PATTERN" value="passoff.chess.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="service" />
-      <option name="MAIN_CLASS_NAME" value="service.UserServiceTests" />
+      <option name="PACKAGE_NAME" value="passoff.chess" />
+      <option name="MAIN_CLASS_NAME" value="passoff.chess.ChessBoardTests" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="dataaccess in server" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/server/src/test/java/dataaccess" />
+    <configuration name="ServerFacadeTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="client" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="client" />
+      <option name="MAIN_CLASS_NAME" value="client.ServerFacadeTests" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="server in server" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="java in server" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/server/src/test/java/passoff/server" />
+      <dir value="$PROJECT_DIR$/server/src/test/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="service in server" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/server/src/test/java/service" />
+    <configuration name="passoff.chess.game in shared" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="shared" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="passoff.chess.game.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="passoff.chess.game" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="passoff.chess.piece in shared" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="shared" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="passoff.chess.piece.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="passoff.chess.piece" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.UserServiceTests" />
-        <item itemvalue="JUnit.dataaccess in server" />
-        <item itemvalue="JUnit.server in server" />
-        <item itemvalue="JUnit.service in server" />
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.java in server" />
+        <item itemvalue="JUnit.ChessBoardTests" />
+        <item itemvalue="JUnit.passoff.chess.piece in shared" />
+        <item itemvalue="JUnit.passoff.chess.game in shared" />
+        <item itemvalue="JUnit.ServerFacadeTests" />
       </list>
     </recent_temporary>
   </component>
@@ -335,7 +362,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742954053185</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Debugging password hashing logic in MemoryDataAccess">
+      <option name="closed" value="true" />
+      <created>1742957900060</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1742957900060</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -371,7 +406,8 @@
     <MESSAGE value="Removing unnecessary files." />
     <MESSAGE value="Recovering ListGamesResult file." />
     <MESSAGE value="Refactoring GameService code." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring GameService code." />
+    <MESSAGE value="Debugging password hashing logic in MemoryDataAccess" />
+    <option name="LAST_COMMIT_MESSAGE" value="Debugging password hashing logic in MemoryDataAccess" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

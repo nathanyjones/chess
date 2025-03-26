@@ -5,6 +5,7 @@ import exception.ResponseException;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
+import request.CreateGameRequest;
 import request.JoinGameRequest;
 import result.ListGamesResult;
 
@@ -42,7 +43,8 @@ public class ServerFacade {
 
     public Integer createGame(String authToken, String gameName) throws ResponseException {
         var path = "/game";
-        GameData game = this.makeRequest("POST", path, gameName, GameData.class, true, authToken);
+        CreateGameRequest req = new CreateGameRequest(gameName);
+        GameData game = this.makeRequest("POST", path, req, GameData.class, true, authToken);
         return game.gameID();
     }
 
