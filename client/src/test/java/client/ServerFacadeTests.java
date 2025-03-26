@@ -46,13 +46,7 @@ public class ServerFacadeTests {
 
     @Test
     public void registerSuccessTest() {
-        try {
-            AuthData authData = facade.register(USER_1);
-            assertEquals("user1", authData.username());
-            assertNotNull(authData.authToken());
-        } catch (ResponseException e) {
-            fail("Unexpected ResponseException: " + e.getMessage());
-        }
+        doAuthSuccessTest();
     }
 
     @Test
@@ -65,6 +59,10 @@ public class ServerFacadeTests {
 
     @Test
     public void loginSuccessTest() {
+        doAuthSuccessTest();
+    }
+
+    private void doAuthSuccessTest() {
         try {
             AuthData authData = facade.register(USER_1);
             assertEquals("user1", authData.username());
