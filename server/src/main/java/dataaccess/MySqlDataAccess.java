@@ -77,7 +77,8 @@ public class MySqlDataAccess implements DataAccess {
         String gameJSON = serializer.toJson(game);
         try {
             int gameID = executeUpdate(statement, gameJSON);
-            GameData gameDataWithID = new GameData(gameID, null, null, gameName, new ChessGame());
+            GameData gameDataWithID = new GameData(gameID,
+                    null, null, gameName, new ChessGame());
             updateGame(gameID, gameDataWithID);
             return gameID;
         } catch (ResponseException e) {

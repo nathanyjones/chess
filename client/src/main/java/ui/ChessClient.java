@@ -1,9 +1,17 @@
 package ui;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPosition;
 import exception.ResponseException;
 import model.AuthData;
+import model.GameData;
 import model.UserData;
 import server.ServerFacade;
+import spark.Response;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import static ui.EscapeSequences.*;
 
@@ -34,6 +42,8 @@ public class ChessClient {
             return switch (cmd) {
                 case "create" -> createGame(params);
                 case "join" -> joinGame(params);
+                case "observe" -> observeGame(params);
+                case "list" -> listGames();
                 case "logout" -> logout();
                 case "quit" -> "Exiting...";
                 case "help" -> help();
@@ -43,7 +53,7 @@ public class ChessClient {
         }
     }
 
-    public String register(String... params) throws ResponseException {
+    private String register(String... params) throws ResponseException {
         if (params.length < 3) {
             throw new ResponseException(400, "Insufficient information. Must provide " +
                     "<USERNAME> <PASSWORD> and <EMAIL>.");
@@ -63,7 +73,7 @@ public class ChessClient {
         }
     }
 
-    public String login(String... params) throws ResponseException {
+    private String login(String... params) throws ResponseException {
         if (params.length < 2) {
             throw new ResponseException(400, "Insufficient information. Must provide <USERNAME> and <PASSWORD>.");
         }
@@ -82,7 +92,7 @@ public class ChessClient {
         }
     }
 
-    public String logout() throws ResponseException {
+    private String logout() throws ResponseException {
         try {
             server.logout(this.authToken);
             this.authToken = null;
@@ -92,7 +102,7 @@ public class ChessClient {
         }
     }
 
-    public String createGame(String... params) throws ResponseException {
+    private String createGame(String... params) throws ResponseException {
         if (params.length < 1) {
             throw new ResponseException(400, "Insufficient information. Must provide game name <NAME>.\n");
         }
@@ -106,7 +116,7 @@ public class ChessClient {
         }
     }
 
-    public String joinGame(String... params) throws ResponseException {
+    private String joinGame(String... params) throws ResponseException {
         if (params.length < 2) {
             throw new ResponseException(400, "Insufficient information. Must provide game ID <ID> and " +
                     "color [WHITE|BLACK].\n");
@@ -118,7 +128,7 @@ public class ChessClient {
         try {
             int gameID = Integer.parseInt(params[0]);
             server.joinGame(this.authToken, gameID, color);
-            return "Game " + gameID + " joined as " + color + ".";
+            return "Game " + gameID + " joined as " + color + ".\n\n" + drawBoard(gameID, color);
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Please provide a valid GameID (number).\nUse command " +
                      SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " to view joinable games, or " +
@@ -131,6 +141,108 @@ public class ChessClient {
         } catch (Exception e) {
             throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
         }
+    }
+
+    private String observeGame(String... params) throws ResponseException {
+        if (params.length < 1) {
+            throw new ResponseException(400, "Invalid color type. Color must be either WHITE or BLACK");
+        }
+        try {
+            int gameID = Integer.parseInt(params[0]);
+            String boardDrawing = drawBoard(gameID, "WHITE");
+            return "Joined game " + gameID + " as a spectator.\n\n" + boardDrawing;
+        } catch (NumberFormatException e) {
+            throw new ResponseException(400, "Invalid GameID. Note that <ID> should be an integer.\nUse command " +
+                    SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " to view joinable games, or " +
+                    SET_TEXT_COLOR_BLUE + "create <NAME>" + SET_TEXT_COLOR_RED + " to create your own game.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
+        }
+    }
+
+    private String drawBoard(int gameID, String colorOrientation) throws ResponseException {
+        StringBuilder boardDrawing = new StringBuilder();
+        GameData gameData;
+        try {
+            gameData = server.getGame(this.authToken, gameID);
+        } catch (Exception e) {
+            throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
+        }
+
+        ChessBoard board = gameData.game().getBoard();
+
+        for (int i = 1; i < 9; i += 1) {
+            for (int j = 1; j < 9; j++) {
+                ChessPosition position = new ChessPosition(i, j);
+                ChessPiece piece = board.getPiece(position);
+
+                if ((i + j) % 2 == 0) {
+                    boardDrawing.append(SET_BG_COLOR_LIGHT_GREY);
+                } else {
+                    boardDrawing.append(SET_BG_COLOR_BLACK);
+                }
+
+                if (piece != null) {
+                    ChessPiece.PieceType pieceType = piece.getPieceType();
+                    ChessGame.TeamColor pieceColor = piece.getTeamColor();
+
+                    if (pieceColor == ChessGame.TeamColor.WHITE) {
+                        boardDrawing.append(SET_TEXT_COLOR_RED);
+                    } else {
+                        boardDrawing.append(SET_TEXT_COLOR_WHITE);
+                    }
+                    if (pieceType == ChessPiece.PieceType.PAWN) {
+                        boardDrawing.append(" P ");
+                    } else if (pieceType == ChessPiece.PieceType.ROOK) {
+                        boardDrawing.append(" R ");
+                    } else if (pieceType == ChessPiece.PieceType.BISHOP) {
+                        boardDrawing.append(" B ");
+                    } else if (pieceType == ChessPiece.PieceType.QUEEN) {
+                        boardDrawing.append(" Q ");
+                    } else if (pieceType == ChessPiece.PieceType.KING) {
+                        boardDrawing.append(" K ");
+                    } else if (pieceType == ChessPiece.PieceType.KNIGHT) {
+                        boardDrawing.append(" N ");
+                    }
+                } else {
+                    boardDrawing.append("   ");
+                }
+            }
+            boardDrawing.append(RESET + "\n");
+        }
+        return boardDrawing.toString();
+    }
+
+    private String listGames() throws ResponseException {
+        StringBuilder printedList = new StringBuilder();
+        try {
+            ArrayList<GameData> gameList = (ArrayList<GameData>) server.listGames(this.authToken);
+            for (int i = 1; i <= gameList.size(); i++) {
+                String gameInfo = getGameInfoString(gameList, i);
+                printedList.append(gameInfo);
+            }
+            return printedList.toString();
+        } catch (Exception e) {
+            throw new ResponseException(500, e.getMessage());
+        }
+    }
+
+    private static String getGameInfoString(ArrayList<GameData> gameList, int i) {
+        GameData gameData = gameList.get(i-1);
+        String gameName = gameData.gameName();
+        int gameID = gameData.gameID();
+        String whitePlayer = gameData.whiteUsername();
+        whitePlayer = whitePlayer == null ? "None" : whitePlayer;
+        String blackPlayer = gameData.blackUsername();
+        blackPlayer = blackPlayer == null ? "None" : blackPlayer;
+        return """
+               %d.
+               \t%s:
+               \t\tID: %d
+               \t\tUser Playing White: %s
+               \t\tUser Playing Black: %s
+               """.formatted(i, gameName, gameID, whitePlayer, blackPlayer);
     }
 
     public String help() {

@@ -4,6 +4,7 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
+import service.request.GetGameRequest;
 import service.request.JoinGameRequest;
 import service.result.CreateGameResult;
 import service.result.JoinGameResult;
@@ -68,6 +69,24 @@ public class GameService {
                 }
             }
 
+        } catch (DataAccessException e) {
+            if (e.getMessage().contains("not found")) {
+                return new Object[]{401, new JoinGameResult("Error: unauthorized")};
+            } else {
+                return new Object[] {500, new JoinGameResult("Error: " + e.getMessage())};
+            }
+        } catch (Exception e) {
+            return new Object[] {500, new JoinGameResult("Error: " + e.getMessage())};
+        }
+    }
+
+    public Object[] getGame(String authToken, Integer gameID) {
+        if (gameID == null) {
+            return new Object[] {400, new JoinGameResult("Error: bad request")};
+        }
+        try {
+            dataAccess.getAuth(authToken);
+            return new Object[] {200, dataAccess.getGame(gameID)};
         } catch (DataAccessException e) {
             if (e.getMessage().contains("not found")) {
                 return new Object[]{401, new JoinGameResult("Error: unauthorized")};
