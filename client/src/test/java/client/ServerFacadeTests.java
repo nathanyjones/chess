@@ -184,4 +184,26 @@ public class ServerFacadeTests {
         }
     }
 
+    @Test
+    public void getGameSuccessTest() {
+        try {
+            AuthData authData = facade.register(user1);
+            Integer gameID = facade.createGame(authData.authToken(), "Game 1");
+            GameData gameData = facade.getGame(authData.authToken(), gameID);
+            assertNotNull(gameData);
+            assertEquals("Game 1", gameData.gameName());
+            assertEquals(gameID, gameData.gameID());
+        } catch (ResponseException e) {
+            fail("Unexpected ResponseException: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void getGameFailInvalidIDTest() {
+        assertThrows(ResponseException.class, () -> {
+            String authToken = facade.register(user1).authToken();
+            facade.getGame(authToken, -1);
+        });
+    }
+
 }

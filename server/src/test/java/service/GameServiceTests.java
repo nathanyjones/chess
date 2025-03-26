@@ -2,6 +2,7 @@ package service;
 
 import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
+import model.GameData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.request.*;
@@ -112,6 +113,28 @@ public class GameServiceTests {
         JoinGameResult result2 = (JoinGameResult) joinGameOutput2[1];
         assertEquals(403, statusCode2);
         assertEquals("Error: already taken", result2.message());
+    }
+
+    @Test
+    void getGameSuccess() {
+        Object[] createGameOutput = gameService.createGame(user1AuthToken, "Game 1");
+        CreateGameResult result = (CreateGameResult) createGameOutput[1];
+        int gameID = result.getGameID();
+
+        Object[] getGameOutput = gameService.getGame(user1AuthToken, gameID);
+        int statusCode = (int) getGameOutput[0];
+        assertEquals(200, statusCode);
+        GameData gameData = (GameData) getGameOutput[1];
+        assertEquals("Game 1", gameData.gameName());
+        assertEquals(gameID, gameData.gameID());
+    }
+
+    @Test
+    void listGameFailNotFound() {
+        Object[] getGameOutput = gameService.getGame(user1AuthToken, -1);
+        int statusCode = (int) getGameOutput[0];
+        System.out.println(statusCode);
+        assertEquals(401, statusCode);
     }
 
 }
