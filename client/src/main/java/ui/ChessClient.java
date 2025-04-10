@@ -22,7 +22,9 @@ public class ChessClient {
     private boolean playingGame;
     private boolean observingGame;
     private int gameID;
+    private ChessGame game;
     private String playerColor;
+
 
     public ChessClient(String serverURL) {
         this.server = new ServerFacade(serverURL);
@@ -46,7 +48,7 @@ public class ChessClient {
             };
         } else if (this.playingGame) {
             return switch (cmd) {
-                case "redraw" -> drawBoard(gameID, playerColor);
+                case "redraw" -> drawBoard(playerColor);
                 case "leave" -> leaveGame();
                 case "help" -> help();
                 default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
@@ -153,7 +155,8 @@ public class ChessClient {
             this.playerColor = color;
             this.gameID = gameID;
             this.playingGame = true;
-            return "Game " + gameID + " joined as " + color + ".\n\n" + drawBoard(gameID, color);
+            this.game = server.getGame(this.authToken, gameID).game();
+            return "Game " + gameID + " joined as " + color + ".\n\n" + drawBoard(color);
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Please provide a valid GameID (number).\nUse command " +
                      SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " to view joinable games, or " +
@@ -175,10 +178,11 @@ public class ChessClient {
         }
         try {
             int gameID = Integer.parseInt(params[0]);
-            String boardDrawing = drawBoard(gameID, "WHITE");
+            String boardDrawing = drawBoard("WHITE");
             this.observingGame = true;
             this.gameID = gameID;
             this.playerColor = "WHITE";
+            this.game = server.getGame(this.authToken, gameID).game();
             return "Joined game " + gameID + " as a spectator.\n\n" + boardDrawing;
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Note that <ID> should be an integer.\nUse command " +
@@ -191,16 +195,9 @@ public class ChessClient {
         }
     }
 
-    private String drawBoard(int gameID, String color) throws ResponseException {
+    private String drawBoard(String color) throws ResponseException {
         StringBuilder boardDrawing = new StringBuilder();
-        GameData gameData;
-        try {
-            gameData = server.getGame(this.authToken, gameID);
-        } catch (Exception e) {
-            throw new ResponseException(500, "Internal Server Error. Check your internet connection and try again.");
-        }
-
-        ChessBoard board = gameData.game().getBoard();
+        ChessBoard board = this.game.getBoard();
 
         for (int i = 0; i < 10; i += 1) {
             int row = color.equals("BLACK") ? 9-i : i;

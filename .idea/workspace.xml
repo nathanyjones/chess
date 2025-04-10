@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing redraw Chess Client functionality.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Partially implementing leaveGame for client">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
     </list>
@@ -379,7 +379,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744251474341</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Partially implementing leaveGame for client">
+      <option name="closed" value="true" />
+      <created>1744252805676</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1744252805676</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -394,7 +402,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Setting up Server Facade, implementing register method" />
     <MESSAGE value="Implementing clear method for ServerFacade" />
     <MESSAGE value="Implementing login method for ServerFacade" />
     <MESSAGE value="Implementing logout method for ServerFacade" />
@@ -419,7 +426,8 @@
     <MESSAGE value="Correcting REPL and ChessClient formatting and error handling." />
     <MESSAGE value="Setting up Phase 6 for implementation." />
     <MESSAGE value="Implementing redraw Chess Client functionality." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing redraw Chess Client functionality." />
+    <MESSAGE value="Partially implementing leaveGame for client" />
+    <option name="LAST_COMMIT_MESSAGE" value="Partially implementing leaveGame for client" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
