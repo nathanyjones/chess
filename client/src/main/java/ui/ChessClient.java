@@ -1,9 +1,6 @@
 package ui;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
 import exception.ResponseException;
 import model.AuthData;
 import model.GameData;
@@ -50,6 +47,7 @@ public class ChessClient {
             return switch (cmd) {
                 case "redraw" -> drawBoard(playerColor);
                 case "leave" -> leaveGame();
+                case "move" -> makeMove(params);
                 case "help" -> help();
                 default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
                         "Try one of these:\n" + help();
@@ -286,6 +284,7 @@ public class ChessClient {
         }
     }
 
+    // Still needs implementation
     private String leaveGame() throws ResponseException {
         try {
             this.playingGame = false;
@@ -295,6 +294,53 @@ public class ChessClient {
         } catch (Exception e) {
             throw new ResponseException(500, "Unable to leave game. Check your internet connection and try again.");
         }
+    }
+
+    /* Still needs implementation for...
+    * Websocket Notification
+    * Updating board in database? */
+    private String makeMove(String... params) throws ResponseException {
+        if (params.length != 2) {
+            throw new ResponseException(400, "Invalid input. Must provide start position <[a-h][1-8]> and end " +
+                    "position <[a-h][1-8]>.\n Use command " + SET_TEXT_COLOR_BLUE + "show <POSITION>" +
+                    SET_TEXT_COLOR_RED + " to see legal moves for a piece.");
+        }
+        try {
+            ChessMove move = parseChessMove(params);
+            this.game.makeMove(move);
+            // Placeholder for sending websocket message with move and updated board.
+            return "Move from " + params[0] + " to " + params[1] + " made successfully.";
+        } catch (InvalidMoveException e) {
+            throw new ResponseException(400, "Not a legal move. Use command " + SET_TEXT_COLOR_BLUE +
+                    "show <POSITION>" + SET_TEXT_COLOR_RED + " to see the valid moves for a piece.");
+        }
+        catch (Exception e) {
+            if (e.getClass() == ResponseException.class && e.getMessage().contains("<[a-h][1-8]>")) {
+                throw e;
+            } else {
+                throw new ResponseException(500, "Internal Server Error. Check your internet " +
+                        "connection and try again.");
+            }
+        }
+    }
+
+    // Does not support promotion pieces yet...
+    // Does not check to see if the move is valid, only if the move is in range.
+    private ChessMove parseChessMove(String... moveStrings) throws ResponseException {
+        String validColLabel = "abcdefg";
+        String validRowLabel = "12345678";
+        ChessPosition[] positions = new ChessPosition[2];
+        for (int i = 0; i < 2; i++) {
+            String moveString = moveStrings[i];
+            if (moveString.length() != 2 || !validColLabel.contains(moveString.substring(0, 1)) ||
+                    !validRowLabel.contains(moveString.substring(1))) {
+                throw new ResponseException(400, "Invalid input. Must provide start position <[a-h][1-8]> and end " +
+                        "position <[a-h][1-8]>.");
+            }
+            positions[i] = new ChessPosition((Integer.parseInt(moveString.substring(1))),
+                    (moveString.charAt(0) - 'a' + 1));
+        }
+        return new ChessMove(positions[0], positions[1], null);
     }
 
     private static String getGameInfoString(ArrayList<GameData> gameList, int i) {
