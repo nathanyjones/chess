@@ -229,4 +229,25 @@ public class ChessGame {
         return board;
     }
 
+    public boolean isGameOver() {
+        for (TeamColor color : TeamColor.values()) {
+            if (isInStalemate(color) || isInCheckmate(color)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getWinner() {
+        if (isInCheckmate(TeamColor.WHITE)) {
+            return "BLACK";
+        } else if (isInCheckmate(TeamColor.BLACK)) {
+            return "WHITE";
+        } else if (isGameOver()) {
+            return "DRAW";
+        } else {
+            return "";
+        }
+    }
+
 }

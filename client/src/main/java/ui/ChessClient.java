@@ -7,8 +7,8 @@ import model.GameData;
 import model.UserData;
 import server.ServerFacade;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
+
 import static ui.EscapeSequences.*;
 
 public class ChessClient {
@@ -20,6 +20,7 @@ public class ChessClient {
     private boolean observingGame;
     private int gameID;
     private ChessGame game;
+    private GameData gameData;
     private String playerColor;
 
 
@@ -48,6 +49,8 @@ public class ChessClient {
                 case "redraw" -> drawBoard(playerColor);
                 case "leave" -> leaveGame();
                 case "move" -> makeMove(params);
+                case "resign" -> resign();
+                case "show" -> showMoves(params);
                 case "help" -> help();
                 default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
                         "Try one of these:\n" + help();
@@ -153,7 +156,8 @@ public class ChessClient {
             this.playerColor = color;
             this.gameID = gameID;
             this.playingGame = true;
-            this.game = server.getGame(this.authToken, gameID).game();
+            this.gameData = server.getGame(this.authToken, gameID);
+            this.game = this.gameData.game();
             return "Game " + gameID + " joined as " + color + ".\n\n" + drawBoard(color);
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Please provide a valid GameID (number).\nUse command " +
@@ -194,69 +198,7 @@ public class ChessClient {
     }
 
     private String drawBoard(String color) throws ResponseException {
-        StringBuilder boardDrawing = new StringBuilder();
-        ChessBoard board = this.game.getBoard();
-
-        for (int i = 0; i < 10; i += 1) {
-            int row = color.equals("BLACK") ? 9-i : i;
-            for (int j = 0; j < 10; j++) {
-                int col = color.equals("BLACK") ? 9-j : j;
-                int colLabelInt = color.equals("BLACK") ? i : (9-i);
-
-                boardDrawing.append(SET_BG_COLOR_DARK_GREY);
-                boardDrawing.append(SET_TEXT_COLOR_LIGHT_GREY);
-                if ((j == 0 || j == 9) && i > 0 && i < 9) {
-                    String rowLabel = " " + colLabelInt + " ";
-                    boardDrawing.append(rowLabel);
-                    continue;
-                } else if ((i == 0 || i == 9) && j > 0 && j < 9) {
-                    char colLabelChar = (char) ('a' + col - 1);
-                    String colLabel = " " + colLabelChar + " ";
-                    boardDrawing.append(colLabel);
-                    continue;
-                } else if (i == 0 || i == 9) {
-                    boardDrawing.append("   ");
-                    continue;
-                }
-
-                ChessPosition position = new ChessPosition(row, col);
-                ChessPiece piece = board.getPiece(position);
-
-                if ((i + j) % 2 == 0) {
-                    boardDrawing.append(SET_BG_COLOR_LIGHT_GREY);
-                } else {
-                    boardDrawing.append(SET_BG_COLOR_BLACK);
-                }
-
-                if (piece != null) {
-                    ChessPiece.PieceType pieceType = piece.getPieceType();
-                    ChessGame.TeamColor pieceColor = piece.getTeamColor();
-
-                    if (pieceColor == ChessGame.TeamColor.WHITE) {
-                        boardDrawing.append(SET_TEXT_COLOR_RED);
-                    } else {
-                        boardDrawing.append(SET_TEXT_COLOR_WHITE);
-                    }
-                    if (pieceType == ChessPiece.PieceType.PAWN) {
-                        boardDrawing.append(" P ");
-                    } else if (pieceType == ChessPiece.PieceType.ROOK) {
-                        boardDrawing.append(" R ");
-                    } else if (pieceType == ChessPiece.PieceType.BISHOP) {
-                        boardDrawing.append(" B ");
-                    } else if (pieceType == ChessPiece.PieceType.QUEEN) {
-                        boardDrawing.append(" Q ");
-                    } else if (pieceType == ChessPiece.PieceType.KING) {
-                        boardDrawing.append(" K ");
-                    } else if (pieceType == ChessPiece.PieceType.KNIGHT) {
-                        boardDrawing.append(" N ");
-                    }
-                } else {
-                    boardDrawing.append("   ");
-                }
-            }
-            boardDrawing.append(RESET + "\n");
-        }
-        return boardDrawing.toString();
+        return drawBoardWithHighlightedSquares(color, "", new HashSet<>());
     }
 
     private String listGames(String... params) throws ResponseException {
@@ -308,6 +250,11 @@ public class ChessClient {
             ChessMove move = parseChessMove(params);
             this.game.makeMove(move);
             server.updateBoard(this.authToken, this.gameID, this.game.getBoard());
+
+            if (this.game.isGameOver()) {
+                String winner = this.game.getWinner();
+                return "Move from " + params[0] + " to " + params[1] + " made successfully.\n" + gameOver(winner);
+            }
             // Placeholder for sending websocket message with move and updated board.
             return "Move from " + params[0] + " to " + params[1] + " made successfully.";
         } catch (InvalidMoveException e) {
@@ -324,22 +271,145 @@ public class ChessClient {
         }
     }
 
+    private String resign() {
+        String winner = playerColor.equals("WHITE") ? "BLACK" : "WHITE";
+        return gameOver(winner);
+    }
+
+    private String gameOver(String winner) {
+        if (winner.equals("WHITE")) {
+            return "White wins!";
+        } else if (winner.equals("BLACK")) {
+            return "Black wins!";
+        } else {
+            return "It's a Draw!";
+        }
+    }
+
     // Does not support promotion pieces yet...
     private ChessMove parseChessMove(String... moveStrings) throws ResponseException {
-        String validColLabel = "abcdefg";
-        String validRowLabel = "12345678";
         ChessPosition[] positions = new ChessPosition[2];
         for (int i = 0; i < 2; i++) {
-            String moveString = moveStrings[i];
-            if (moveString.length() != 2 || !validColLabel.contains(moveString.substring(0, 1)) ||
-                    !validRowLabel.contains(moveString.substring(1))) {
-                throw new ResponseException(400, "Invalid input. Must provide start position <[a-h][1-8]> and end " +
-                        "position <[a-h][1-8]>.");
-            }
-            positions[i] = new ChessPosition((Integer.parseInt(moveString.substring(1))),
-                    (moveString.charAt(0) - 'a' + 1));
+            positions[i] = parseChessPosition(moveStrings[i]);
         }
         return new ChessMove(positions[0], positions[1], null);
+    }
+
+    private ChessPosition parseChessPosition(String moveString) throws ResponseException {
+        String validColLabel = "abcdefg";
+        String validRowLabel = "12345678";
+        if (moveString.length() != 2 || !validColLabel.contains(moveString.substring(0, 1)) ||
+                !validRowLabel.contains(moveString.substring(1))) {
+            throw new ResponseException(400, "Invalid input. Must provide valid position <[a-h][1-8]>");
+        }
+        return new ChessPosition((Integer.parseInt(moveString.substring(1))),
+                (moveString.charAt(0) - 'a' + 1));
+    }
+
+    private String showMoves(String... params) throws ResponseException {
+        if (params.length != 1) {
+            throw new ResponseException(400, "Invalid input. Must provide valid position <[a-h][1-8]>");
+        }
+        try {
+            ChessPosition position = parseChessPosition(params[0]);
+            Collection<ChessMove> validMoves = this.game.validMoves(position);
+            HashSet<String> highlightedSquarePositions = new HashSet<>();
+            for (ChessMove move : validMoves) {
+                ChessPosition endPosition = move.getEndPosition();
+                highlightedSquarePositions.add("" + endPosition.getRow() + endPosition.getColumn());
+            }
+            String startString = "" + position.getRow() + position.getColumn();
+            return drawBoardWithHighlightedSquares(playerColor, startString, highlightedSquarePositions);
+        } catch (Exception e) {
+            if (e.getClass() == ResponseException.class && e.getMessage().contains("<[a-h][1-8]>")) {
+                throw e;
+            } else {
+                throw new ResponseException(500, "Internal Server Error. Check your internet " +
+                        "connection and try again.");
+            }
+        }
+    }
+
+    private String drawBoardWithHighlightedSquares(String color, String startPosition,
+                                                   Set<String> highlightedSquares) {
+        StringBuilder boardDrawing = new StringBuilder();
+        ChessBoard board = this.game.getBoard();
+        boolean highlightSquare;
+
+        for (int i = 0; i < 10; i += 1) {
+            int row = color.equals("BLACK") ? 9-i : i;
+            for (int j = 0; j < 10; j++) {
+
+                highlightSquare = highlightedSquares.contains("" + i + j);
+
+                int col = color.equals("BLACK") ? 9-j : j;
+                int colLabelInt = color.equals("BLACK") ? i : (9-i);
+
+                boardDrawing.append(SET_BG_COLOR_DARK_GREY);
+                boardDrawing.append(SET_TEXT_COLOR_LIGHT_GREY);
+                if ((j == 0 || j == 9) && i > 0 && i < 9) {
+                    String rowLabel = " " + colLabelInt + " ";
+                    boardDrawing.append(rowLabel);
+                    continue;
+                } else if ((i == 0 || i == 9) && j > 0 && j < 9) {
+                    char colLabelChar = (char) ('a' + col - 1);
+                    String colLabel = " " + colLabelChar + " ";
+                    boardDrawing.append(colLabel);
+                    continue;
+                } else if (i == 0 || i == 9) {
+                    boardDrawing.append("   ");
+                    continue;
+                }
+
+                ChessPosition position = new ChessPosition(row, col);
+                ChessPiece piece = board.getPiece(position);
+
+                if ((i + j) % 2 == 0) {
+                    if (highlightSquare) {
+                        boardDrawing.append(SET_BG_COLOR_GREEN);
+                    } else {
+                        boardDrawing.append(SET_BG_COLOR_LIGHT_GREY);
+                    }
+                } else {
+                    if (highlightSquare) {
+                        boardDrawing.append(SET_BG_COLOR_DARK_GREEN);
+                    } else {
+                        boardDrawing.append(SET_BG_COLOR_BLACK);
+                    }
+                }
+                if (startPosition.equals("" + i + j)) {
+                    boardDrawing.append(SET_BG_COLOR_YELLOW);
+                }
+
+                if (piece != null) {
+                    ChessPiece.PieceType pieceType = piece.getPieceType();
+                    ChessGame.TeamColor pieceColor = piece.getTeamColor();
+
+                    if (pieceColor == ChessGame.TeamColor.WHITE) {
+                        boardDrawing.append(SET_TEXT_COLOR_RED);
+                    } else {
+                        boardDrawing.append(SET_TEXT_COLOR_WHITE);
+                    }
+                    if (pieceType == ChessPiece.PieceType.PAWN) {
+                        boardDrawing.append(" P ");
+                    } else if (pieceType == ChessPiece.PieceType.ROOK) {
+                        boardDrawing.append(" R ");
+                    } else if (pieceType == ChessPiece.PieceType.BISHOP) {
+                        boardDrawing.append(" B ");
+                    } else if (pieceType == ChessPiece.PieceType.QUEEN) {
+                        boardDrawing.append(" Q ");
+                    } else if (pieceType == ChessPiece.PieceType.KING) {
+                        boardDrawing.append(" K ");
+                    } else if (pieceType == ChessPiece.PieceType.KNIGHT) {
+                        boardDrawing.append(" N ");
+                    }
+                } else {
+                    boardDrawing.append("   ");
+                }
+            }
+            boardDrawing.append(RESET + "\n");
+        }
+        return boardDrawing.toString();
     }
 
     private static String getGameInfoString(ArrayList<GameData> gameList, int i) {
