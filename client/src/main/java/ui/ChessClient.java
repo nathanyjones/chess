@@ -248,6 +248,7 @@ public class ChessClient {
         }
         try {
             ChessMove move = parseChessMove(params);
+            System.out.println(move);
             this.game.makeMove(move);
             server.updateBoard(this.authToken, this.gameID, this.game.getBoard());
 
@@ -292,18 +293,24 @@ public class ChessClient {
         for (int i = 0; i < 2; i++) {
             positions[i] = parseChessPosition(moveStrings[i]);
         }
+        System.out.println("You tried to move from col " + positions[0].getColumn() + " row " + positions[0].getRow() +
+                " to col " + positions[1].getColumn() + " row " + positions[1].getRow());
         return new ChessMove(positions[0], positions[1], null);
     }
 
     private ChessPosition parseChessPosition(String moveString) throws ResponseException {
-        String validColLabel = "abcdefg";
+        String validColLabel = "abcdefgh";
         String validRowLabel = "12345678";
         if (moveString.length() != 2 || !validColLabel.contains(moveString.substring(0, 1)) ||
                 !validRowLabel.contains(moveString.substring(1))) {
             throw new ResponseException(400, "Invalid input. Must provide valid position <[a-h][1-8]>");
         }
-        return new ChessPosition((Integer.parseInt(moveString.substring(1))),
-                (moveString.charAt(0) - 'a' + 1));
+        System.out.println(9 - moveString.charAt(0) + 'a');
+        int tempRow = Integer.parseInt(moveString.substring(1));
+        int tempCol = 8 - moveString.charAt(0) + 'a';
+        int row = playerColor.equals("BLACK") ? tempRow : 9 - tempRow;
+        int col = playerColor.equals("BLACK") ? tempCol : 9 - tempCol;
+        return new ChessPosition(row, col);
     }
 
     private String showMoves(String... params) throws ResponseException {
@@ -345,6 +352,7 @@ public class ChessClient {
                 int col = color.equals("BLACK") ? 9-j : j;
                 int colLabelInt = color.equals("BLACK") ? i : (9-i);
 
+
                 boardDrawing.append(SET_BG_COLOR_DARK_GREY);
                 boardDrawing.append(SET_TEXT_COLOR_LIGHT_GREY);
                 if ((j == 0 || j == 9) && i > 0 && i < 9) {
@@ -378,7 +386,7 @@ public class ChessClient {
                     }
                 }
                 if (startPosition.equals("" + i + j)) {
-                    boardDrawing.append(SET_BG_COLOR_YELLOW);
+                    boardDrawing.append(SET_BG_COLOR_MAGENTA);
                 }
 
                 if (piece != null) {
