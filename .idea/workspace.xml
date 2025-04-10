@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing show moves functionality for ChessClient.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging board drawing and makeMove logic">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +72,7 @@
     &quot;JUnit.StandardAPITests.goodCreate.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.StandardAPITests.successLogin.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UserServiceTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.chess in shared.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.dataaccess in server.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.java in server.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.passoff.chess in shared.executor&quot;: &quot;Run&quot;,
@@ -135,22 +137,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameServiceTests.updateBoardFailInvalidAuth" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="service" />
-      <option name="MAIN_CLASS_NAME" value="service.GameServiceTests" />
-      <option name="METHOD_NAME" value="updateBoardFailInvalidAuth" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ServerFacadeTests.updateBoardSuccessTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="client" />
       <extension name="coverage">
@@ -167,13 +153,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="chess in shared" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="shared" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/shared/src/test/java/passoff/chess" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main (1)" />
+        <item itemvalue="JUnit.chess in shared" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.ServerFacadeTests.updateBoardSuccessTest" />
         <item itemvalue="JUnit.GameServiceTests" />
-        <item itemvalue="JUnit.GameServiceTests.updateBoardFailInvalidAuth" />
       </list>
     </recent_temporary>
   </component>
@@ -450,7 +444,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744266076374</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Debugging board drawing and makeMove logic">
+      <option name="closed" value="true" />
+      <created>1744269987951</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1744269987951</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -465,7 +467,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implementing ListGames method for ServerFacade, finishing ServerFacade code" />
     <MESSAGE value="Implementing registration facade tests" />
     <MESSAGE value="Implementing createGame, listGames, and logout facade tests" />
     <MESSAGE value="Implementing the rest of the ServerFacade Tests" />
@@ -490,7 +491,8 @@
     <MESSAGE value="Partial implementation of makeMove client logic with websocket placeholders." />
     <MESSAGE value="Implementing updateBoard service / serverFacade method. Implementing makeMove in ChessClient." />
     <MESSAGE value="Implementing show moves functionality for ChessClient." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing show moves functionality for ChessClient." />
+    <MESSAGE value="Debugging board drawing and makeMove logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="Debugging board drawing and makeMove logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

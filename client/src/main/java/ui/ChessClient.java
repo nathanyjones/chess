@@ -248,7 +248,6 @@ public class ChessClient {
         }
         try {
             ChessMove move = parseChessMove(params);
-            System.out.println(move);
             this.game.makeMove(move);
             server.updateBoard(this.authToken, this.gameID, this.game.getBoard());
 
@@ -293,9 +292,9 @@ public class ChessClient {
         for (int i = 0; i < 2; i++) {
             positions[i] = parseChessPosition(moveStrings[i]);
         }
-        System.out.println("You tried to move from col " + positions[0].getColumn() + " row " + positions[0].getRow() +
-                " to col " + positions[1].getColumn() + " row " + positions[1].getRow());
-        return new ChessMove(positions[0], positions[1], null);
+        ChessPosition startPosition = new ChessPosition(9-positions[0].getRow(), positions[0].getColumn());
+        ChessPosition endPosition = new ChessPosition(9-positions[1].getRow(), positions[1].getColumn());
+        return new ChessMove(startPosition, endPosition, null);
     }
 
     private ChessPosition parseChessPosition(String moveString) throws ResponseException {
@@ -369,7 +368,7 @@ public class ChessClient {
                     continue;
                 }
 
-                ChessPosition position = new ChessPosition(row, col);
+                ChessPosition position = new ChessPosition(9-row, col);
                 ChessPiece piece = board.getPiece(position);
 
                 if ((i + j) % 2 == 0) {
@@ -394,9 +393,9 @@ public class ChessClient {
                     ChessGame.TeamColor pieceColor = piece.getTeamColor();
 
                     if (pieceColor == ChessGame.TeamColor.WHITE) {
-                        boardDrawing.append(SET_TEXT_COLOR_RED);
-                    } else {
                         boardDrawing.append(SET_TEXT_COLOR_WHITE);
+                    } else {
+                        boardDrawing.append(SET_TEXT_COLOR_RED);
                     }
                     if (pieceType == ChessPiece.PieceType.PAWN) {
                         boardDrawing.append(" P ");
