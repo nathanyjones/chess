@@ -248,9 +248,13 @@ public class ChessClient {
     // Possibly needs to remove the user from the game in the database as well.
     private String leaveGame() throws ResponseException {
         try {
+            if (this.playingGame) {
+                ws.leaveGame(authToken, this.gameID, true);
+            } else if (this.observingGame) {
+                ws.leaveGame(authToken, this.gameID, false);
+            }
             this.playingGame = false;
             this.observingGame = false;
-            // Placeholder for sending a websocket message that the player left the game.
             return "Left game '" + gameID + "' successfully.";
         } catch (Exception e) {
             throw new ResponseException(500, "Unable to leave game. Check your internet connection and try again.");

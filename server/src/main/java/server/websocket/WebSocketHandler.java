@@ -6,6 +6,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import websocket.commands.ConnectCommand;
+import websocket.commands.LeaveGameCommand;
 import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.NotificationMessage;
@@ -19,11 +20,9 @@ public class WebSocketHandler {
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) throws IOException {
-        System.out.println("We made it to the onMessage for the WS Handler.");
         UserGameCommand userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
         switch (userGameCommand.getCommandType()) {
             case CONNECT:
-                System.out.println("The command is a connect command.");
                 ConnectCommand connectCommand = new Gson().fromJson(message, ConnectCommand.class);
                 connect(connectCommand.getAuthToken(), connectCommand.getUsername(),
                         connectCommand.getGameID(), connectCommand.getColor(), session);
@@ -33,7 +32,8 @@ public class WebSocketHandler {
                 makeMove(makeMoveCommand.getAuthToken(), makeMoveCommand.getMove());
                 break;
             case LEAVE:
-                leave(userGameCommand.getAuthToken());
+                LeaveGameCommand leaveCommand = new Gson().fromJson(message, LeaveGameCommand.class);
+                leave(leaveCommand.getAuthToken(), leaveCommand.getIsPlayer());
                 break;
         }
     }
@@ -66,11 +66,13 @@ public class WebSocketHandler {
         connections.broadcast(authToken, notification, false);
     }
 
-    private void leave(String authToken) throws IOException {
+    private void leave(String authToken, boolean isPlayer) throws IOException {
         String username = connections.remove(authToken);
         var message = String.format("%s left the game", username);
-        var notification = new NotificationMessage(message);
-        connections.broadcast(authToken, notification, false);
+        if (isPlayer) {
+            var notification = new NotificationMessage(message);
+            connections.broadcast(authToken, notification, false);
+        }
     }
 
 }

@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Partial implementation of WebsocketHandler class">
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" afterDir="false" />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Updated joinGame websocket implementation. Debugging websocket Handler logic.">
+      <change afterPath="$PROJECT_DIR$/shared/src/main/java/websocket/commands/LeaveGameCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/server/websocket/WebSocketHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/server/websocket/WebSocketHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/websocket/commands/ConnectCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/websocket/commands/ConnectCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,8 +101,8 @@
       <recent name="$PROJECT_DIR$/client/src/main/java/ui" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="websocket" />
       <recent name="websocket.commands" />
+      <recent name="websocket" />
       <recent name="websocket.messages" />
       <recent name="handler" />
       <recent name="request" />
@@ -509,7 +506,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Reimplementing error paths for ChessClient createGame, login methods." />
     <MESSAGE value="Implementing joinGame ChessClient method." />
     <MESSAGE value="Partial implementation of drawBoard. Also adding a getGame Service endpoint." />
     <MESSAGE value="Finishing implementation of drawBoard method." />
@@ -534,7 +530,8 @@
     <MESSAGE value="Restoring files." />
     <MESSAGE value="Adding LoadGameMessage subclass." />
     <MESSAGE value="Partial implementation of WebsocketHandler class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Partial implementation of WebsocketHandler class" />
+    <MESSAGE value="Updated joinGame websocket implementation. Debugging websocket Handler logic." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated joinGame websocket implementation. Debugging websocket Handler logic." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

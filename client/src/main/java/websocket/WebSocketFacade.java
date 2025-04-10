@@ -46,15 +46,33 @@ public class WebSocketFacade extends Endpoint {
 
     public void joinGameAsPlayer(String authToken, String username,
                                  int gameID, String color) throws ResponseException {
+        joinGame(authToken, username, gameID, color);
+    }
+
+    public void joinGameAsObserver(String authToken, String username,
+                                 int gameID) throws ResponseException {
+        joinGame(authToken, username, gameID, "");
+    }
+
+    private void joinGame(String authToken, String username,
+                          int gameID, String color) throws ResponseException {
         try {
             var connectCommand = new ConnectCommand(authToken, gameID, username, color);
-            System.out.println(connectCommand);
             this.session.getBasicRemote().sendText(new Gson().toJson(connectCommand));
-            System.out.println("Websocket supposedly called without exceptions.");
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());
         }
     }
+
+    public void leaveGame(String authToken, int gameID, boolean isPlayer) throws ResponseException {
+        try {
+            var leaveCommand = new LeaveGameCommand(authToken, gameID, isPlayer);
+            this.session.getBasicRemote().sendText(new Gson().toJson(leaveCommand));
+        } catch (IOException ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
+
 
 //    public void leavePetShop(String visitorName) throws ResponseException {
 //        try {
