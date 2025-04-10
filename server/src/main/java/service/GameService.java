@@ -1,9 +1,12 @@
 package service;
 
+import chess.ChessBoard;
+import chess.ChessGame;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
+import request.UpdateBoardRequest;
 import service.request.JoinGameRequest;
 import service.result.CreateGameResult;
 import service.result.JoinGameResult;
@@ -68,6 +71,22 @@ public class GameService {
                 }
             }
 
+        } catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
+    public Object[] updateBoard(String authToken, Integer gameID, UpdateBoardRequest updateBoardRequest) {
+        ChessBoard board = updateBoardRequest.board();
+        System.out.println("Okay so the integer now is " + gameID);
+        try {
+            dataAccess.getAuth(authToken);
+            GameData gameData = dataAccess.getGame(gameID);
+            ChessGame game = gameData.game();
+            game.setBoard(board);
+            dataAccess.updateGame(gameID, new GameData(gameData.gameID(), gameData.whiteUsername(),
+                    gameData.blackUsername(), gameData.gameName(), game));
+            return new Object[] {200, new JoinGameResult(null)};
         } catch (Exception e) {
             return handleException(e);
         }

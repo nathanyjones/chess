@@ -4,9 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Adding help message functions to chess client for playing and observing games.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Partial implementation of makeMove client logic with websocket placeholders.">
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/handler/UpdateBoardHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/src/main/java/request/UpdateBoardRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/java/client/ServerFacadeTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/java/client/ServerFacadeTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/service/GameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/service/GameService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/service/GameServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/service/GameServiceTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/server/ServerFacade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,44 +54,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main (2).executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AuthDataAccessTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChessBoardTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DatabaseTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GameServiceTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GameServiceTests.getGameSuccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GameServiceTests.listGameFailNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ServerFacadeTests.clearSuccessTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ServerFacadeTests.createGameSuccessTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ServerFacadeTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ServerFacadeTests.getGameFailInvalidIDTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StandardAPITests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StandardAPITests.gamesList.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StandardAPITests.goodCreate.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StandardAPITests.successLogin.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserServiceTests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.dataaccess in server.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.java in server.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.passoff.chess in shared.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.passoff.chess.game in shared.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.passoff.chess.piece in shared.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.server in server.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.service in server.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/nathanyjones/Desktop/school/cs240/chess_p5/chess/shared/src/main/java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main (1).executor": "Run",
+    "Application.Main (2).executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.AuthDataAccessTests.executor": "Run",
+    "JUnit.ChessBoardTests.executor": "Run",
+    "JUnit.DatabaseTests.executor": "Run",
+    "JUnit.GameServiceTests.executor": "Run",
+    "JUnit.GameServiceTests.getGameSuccess.executor": "Run",
+    "JUnit.GameServiceTests.listGameFailNotFound.executor": "Run",
+    "JUnit.GameServiceTests.updateBoardFailInvalidAuth.executor": "Run",
+    "JUnit.GameServiceTests.updateBoardSuccess.executor": "Run",
+    "JUnit.ServerFacadeTests.clearSuccessTest.executor": "Run",
+    "JUnit.ServerFacadeTests.createGameSuccessTest.executor": "Run",
+    "JUnit.ServerFacadeTests.executor": "Run",
+    "JUnit.ServerFacadeTests.getGameFailInvalidIDTest.executor": "Run",
+    "JUnit.ServerFacadeTests.updateBoardSuccessTest.executor": "Run",
+    "JUnit.StandardAPITests.executor": "Run",
+    "JUnit.StandardAPITests.gamesList.executor": "Run",
+    "JUnit.StandardAPITests.goodCreate.executor": "Run",
+    "JUnit.StandardAPITests.successLogin.executor": "Run",
+    "JUnit.UserServiceTests.executor": "Run",
+    "JUnit.dataaccess in server.executor": "Run",
+    "JUnit.java in server.executor": "Run",
+    "JUnit.passoff.chess in shared.executor": "Run",
+    "JUnit.passoff.chess.game in shared.executor": "Run",
+    "JUnit.passoff.chess.piece in shared.executor": "Run",
+    "JUnit.server in server.executor": "Run",
+    "JUnit.service in server.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/nathanyjones/Desktop/school/cs240/chess_p5/chess/shared/src/main/java",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/shared/src/main/java" />
@@ -94,21 +104,14 @@
       <recent name="$PROJECT_DIR$/client/src/main/java/ui" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="handler" />
+      <recent name="request" />
       <recent name="result" />
       <recent name="service.result" />
       <recent name="service.request" />
-      <recent name="handler" />
-      <recent name="request" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main (2)">
-    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="server" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.ServerFacadeTests.updateBoardSuccessTest">
     <configuration name="Main (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="client" />
@@ -116,36 +119,76 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="shared" />
+    <configuration name="GameServiceTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="service" />
+      <option name="MAIN_CLASS_NAME" value="service.GameServiceTests" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="java in server" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="GameServiceTests.updateBoardFailInvalidAuth" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/server/src/test/java" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="service" />
+      <option name="MAIN_CLASS_NAME" value="service.GameServiceTests" />
+      <option name="METHOD_NAME" value="updateBoardFailInvalidAuth" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="server in server" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="GameServiceTests.updateBoardSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/server/src/test/java/passoff/server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="service" />
+      <option name="MAIN_CLASS_NAME" value="service.GameServiceTests" />
+      <option name="METHOD_NAME" value="updateBoardSuccess" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerFacadeTests.updateBoardSuccessTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="client" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="client" />
+      <option name="MAIN_CLASS_NAME" value="client.ServerFacadeTests" />
+      <option name="METHOD_NAME" value="updateBoardSuccessTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ServerFacadeTests.updateBoardSuccessTest" />
+        <item itemvalue="JUnit.GameServiceTests" />
+        <item itemvalue="JUnit.GameServiceTests.updateBoardFailInvalidAuth" />
+        <item itemvalue="JUnit.GameServiceTests.updateBoardSuccess" />
         <item itemvalue="Application.Main (2)" />
-        <item itemvalue="Application.Main (1)" />
-        <item itemvalue="JUnit.server in server" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.java in server" />
       </list>
     </recent_temporary>
   </component>
@@ -398,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744253365897</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Partial implementation of makeMove client logic with websocket placeholders.">
+      <option name="closed" value="true" />
+      <created>1744258289240</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1744258289240</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -413,7 +464,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implementing login method for ServerFacade" />
     <MESSAGE value="Implementing logout method for ServerFacade" />
     <MESSAGE value="Implementing joinGame method for ServerFacade" />
     <MESSAGE value="Implementing ListGames method for ServerFacade, finishing ServerFacade code" />
@@ -438,7 +488,8 @@
     <MESSAGE value="Implementing redraw Chess Client functionality." />
     <MESSAGE value="Partially implementing leaveGame for client" />
     <MESSAGE value="Adding help message functions to chess client for playing and observing games." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding help message functions to chess client for playing and observing games." />
+    <MESSAGE value="Partial implementation of makeMove client logic with websocket placeholders." />
+    <option name="LAST_COMMIT_MESSAGE" value="Partial implementation of makeMove client logic with websocket placeholders." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,5 +1,8 @@
 package client;
 
+import chess.ChessBoard;
+import chess.ChessMove;
+import chess.ChessPosition;
 import exception.ResponseException;
 import model.AuthData;
 import model.GameData;
@@ -201,6 +204,35 @@ public class ServerFacadeTests {
         assertThrows(ResponseException.class, () -> {
             String authToken = facade.register(USER_1).authToken();
             facade.getGame(authToken, -1);
+        });
+    }
+
+    @Test
+    public void updateBoardSuccessTest() {
+        try {
+            AuthData authData = facade.register(USER_1);
+            Integer gameID = facade.createGame(authData.authToken(), "Game 1");
+            ChessPosition position1 = new ChessPosition(2,1);
+            ChessPosition position2 = new ChessPosition(3,1);
+            ChessMove move = new ChessMove(position1, position2, null);
+            GameData gameData = facade.getGame(authData.authToken(), gameID);
+            gameData.game().makeMove(move);
+            ChessBoard newBoard = gameData.game().getBoard();
+            facade.updateBoard(authData.authToken(), gameID, gameData.game().getBoard());
+
+            GameData retrievedGameData = facade.getGame(authData.authToken(), gameID);
+            assertEquals(newBoard, retrievedGameData.game().getBoard());
+
+        } catch (Exception e) {
+            fail("Unexpected Exception: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void updateBoardInvalidIDTest() {
+        assertThrows(ResponseException.class, () -> {
+            String authToken = facade.register(USER_1).authToken();
+            facade.updateBoard(authToken, -1, new ChessBoard());
         });
     }
 

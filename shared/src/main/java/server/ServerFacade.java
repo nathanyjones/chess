@@ -1,5 +1,6 @@
 package server;
 
+import chess.ChessBoard;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import model.AuthData;
@@ -7,6 +8,7 @@ import model.GameData;
 import model.UserData;
 import request.CreateGameRequest;
 import request.JoinGameRequest;
+import request.UpdateBoardRequest;
 import result.ListGamesResult;
 
 import java.io.*;
@@ -65,6 +67,12 @@ public class ServerFacade {
         var path = "/game/" + gameID;
         return this.makeRequest("GET", path, null, GameData.class,
                 true, authToken);
+    }
+
+    public void updateBoard(String authToken, Integer gameID, ChessBoard board) throws ResponseException {
+        var path = "/game/" + gameID;
+        UpdateBoardRequest updateBoardRequest = new UpdateBoardRequest(board);
+        this.makeRequest("PUT", path, updateBoardRequest, null, true, authToken);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass,

@@ -1,10 +1,12 @@
 package service;
 
+import chess.ChessBoard;
 import dataaccess.DataAccess;
 import dataaccess.MemoryDataAccess;
 import model.GameData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import request.UpdateBoardRequest;
 import result.ListGamesResult;
 import service.request.*;
 import service.result.*;
@@ -135,6 +137,36 @@ public class GameServiceTests {
         Object[] getGameOutput = gameService.getGame(user1AuthToken, -1);
         int statusCode = (int) getGameOutput[0];
         System.out.println(statusCode);
+        assertEquals(401, statusCode);
+    }
+
+    @Test
+    void updateBoardSuccess() {
+        String gameName = "game1";
+        Object[] createGameOutput = gameService.createGame(user1AuthToken, gameName);
+        int gameID = ((CreateGameResult) createGameOutput[1]).getGameID();
+
+        gameService.joinGame(user1AuthToken, new JoinGameRequest("WHITE", gameID));
+
+        ChessBoard board = new ChessBoard();
+        UpdateBoardRequest req = new UpdateBoardRequest(board);
+
+        int statusCode = (int) gameService.updateBoard(user1AuthToken, gameID, req)[0];
+        assertEquals(200, statusCode);
+    }
+
+    @Test
+    void updateBoardFailInvalidAuth() {
+        String gameName = "game1";
+        Object[] createGameOutput = gameService.createGame(user1AuthToken, gameName);
+        int gameID = ((CreateGameResult) createGameOutput[1]).getGameID();
+
+        gameService.joinGame(user1AuthToken, new JoinGameRequest("WHITE", gameID));
+
+        ChessBoard board = new ChessBoard();
+        UpdateBoardRequest req = new UpdateBoardRequest(board);
+
+        int statusCode = (int) gameService.updateBoard(invalidAuthToken, gameID, req)[0];
         assertEquals(401, statusCode);
     }
 

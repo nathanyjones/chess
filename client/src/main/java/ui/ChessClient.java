@@ -284,7 +284,8 @@ public class ChessClient {
         }
     }
 
-    // Still needs implementation
+    // Still needs implementation for Websocket Notification
+    // Possibly needs to remove the user from the game in the database as well.
     private String leaveGame() throws ResponseException {
         try {
             this.playingGame = false;
@@ -296,9 +297,7 @@ public class ChessClient {
         }
     }
 
-    /* Still needs implementation for...
-    * Websocket Notification
-    * Updating board in database? */
+    // Still needs implementation for Websocket Notification
     private String makeMove(String... params) throws ResponseException {
         if (params.length != 2) {
             throw new ResponseException(400, "Invalid input. Must provide start position <[a-h][1-8]> and end " +
@@ -308,6 +307,7 @@ public class ChessClient {
         try {
             ChessMove move = parseChessMove(params);
             this.game.makeMove(move);
+            server.updateBoard(this.authToken, this.gameID, this.game.getBoard());
             // Placeholder for sending websocket message with move and updated board.
             return "Move from " + params[0] + " to " + params[1] + " made successfully.";
         } catch (InvalidMoveException e) {
@@ -325,7 +325,6 @@ public class ChessClient {
     }
 
     // Does not support promotion pieces yet...
-    // Does not check to see if the move is valid, only if the move is in range.
     private ChessMove parseChessMove(String... moveStrings) throws ResponseException {
         String validColLabel = "abcdefg";
         String validRowLabel = "12345678";
