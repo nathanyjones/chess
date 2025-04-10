@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Correcting REPL and ChessClient formatting and error handling.">
-      <change afterPath="$PROJECT_DIR$/server/src/test/java/passoff/server/TestFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/test/java/passoff/server/WebSocketTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared/src/main/java/websocket/commands/UserGameCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared/src/main/java/websocket/messages/ServerMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pom.xml" afterDir="false" />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Setting up Phase 6 for implementation.">
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -369,7 +362,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743010500764</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Setting up Phase 6 for implementation.">
+      <option name="closed" value="true" />
+      <created>1744251003861</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1744251003861</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -384,7 +385,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Debugging DataAccess login code, Restoring files" />
     <MESSAGE value="Setting up phase 5 files" />
     <MESSAGE value="Setting up Server Facade, implementing register method" />
     <MESSAGE value="Implementing clear method for ServerFacade" />
@@ -409,7 +409,8 @@
     <MESSAGE value="Debugging CreateGameHandler and usage." />
     <MESSAGE value="Restoring ListGamesResult.java" />
     <MESSAGE value="Correcting REPL and ChessClient formatting and error handling." />
-    <option name="LAST_COMMIT_MESSAGE" value="Correcting REPL and ChessClient formatting and error handling." />
+    <MESSAGE value="Setting up Phase 6 for implementation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Setting up Phase 6 for implementation." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

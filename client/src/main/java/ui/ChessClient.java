@@ -18,10 +18,17 @@ public class ChessClient {
     private final ServerFacade server;
     private String authToken;
     private boolean loggedIn;
+    private boolean playingGame;
+    private boolean observingGame;
+    private int gameID;
+    private String playerColor;
+
 
     public ChessClient(String serverURL) {
         this.server = new ServerFacade(serverURL);
         this.loggedIn = false;
+        this.playingGame = false;
+        this.observingGame = false;
     }
 
     public String eval(String input) throws ResponseException {
@@ -33,6 +40,13 @@ public class ChessClient {
                 case "register" -> register(params);
                 case "login" -> login(params);
                 case "quit" -> "Exiting...";
+                case "help" -> help();
+                default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
+                        "Try one of these:\n" + help();
+            };
+        } else if (this.playingGame) {
+            return switch (cmd) {
+                case "redraw" -> drawBoard(gameID, playerColor);
                 case "help" -> help();
                 default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
                         "Try one of these:\n" + help();
@@ -133,6 +147,9 @@ public class ChessClient {
         try {
             int gameID = Integer.parseInt(params[0]);
             server.joinGame(this.authToken, gameID, color);
+            this.playerColor = color;
+            this.gameID = gameID;
+            this.playingGame = true;
             return "Game " + gameID + " joined as " + color + ".\n\n" + drawBoard(gameID, color);
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Please provide a valid GameID (number).\nUse command " +
