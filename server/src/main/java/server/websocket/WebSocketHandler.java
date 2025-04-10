@@ -19,15 +19,17 @@ public class WebSocketHandler {
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) throws IOException {
+        System.out.println("We made it to the onMessage for the WS Handler.");
         UserGameCommand userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
         switch (userGameCommand.getCommandType()) {
             case CONNECT:
-                ConnectCommand connectCommand = (ConnectCommand) userGameCommand;
+                System.out.println("The command is a connect command.");
+                ConnectCommand connectCommand = new Gson().fromJson(message, ConnectCommand.class);
                 connect(connectCommand.getAuthToken(), connectCommand.getUsername(),
-                        connectCommand.getGameID(), session);
+                        connectCommand.getGameID(), connectCommand.getColor(), session);
                 break;
             case MAKE_MOVE:
-                MakeMoveCommand makeMoveCommand = (MakeMoveCommand) userGameCommand;
+                MakeMoveCommand makeMoveCommand = new Gson().fromJson(message, MakeMoveCommand.class);
                 makeMove(makeMoveCommand.getAuthToken(), makeMoveCommand.getMove());
                 break;
             case LEAVE:
@@ -36,9 +38,17 @@ public class WebSocketHandler {
         }
     }
 
-    private void connect(String authToken, String username, int gameID, Session session) throws IOException {
+    private void connect(String authToken, String username, int gameID,
+                         String color, Session session) throws IOException {
         connections.add(authToken, username, gameID, session);
-        var message = String.format("%s joined the game", username);
+        var message = String.format("%s joined the game as ", username);
+        if (color.isEmpty()) {
+            message += "an observer.";
+        } else if (color.equals("WHITE")) {
+            message += "white.";
+        } else if (color.equals("BLACK")) {
+            message += "black.";
+        }
         var notification = new NotificationMessage(message);
         connections.broadcast(authToken, notification, false);
     }

@@ -6,6 +6,8 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import server.ServerFacade;
+import websocket.NotificationHandler;
+import websocket.WebSocketFacade;
 
 import java.util.*;
 
@@ -15,21 +17,23 @@ public class ChessClient {
     private final ServerFacade server;
     private String authToken;
     private String username;
-    private boolean loggedIn;
-    private boolean playingGame;
-    private boolean observingGame;
+    private boolean loggedIn = false;
+    private boolean playingGame = false;
+    private boolean observingGame = false;
     private int gameID;
     private ChessGame game;
     private GameData gameData;
     private String playerColor;
     private boolean gameActive;
+    private final NotificationHandler notificationHandler;
+    private final String serverURL;
+    private WebSocketFacade ws;
 
 
-    public ChessClient(String serverURL) {
+    public ChessClient(String serverURL, NotificationHandler notificationHandler) {
         this.server = new ServerFacade(serverURL);
-        this.loggedIn = false;
-        this.playingGame = false;
-        this.observingGame = false;
+        this.notificationHandler = notificationHandler;
+        this.serverURL = serverURL;
     }
 
     public String eval(String input) throws ResponseException {
@@ -168,6 +172,8 @@ public class ChessClient {
             this.playingGame = true;
             this.gameData = server.getGame(this.authToken, gameID);
             this.game = this.gameData.game();
+            this.ws = new WebSocketFacade(this.serverURL, this.notificationHandler);
+            ws.joinGameAsPlayer(authToken, this.username, gameID, color);
             return "Game " + gameID + " joined as " + color + ".\n\n" + drawBoard(color);
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Please provide a valid GameID (number).\nUse command " +
@@ -176,6 +182,8 @@ public class ChessClient {
         } catch (ResponseException e) {
             if (e.getStatusCode() == 403) {
                 throw new ResponseException(403, "Color already taken by another user.");
+            } else if (e.getStatusCode() == 500) {
+                throw new ResponseException(500, "Unable to make websocket connection.");
             }
             throw new ResponseException(401, "Game not found. Provided game ID may be invalid or expired.");
         } catch (Exception e) {
