@@ -272,8 +272,16 @@ public class ChessClient {
     }
 
     private String resign() {
-        String winner = playerColor.equals("WHITE") ? "BLACK" : "WHITE";
-        return gameOver(winner);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(SET_TEXT_COLOR_YELLOW + "Are you sure you want to resign?" + SET_TEXT_COLOR_BLUE +
+                "[YES|NO]");
+        System.out.print("\n" + RESET + ">>> " + SET_TEXT_COLOR_GREEN);
+        if (scanner.nextLine().equals("YES")) {
+            // Placeholder for additional code.
+            String winner = playerColor.equals("WHITE") ? "BLACK" : "WHITE";
+            return gameOver(winner);
+        }
+        return "";
     }
 
     private String gameOver(String winner) {

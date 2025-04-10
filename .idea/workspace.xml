@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging board drawing and makeMove logic">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging makeMove logic">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -452,7 +450,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744269987951</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Debugging makeMove logic">
+      <option name="closed" value="true" />
+      <created>1744271854242</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1744271854242</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -467,7 +473,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implementing registration facade tests" />
     <MESSAGE value="Implementing createGame, listGames, and logout facade tests" />
     <MESSAGE value="Implementing the rest of the ServerFacade Tests" />
     <MESSAGE value="Setting up REPL files and initial print code." />
@@ -492,7 +497,8 @@
     <MESSAGE value="Implementing updateBoard service / serverFacade method. Implementing makeMove in ChessClient." />
     <MESSAGE value="Implementing show moves functionality for ChessClient." />
     <MESSAGE value="Debugging board drawing and makeMove logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging board drawing and makeMove logic" />
+    <MESSAGE value="Debugging makeMove logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="Debugging makeMove logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
