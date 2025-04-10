@@ -3,6 +3,7 @@ package server;
 import dataaccess.DataAccess;
 import dataaccess.MySqlDataAccess;
 import dataaccess.ResponseException;
+import server.websocket.WebSocketHandler;
 import service.ClearService;
 import service.GameService;
 import service.UserService;
@@ -29,13 +30,16 @@ public class Server {
         final ListGamesHandler listGamesHandler = new ListGamesHandler(gameService);
         final CreateGameHandler createGameHandler = new CreateGameHandler(gameService);
         final ClearHandler clearHandler = new ClearHandler(clearService);
-        final JoinGameHandler  joinGameHandler = new JoinGameHandler(gameService);
-        final GetGameHandler  getGameHandler = new GetGameHandler(gameService);
-        final UpdateBoardHandler  updateBoardHandler = new UpdateBoardHandler(gameService);
+        final JoinGameHandler joinGameHandler = new JoinGameHandler(gameService);
+        final GetGameHandler getGameHandler = new GetGameHandler(gameService);
+        final UpdateBoardHandler updateBoardHandler = new UpdateBoardHandler(gameService);
+        final WebSocketHandler webSocketHandler = new WebSocketHandler();
 
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("web");
+
+        Spark.webSocket("/ws", webSocketHandler);
 
         Spark.post("/user", registerHandler);
         Spark.post("/session", loginHandler);
