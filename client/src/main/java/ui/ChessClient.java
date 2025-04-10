@@ -17,12 +17,12 @@ import static ui.EscapeSequences.*;
 public class ChessClient {
     private final ServerFacade server;
     private String authToken;
+    private String username;
     private boolean loggedIn;
     private boolean playingGame;
     private boolean observingGame;
     private int gameID;
     private String playerColor;
-
 
     public ChessClient(String serverURL) {
         this.server = new ServerFacade(serverURL);
@@ -47,6 +47,7 @@ public class ChessClient {
         } else if (this.playingGame) {
             return switch (cmd) {
                 case "redraw" -> drawBoard(gameID, playerColor);
+                case "leave" -> leaveGame();
                 case "help" -> help();
                 default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
                         "Try one of these:\n" + help();
@@ -75,6 +76,7 @@ public class ChessClient {
             AuthData authData = server.register(new UserData(params[0], params[1], params[2]));
             this.authToken = authData.authToken();
             this.loggedIn = true;
+            this.username = params[0];
             return "Successfully Registered " + params[0] + "\n" + help();
         } catch (ResponseException e) {
             if (e.getStatusCode() == 403) {
@@ -93,6 +95,7 @@ public class ChessClient {
         try {
             AuthData authData = server.login(new UserData(params[0], params[1], null));
             this.authToken = authData.authToken();
+            this.username = params[0];
             this.loggedIn = true;
             return "Successfully Logged in as " + params[0] + "\n" + help();
         } catch (ResponseException e) {
@@ -173,6 +176,9 @@ public class ChessClient {
         try {
             int gameID = Integer.parseInt(params[0]);
             String boardDrawing = drawBoard(gameID, "WHITE");
+            this.observingGame = true;
+            this.gameID = gameID;
+            this.playerColor = "WHITE";
             return "Joined game " + gameID + " as a spectator.\n\n" + boardDrawing;
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Note that <ID> should be an integer.\nUse command " +
@@ -283,6 +289,17 @@ public class ChessClient {
         }
     }
 
+    private String leaveGame() throws ResponseException {
+        try {
+            this.playingGame = false;
+            this.observingGame = false;
+            // Placeholder for sending a websocket message that the player left the game.
+            return "Left game '" + gameID + "' successfully.";
+        } catch (Exception e) {
+            throw new ResponseException(500, "Unable to leave game. Check your internet connection and try again.");
+        }
+    }
+
     private static String getGameInfoString(ArrayList<GameData> gameList, int i) {
         GameData gameData = gameList.get(i-1);
         String gameName = gameData.gameName();
@@ -300,7 +317,11 @@ public class ChessClient {
     }
 
     public String help() {
-        if (this.loggedIn) {
+        if (this.playingGame) {
+            return getPlayingGameHelpString();
+        } else if (this.observingGame) {
+            return getObservingGameHelpString();
+        } else if (this.loggedIn) {
             return getSignedInHelpString();
         } else {
             return getSignedOutHelpString();
@@ -325,6 +346,30 @@ public class ChessClient {
                     \t{{bluet}}join <ID> [WHITE|BLACK] {{whitet}}- a game
                     \t{{bluet}}observe <ID> {{whitet}}- a game
                     \t{{bluet}}logout {{whitet}}- when you are done
+                    \t{{bluet}}help {{whitet}}- with possible commands""";
+        String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
+        message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
+        return message;
+    }
+
+    private static String getPlayingGameHelpString() {
+        String template = """
+                    \t{{bluet}}redraw {{whitet}}- redraws the chess board
+                    \t{{bluet}}leave {{whitet}}- your current game
+                    \t{{bluet}}move <Start Position> <End Position> {{whitet}}- a piece (ex. move e2 e4)
+                    \t{{bluet}}resign {{whitet}}- forfeit the game
+                    \t{{bluet}}show <Position> {{whitet}}- highlight legal moves (ex. show f5)
+                    \t{{bluet}}help {{whitet}}- with possible commands""";
+        String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
+        message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
+        return message;
+    }
+
+    private static String getObservingGameHelpString() {
+        String template = """
+                    \t{{bluet}}redraw {{whitet}}- redraws the chess board
+                    \t{{bluet}}leave {{whitet}}- stop observing this game
+                    \t{{bluet}}show <Position> {{whitet}}- highlight legal moves (ex. show f5)
                     \t{{bluet}}help {{whitet}}- with possible commands""";
         String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
         message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
