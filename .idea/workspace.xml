@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Updating resign functionality.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing ServerMessage subclasses.">
       <change afterPath="$PROJECT_DIR$/shared/src/main/java/websocket/messages/NotificationMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/server/websocket/ConnectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/server/websocket/ConnectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/server/websocket/WebSocketHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/server/websocket/WebSocketHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/websocket/NotificationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/websocket/NotificationHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/websocket/messages/ErrorMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/websocket/messages/ErrorMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/main/java/websocket/messages/Notification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/websocket/messages/ServerMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/websocket/messages/ServerMessage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -409,4 +414,115 @@
       <created>1744252805676</created>
       <option name="number" value="00029" />
       <option name="presentableId" value="LOCAL-00029" />
-      <option name="project"
+      <option name="project" value="LOCAL" />
+      <updated>1744252805676</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Adding help message functions to chess client for playing and observing games.">
+      <option name="closed" value="true" />
+      <created>1744253365897</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1744253365897</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Partial implementation of makeMove client logic with websocket placeholders.">
+      <option name="closed" value="true" />
+      <created>1744258289240</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1744258289240</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Implementing updateBoard service / serverFacade method. Implementing makeMove in ChessClient.">
+      <option name="closed" value="true" />
+      <created>1744262390385</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1744262390385</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Implementing show moves functionality for ChessClient.">
+      <option name="closed" value="true" />
+      <created>1744266076374</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1744266076374</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Debugging board drawing and makeMove logic">
+      <option name="closed" value="true" />
+      <created>1744269987951</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1744269987951</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Debugging makeMove logic">
+      <option name="closed" value="true" />
+      <created>1744271854242</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1744271854242</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Updating resign functionality.">
+      <option name="closed" value="true" />
+      <created>1744272387503</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1744272387503</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Setting up REPL files and initial print code." />
+    <MESSAGE value="Implementing login, register, and help REPL commands." />
+    <MESSAGE value="Debugging register ChessClient method" />
+    <MESSAGE value="Reimplementing error paths for ChessClient createGame, login methods." />
+    <MESSAGE value="Implementing joinGame ChessClient method." />
+    <MESSAGE value="Partial implementation of drawBoard. Also adding a getGame Service endpoint." />
+    <MESSAGE value="Finishing implementation of drawBoard method." />
+    <MESSAGE value="Removing unnecessary files." />
+    <MESSAGE value="Recovering ListGamesResult file." />
+    <MESSAGE value="Refactoring GameService code." />
+    <MESSAGE value="Debugging password hashing logic in MemoryDataAccess" />
+    <MESSAGE value="Debugging CreateGameHandler and usage." />
+    <MESSAGE value="Restoring ListGamesResult.java" />
+    <MESSAGE value="Correcting REPL and ChessClient formatting and error handling." />
+    <MESSAGE value="Setting up Phase 6 for implementation." />
+    <MESSAGE value="Implementing redraw Chess Client functionality." />
+    <MESSAGE value="Partially implementing leaveGame for client" />
+    <MESSAGE value="Adding help message functions to chess client for playing and observing games." />
+    <MESSAGE value="Partial implementation of makeMove client logic with websocket placeholders." />
+    <MESSAGE value="Implementing updateBoard service / serverFacade method. Implementing makeMove in ChessClient." />
+    <MESSAGE value="Implementing show moves functionality for ChessClient." />
+    <MESSAGE value="Debugging board drawing and makeMove logic" />
+    <MESSAGE value="Debugging makeMove logic" />
+    <MESSAGE value="Updating resign functionality." />
+    <MESSAGE value="Implementing ServerMessage subclasses." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing ServerMessage subclasses." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

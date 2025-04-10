@@ -40,4 +40,11 @@ public class ServerMessage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getServ
+        return Objects.hash(getServerMessageType());
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
+}
