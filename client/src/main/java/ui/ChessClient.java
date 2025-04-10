@@ -22,6 +22,7 @@ public class ChessClient {
     private ChessGame game;
     private GameData gameData;
     private String playerColor;
+    private boolean gameActive;
 
 
     public ChessClient(String serverURL) {
@@ -50,6 +51,15 @@ public class ChessClient {
                 case "leave" -> leaveGame();
                 case "move" -> makeMove(params);
                 case "resign" -> resign();
+                case "show" -> showMoves(params);
+                case "help" -> help();
+                default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
+                        "Try one of these:\n" + help();
+            };
+        } else if (this.observingGame) {
+            return switch (cmd) {
+                case "redraw" -> drawBoard("WHITE");
+                case "leave" -> leaveGame();
                 case "show" -> showMoves(params);
                 case "help" -> help();
                 default -> SET_TEXT_COLOR_RED + "Unknown Command\n" +
@@ -240,7 +250,12 @@ public class ChessClient {
     }
 
     // Still needs implementation for Websocket Notification
+    // Need to implement functionality so that a player can only move for their team.
     private String makeMove(String... params) throws ResponseException {
+        if (!gameActive) {
+            throw new ResponseException(400, "Game has ended. Find other games with the " + SET_TEXT_COLOR_BLUE +
+                    "list " + SET_TEXT_COLOR_RED + "command");
+        }
         if (params.length != 2) {
             throw new ResponseException(400, "Invalid input. Must provide start position <[a-h][1-8]> and end " +
                     "position <[a-h][1-8]>.\n Use command " + SET_TEXT_COLOR_BLUE + "show <POSITION>" +
@@ -250,6 +265,7 @@ public class ChessClient {
             ChessMove move = parseChessMove(params);
             this.game.makeMove(move);
             server.updateBoard(this.authToken, this.gameID, this.game.getBoard());
+            drawBoard(playerColor);
 
             if (this.game.isGameOver()) {
                 String winner = this.game.getWinner();
@@ -285,6 +301,7 @@ public class ChessClient {
     }
 
     private String gameOver(String winner) {
+        this.gameActive = false;
         if (winner.equals("WHITE")) {
             return "White wins!";
         } else if (winner.equals("BLACK")) {
@@ -312,7 +329,6 @@ public class ChessClient {
                 !validRowLabel.contains(moveString.substring(1))) {
             throw new ResponseException(400, "Invalid input. Must provide valid position <[a-h][1-8]>");
         }
-        System.out.println(9 - moveString.charAt(0) + 'a');
         int tempRow = Integer.parseInt(moveString.substring(1));
         int tempCol = 8 - moveString.charAt(0) + 'a';
         int row = playerColor.equals("BLACK") ? tempRow : 9 - tempRow;
