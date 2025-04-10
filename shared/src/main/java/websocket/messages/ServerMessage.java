@@ -1,5 +1,7 @@
 package websocket.messages;
 
+import com.google.gson.Gson;
+
 import java.util.Objects;
 
 /**
@@ -38,6 +40,4 @@ public class ServerMessage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getServerMessageType());
-    }
-}
+        return Objects.hash(getServ

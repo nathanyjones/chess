@@ -1,5 +1,5 @@
 package websocket.messages;
 
-public class ErrorMessage extends ServerMessage {
+import com.google.gson.Gson;
 
-}
+public class ErrorMessa
