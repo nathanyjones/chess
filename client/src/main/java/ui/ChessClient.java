@@ -292,15 +292,19 @@ public class ChessClient {
         }
     }
 
-    private String resign() {
+    private String resign() throws ResponseException{
         Scanner scanner = new Scanner(System.in);
         System.out.println(SET_TEXT_COLOR_YELLOW + "Are you sure you want to resign?" + SET_TEXT_COLOR_BLUE +
                 "[YES|NO]");
         System.out.print("\n" + RESET + ">>> " + SET_TEXT_COLOR_GREEN);
         if (scanner.nextLine().equals("YES")) {
-            // Placeholder for additional code.
-            String winner = playerColor.equals("WHITE") ? "BLACK" : "WHITE";
-            return gameOver(winner);
+            try {
+                ws.resign(authToken, gameID, username, playerColor);
+                String winner = playerColor.equals("WHITE") ? "BLACK" : "WHITE";
+                return gameOver(winner);
+            } catch (ResponseException e) {
+                throw new ResponseException(500, "Internal Server Error.");
+            }
         }
         return "";
     }

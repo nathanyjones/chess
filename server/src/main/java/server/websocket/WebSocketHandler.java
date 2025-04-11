@@ -97,6 +97,9 @@ public class WebSocketHandler {
         try {
             GameData gameData = getGameData(authToken, gameID);
             ChessGame game = gameData.game();
+            if (game.isGameOver()) {
+                sendErrorMessage(session, "Game has ended. Cannot make additional moves.");
+            }
             String playerColorString = getColor(authToken, gameID);
             if (playerColorString.isEmpty()) {
                 sendErrorMessage(session, "Cannot make moves as observer. Join a game as a player to play.");
@@ -124,9 +127,11 @@ public class WebSocketHandler {
 
             ChessGame gameRef = gameData.game();
             if (gameRef.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+                game.setGameOver(true);
                 var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.whiteUsername()));
                 connections.broadcast(authToken, msg, true);
             } else if (gameRef.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+                game.setGameOver(true);
                 var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.blackUsername()));
                 connections.broadcast(authToken, msg, true);
             } else if (gameRef.isInCheck(ChessGame.TeamColor.WHITE)) {
@@ -136,9 +141,12 @@ public class WebSocketHandler {
                 var msg = new NotificationMessage(String.format("%s is in check.", gameData.blackUsername()));
                 connections.broadcast(authToken, msg, true);
             } else if (gameRef.isInStalemate(ChessGame.TeamColor.WHITE)) {
+                game.setGameOver(true);
                 var msg = new NotificationMessage("Stalemate!");
                 connections.broadcast(authToken, msg, true);
             }
+
+            gameService.updateGame(authToken, gameID, gameData);
 
         } catch (InvalidMoveException e) {
             sendErrorMessage(session, "Not a legal chess move.");

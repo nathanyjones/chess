@@ -78,7 +78,6 @@ public class GameService {
 
     public Object[] updateBoard(String authToken, Integer gameID, UpdateBoardRequest updateBoardRequest) {
         ChessBoard board = updateBoardRequest.board();
-        System.out.println("Okay so the integer now is " + gameID);
         try {
             dataAccess.getAuth(authToken);
             GameData gameData = dataAccess.getGame(gameID);
@@ -93,7 +92,6 @@ public class GameService {
     }
 
     public Object[] updateGame(String authToken, Integer gameID, GameData updatedGameData) {
-        System.out.println("Okay so the integer now is " + gameID);
         try {
             dataAccess.getAuth(authToken);
             dataAccess.updateGame(gameID, updatedGameData);
