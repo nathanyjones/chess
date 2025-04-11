@@ -97,12 +97,7 @@ public class WebSocketHandler {
         try {
             GameData gameData = getGameData(authToken, gameID);
             ChessGame game = gameData.game();
-            if (game.isGameOver() || connections.endedGames.contains(gameID)) {
-                if (connections.endedGames.contains(gameID)) {
-                    System.out.println("The gameID is in the endedGames list.");
-                } else {
-                    System.out.println("The game object has the isGameOver flagged true.");
-                }
+            if (game.getGameOver()) {
                 sendErrorMessage(session, "Game has ended. Cannot make additional moves.");
                 return;
             }
@@ -136,12 +131,10 @@ public class WebSocketHandler {
                 game.setGameOver(true);
                 var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.whiteUsername()));
                 connections.broadcast(authToken, msg, true);
-                connections.endedGames.add(gameID);
             } else if (gameRef.isInCheckmate(ChessGame.TeamColor.BLACK)) {
                 game.setGameOver(true);
                 var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.blackUsername()));
                 connections.broadcast(authToken, msg, true);
-                connections.endedGames.add(gameID);
             } else if (gameRef.isInCheck(ChessGame.TeamColor.WHITE)) {
                 var msg = new NotificationMessage(String.format("%s is in check.", gameData.whiteUsername()));
                 connections.broadcast(authToken, msg, true);
@@ -152,7 +145,6 @@ public class WebSocketHandler {
                 game.setGameOver(true);
                 var msg = new NotificationMessage("Stalemate!");
                 connections.broadcast(authToken, msg, true);
-                connections.endedGames.add(gameID);
             }
 
             gameService.updateGame(authToken, gameID, gameData);
@@ -224,7 +216,6 @@ public class WebSocketHandler {
             }
             gameData.game().setGameOver(true);
             gameService.updateGame(authToken, gameID, gameData);
-            connections.endedGames.add(gameID);
             var message = String.format("%s (%s) has resigned.", username, color);
             var notification = new NotificationMessage(message);
             connections.broadcast(authToken, notification, true);
@@ -245,13 +236,9 @@ public class WebSocketHandler {
 
     private String getColor(String authToken, int gameID) throws IOException {
         try {
-//            System.out.println("1");
             UserData userData = userService.getUser(authToken);
-//            System.out.println("2");
             String username = userData.username();
-//            System.out.println("3");
             GameData gameData = getGameData(authToken, gameID);
-//            System.out.println("4");
             if (gameData.blackUsername().equals(username)) {
                 return "BLACK";
             } else if (gameData.whiteUsername().equals(username)) {
