@@ -92,6 +92,17 @@ public class GameService {
         }
     }
 
+    public Object[] updateGame(String authToken, Integer gameID, GameData updatedGameData) {
+        System.out.println("Okay so the integer now is " + gameID);
+        try {
+            dataAccess.getAuth(authToken);
+            dataAccess.updateGame(gameID, updatedGameData);
+            return new Object[] {200, new JoinGameResult(null)};
+        } catch (Exception e) {
+            return handleException(e);
+        }
+    }
+
     public Object[] getGame(String authToken, Integer gameID) {
         if (gameID == null) {
             return new Object[] {400, new JoinGameResult("Error: bad request")};

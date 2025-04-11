@@ -3,7 +3,9 @@ package model;
 import chess.ChessGame;
 import java.util.Objects;
 
-public record GameData(Integer gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
+public record GameData(Integer gameID, String whiteUsername, String blackUsername,
+                       String gameName, ChessGame game) {
+
 
     @Override
     public boolean equals(Object o) {

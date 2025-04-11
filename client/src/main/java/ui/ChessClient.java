@@ -261,7 +261,6 @@ public class ChessClient {
         }
     }
 
-    // Still needs implementation for Websocket Notification
     private String makeMove(String... params) throws ResponseException {
         if (!gameActive) {
             throw new ResponseException(400, "Game has ended. Find other games with the " + SET_TEXT_COLOR_BLUE +
@@ -273,19 +272,8 @@ public class ChessClient {
                     SET_TEXT_COLOR_RED + " to see legal moves for a piece.");
         }
         try {
-
             ChessMove move = parseChessMove(params);
-            if ((this.playerColor.equals("WHITE") && this.game.getTeamTurn() == ChessGame.TeamColor.WHITE) ||
-                    (this.playerColor.equals("BLACK") && this.game.getTeamTurn() == ChessGame.TeamColor.BLACK)) {
-                this.game.makeMove(move);
-                server.updateBoard(this.authToken, this.gameID, this.game.getBoard());
-
-//                ws.makeMove(authToken, this.gameID, true);
-
-                drawBoard(playerColor);
-            } else {
-                throw new ResponseException(400, "Not your turn. Failed to execute move.");
-            }
+            ws.makeMove(this.authToken, this.gameID, move);
 
             if (this.game.isGameOver()) {
                 String winner = this.game.getWinner();
@@ -293,9 +281,6 @@ public class ChessClient {
             }
             return "Move from " + params[0] + " to " + params[1] + " made successfully.";
 
-        } catch (InvalidMoveException e) {
-            throw new ResponseException(400, "Not a legal move. Use command " + SET_TEXT_COLOR_BLUE +
-                    "show <POSITION>" + SET_TEXT_COLOR_RED + " to see the valid moves for a piece.");
         } catch (Exception e) {
             if (e.getClass() == ResponseException.class && (e.getMessage().contains("<[a-h][1-8]>") ||
                     e.getMessage().contains("Not your turn."))) {

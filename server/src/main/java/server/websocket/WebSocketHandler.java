@@ -2,9 +2,8 @@ package server.websocket;
 
 import chess.ChessGame;
 import chess.ChessMove;
+import chess.InvalidMoveException;
 import com.google.gson.Gson;
-import dataaccess.DataAccessException;
-import dataaccess.ResponseException;
 import model.GameData;
 import model.UserData;
 import org.eclipse.jetty.websocket.api.Session;
@@ -40,7 +39,8 @@ public class WebSocketHandler {
                 break;
             case MAKE_MOVE:
                 MakeMoveCommand makeMoveCommand = new Gson().fromJson(message, MakeMoveCommand.class);
-                makeMove(makeMoveCommand.getAuthToken(), makeMoveCommand.getMove());
+                makeMove(makeMoveCommand.getAuthToken(), makeMoveCommand.getGameID(),
+                        makeMoveCommand.getMove(), session);
                 break;
             case LEAVE:
                 leave(userGameCommand.getAuthToken(), userGameCommand.getGameID());
@@ -93,7 +93,61 @@ public class WebSocketHandler {
         session.getRemote().sendString(new Gson().toJson(errorMessage));
     }
 
-    private void makeMove(String authToken, ChessMove move) throws IOException {
+    private void makeMove(String authToken, int gameID, ChessMove move, Session session) throws IOException {
+        try {
+            GameData gameData = getGameData(authToken, gameID);
+            ChessGame game = gameData.game();
+            String playerColorString = getColor(authToken, gameID);
+            if (playerColorString.isEmpty()) {
+                sendErrorMessage(session, "Cannot make moves as observer. Join a game as a player to play.");
+                return;
+            }
+            ChessGame.TeamColor playerColor = playerColorString.equals("WHITE") ?
+                    ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
+
+            if (game.getTeamTurn() != playerColor) {
+                sendErrorMessage(session, "Cannot move on other player's turn.");
+                return;
+            } else if (game.getBoard().getPiece(move.getStartPosition()).getTeamColor() != playerColor) {
+                sendErrorMessage(session, "Cannot move other player's piece.");
+                return;
+            }
+
+            gameData.game().makeMove(move);
+            gameService.updateGame(authToken, gameID, gameData);
+
+            LoadGameMessage loadGameMessage = new LoadGameMessage(game);
+            connections.broadcast(authToken, loadGameMessage, true);
+
+            NotificationMessage notification = getMoveNotification(authToken, move);
+            connections.broadcast(authToken, notification, false);
+
+            ChessGame gameRef = gameData.game();
+            if (gameRef.isInCheckmate(ChessGame.TeamColor.WHITE)) {
+                var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.whiteUsername()));
+                connections.broadcast(authToken, msg, true);
+            } else if (gameRef.isInCheckmate(ChessGame.TeamColor.BLACK)) {
+                var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.blackUsername()));
+                connections.broadcast(authToken, msg, true);
+            } else if (gameRef.isInCheck(ChessGame.TeamColor.WHITE)) {
+                var msg = new NotificationMessage(String.format("%s is in check.", gameData.whiteUsername()));
+                connections.broadcast(authToken, msg, true);
+            } else if (gameRef.isInCheck(ChessGame.TeamColor.BLACK)) {
+                var msg = new NotificationMessage(String.format("%s is in check.", gameData.blackUsername()));
+                connections.broadcast(authToken, msg, true);
+            } else if (gameRef.isInStalemate(ChessGame.TeamColor.WHITE)) {
+                var msg = new NotificationMessage("Stalemate!");
+                connections.broadcast(authToken, msg, true);
+            }
+
+        } catch (InvalidMoveException e) {
+            sendErrorMessage(session, "Not a legal chess move.");
+        } catch (Exception e) {
+            sendErrorMessage(session, "Internal Server Error. Check your internet connection and try again.");
+        }
+    }
+
+    private NotificationMessage getMoveNotification(String authToken, ChessMove move) {
         String username = connections.getUsername(authToken);
         char startColumn = (char) (move.getStartPosition().getColumn() - 1 + 'a');
         int startRow = move.getStartPosition().getRow();
@@ -101,9 +155,8 @@ public class WebSocketHandler {
         int endRow = move.getStartPosition().getRow();
 
         String moveString = "from " + startColumn + startRow + " to " + endColumn + endRow;
-        var message = String.format("%s moved " + moveString + ".", username);
-        var notification = new NotificationMessage(message);
-        connections.broadcast(authToken, notification, true);
+        String message = String.format("%s moved " + moveString + ".", username);
+        return new NotificationMessage(message);
     }
 
     private void leave(String authToken, int gameID) throws IOException {
@@ -163,6 +216,17 @@ public class WebSocketHandler {
             }
         } catch (Exception e) {
             throw new IOException();
+        }
+    }
+
+    private GameData getGameData(String authToken, int gameID) throws IOException {
+        try {
+            return (GameData) gameService.getGame(authToken, gameID)[1];
+        } catch (Exception e) {
+            if (e.getMessage().contains(" not found")) {
+                throw new IOException("Game not found");
+            }
+            throw new IOException("Internal Server Error");
         }
     }
 

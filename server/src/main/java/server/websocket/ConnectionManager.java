@@ -1,7 +1,7 @@
 package server.websocket;
 
 import org.eclipse.jetty.websocket.api.Session;
-import websocket.messages.NotificationMessage;
+import websocket.messages.ServerMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ConnectionManager {
         return authUsernameMap.get(authToken);
     }
 
-    public void broadcast(String initiatorAuth, NotificationMessage notification,
+    public void broadcast(String initiatorAuth, ServerMessage message,
                           boolean sendToInitiator) throws IOException {
         var removeList = new ArrayList<Connection>();
         int gameID = authGameMap.get(initiatorAuth);
@@ -44,7 +44,7 @@ public class ConnectionManager {
             var c = connections.get(authToken);
             if (c != null && c.session.isOpen()) {
                 if (!c.authToken.equals(initiatorAuth) || sendToInitiator) {
-                    c.send(notification.toString());
+                    c.send(message.toString());
                 }
             } else if (c != null) {
                 removeList.add(c);
@@ -56,7 +56,7 @@ public class ConnectionManager {
         }
     }
 
-    public void sendIndividualMessage(String authToken, Object message) throws IOException {
+    public void sendIndividualMessage(String authToken, ServerMessage message) throws IOException {
         Connection c = connections.get(authToken);
 
         if (c != null && c.session.isOpen()) {
