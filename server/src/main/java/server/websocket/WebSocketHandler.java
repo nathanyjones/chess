@@ -98,6 +98,11 @@ public class WebSocketHandler {
             GameData gameData = getGameData(authToken, gameID);
             ChessGame game = gameData.game();
             if (game.isGameOver() || connections.endedGames.contains(gameID)) {
+                if (connections.endedGames.contains(gameID)) {
+                    System.out.println("The gameID is in the endedGames list.");
+                } else {
+                    System.out.println("The game object has the isGameOver flagged true.");
+                }
                 sendErrorMessage(session, "Game has ended. Cannot make additional moves.");
                 return;
             }
@@ -172,23 +177,36 @@ public class WebSocketHandler {
     }
 
     private void leave(String authToken, int gameID) throws IOException {
-        boolean isPlayer;
+        String color = "...";
         try {
-            UserData userData = userService.getUser(authToken);
-            String username = userData.username();
-            GameData gameData = getGameData(authToken, gameID);
-            isPlayer = gameData.blackUsername().equals(username) || gameData.whiteUsername().equals(username);
+            color = getColor(authToken, gameID);
+        } catch (Exception e) {
+            //
+        }
+        try {
+            String username = getUsername(authToken);
+
+            boolean isPlayer = !color.isEmpty();
+
+            GameData gameData = (GameData) gameService.getGame(authToken, gameID)[1];
+            if (color.equals("WHITE")) {
+                gameService.updateGame(authToken, gameID, new GameData(gameID, null,
+                        gameData.blackUsername(), gameData.gameName(), gameData.game()));
+            } else if (color.equals("BLACK")) {
+                gameService.updateGame(authToken, gameID, new GameData(gameID, gameData.whiteUsername(),
+                        null, gameData.gameName(), gameData.game()));
+            }
+            var message = String.format("%s left the game", username);
+            var notification = new NotificationMessage(message);
+            System.out.println("The color is: " + color);
+            if (isPlayer) {
+                connections.broadcast(authToken, notification, false);
+            }
+            connections.remove(authToken);
         } catch (Exception e) {
             throw new IOException();
         }
-        String username = connections.remove(authToken);
-        var message = String.format("%s left the game", username);
-        var notification = new NotificationMessage(message);
-        if (isPlayer) {
-            connections.broadcast(authToken, notification, true);
-        } else {
-            connections.sendIndividualMessage(authToken, notification);
-        }
+
     }
 
     private void resign(String authToken, int gameID, Session session) throws IOException {
@@ -221,15 +239,19 @@ public class WebSocketHandler {
             UserData userData = userService.getUser(authToken);
             return userData.username();
         } catch (Exception e) {
-            throw new IOException();
+            throw new IOException("Failed to retrieve username.");
         }
     }
 
     private String getColor(String authToken, int gameID) throws IOException {
         try {
+//            System.out.println("1");
             UserData userData = userService.getUser(authToken);
+//            System.out.println("2");
             String username = userData.username();
-            GameData gameData = (GameData) gameService.getGame(authToken, gameID)[1];
+//            System.out.println("3");
+            GameData gameData = getGameData(authToken, gameID);
+//            System.out.println("4");
             if (gameData.blackUsername().equals(username)) {
                 return "BLACK";
             } else if (gameData.whiteUsername().equals(username)) {
@@ -238,7 +260,7 @@ public class WebSocketHandler {
                 return "";
             }
         } catch (Exception e) {
-            throw new IOException();
+            throw new IOException("Failed to retrieve color.");
         }
     }
 
@@ -247,9 +269,9 @@ public class WebSocketHandler {
             return (GameData) gameService.getGame(authToken, gameID)[1];
         } catch (Exception e) {
             if (e.getMessage().contains(" not found")) {
-                throw new IOException("Game not found");
+                throw new IOException("Game not found.");
             }
-            throw new IOException("Internal Server Error");
+            throw new IOException("Internal Server Error: Failed to retrieve Game.");
         }
     }
 
