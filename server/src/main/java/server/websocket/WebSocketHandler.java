@@ -46,7 +46,7 @@ public class WebSocketHandler {
                 leave(userGameCommand.getAuthToken(), userGameCommand.getGameID());
                 break;
             case RESIGN:
-                resign(userGameCommand.getAuthToken(), userGameCommand.getGameID());
+                resign(userGameCommand.getAuthToken(), userGameCommand.getGameID(), session);
                 break;
         }
     }
@@ -97,8 +97,9 @@ public class WebSocketHandler {
         try {
             GameData gameData = getGameData(authToken, gameID);
             ChessGame game = gameData.game();
-            if (game.isGameOver()) {
+            if (game.isGameOver() || connections.endedGames.contains(gameID)) {
                 sendErrorMessage(session, "Game has ended. Cannot make additional moves.");
+                return;
             }
             String playerColorString = getColor(authToken, gameID);
             if (playerColorString.isEmpty()) {
@@ -130,10 +131,12 @@ public class WebSocketHandler {
                 game.setGameOver(true);
                 var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.whiteUsername()));
                 connections.broadcast(authToken, msg, true);
+                connections.endedGames.add(gameID);
             } else if (gameRef.isInCheckmate(ChessGame.TeamColor.BLACK)) {
                 game.setGameOver(true);
                 var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.blackUsername()));
                 connections.broadcast(authToken, msg, true);
+                connections.endedGames.add(gameID);
             } else if (gameRef.isInCheck(ChessGame.TeamColor.WHITE)) {
                 var msg = new NotificationMessage(String.format("%s is in check.", gameData.whiteUsername()));
                 connections.broadcast(authToken, msg, true);
@@ -144,6 +147,7 @@ public class WebSocketHandler {
                 game.setGameOver(true);
                 var msg = new NotificationMessage("Stalemate!");
                 connections.broadcast(authToken, msg, true);
+                connections.endedGames.add(gameID);
             }
 
             gameService.updateGame(authToken, gameID, gameData);
@@ -172,32 +176,43 @@ public class WebSocketHandler {
         try {
             UserData userData = userService.getUser(authToken);
             String username = userData.username();
-            GameData gameData = (GameData) gameService.getGame(authToken, gameID)[1];
+            GameData gameData = getGameData(authToken, gameID);
             isPlayer = gameData.blackUsername().equals(username) || gameData.whiteUsername().equals(username);
         } catch (Exception e) {
             throw new IOException();
         }
         String username = connections.remove(authToken);
         var message = String.format("%s left the game", username);
+        var notification = new NotificationMessage(message);
         if (isPlayer) {
-            var notification = new NotificationMessage(message);
-            connections.broadcast(authToken, notification, false);
+            connections.broadcast(authToken, notification, true);
+        } else {
+            connections.sendIndividualMessage(authToken, notification);
         }
     }
 
-    private void resign(String authToken, int gameID) throws IOException {
-        String username;
-        String color;
+    private void resign(String authToken, int gameID, Session session) throws IOException {
         try {
-            username = getUsername(authToken);
-            color = getColor(authToken, gameID);
+            String username = getUsername(authToken);
+            String color = getColor(authToken, gameID);
+            if (color.isEmpty()) {
+                sendErrorMessage(session, "Cannot resign as an observer.");
+                return;
+            }
+            GameData gameData = getGameData(authToken, gameID);
+            if (gameData.game().getGameOver()) {
+                sendErrorMessage(session, "The game has ended. Cannot resign.");
+                return;
+            }
+            gameData.game().setGameOver(true);
+            gameService.updateGame(authToken, gameID, gameData);
+            connections.endedGames.add(gameID);
+            var message = String.format("%s (%s) has resigned.", username, color);
+            var notification = new NotificationMessage(message);
+            connections.broadcast(authToken, notification, true);
         } catch (Exception e) {
             throw new IOException();
         }
-
-        var message = String.format("%s (%s) has resigned.", username, color);
-        var notification = new NotificationMessage(message);
-        connections.broadcast(authToken, notification, true);
 
     }
 

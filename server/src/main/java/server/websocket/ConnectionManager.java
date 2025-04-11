@@ -13,6 +13,7 @@ public class ConnectionManager {
     public final ConcurrentHashMap<String, String> authUsernameMap = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Integer, HashSet<String>> gameAuthMap = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<String, Integer> authGameMap = new ConcurrentHashMap<>();
+    public final HashSet<Integer> endedGames = new HashSet<>();
 
     public void add(String authToken, String username, int gameID, Session session) {
         var connection = new Connection(authToken, session);
