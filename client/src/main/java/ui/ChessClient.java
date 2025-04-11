@@ -24,7 +24,6 @@ public class ChessClient {
     private ChessGame game;
     private GameData gameData;
     private String playerColor;
-    private boolean gameActive;
     private final NotificationHandler notificationHandler;
     private final String serverURL;
     private WebSocketFacade ws;
@@ -203,6 +202,7 @@ public class ChessClient {
             this.gameID = gameID;
             this.playerColor = "WHITE";
             this.game = server.getGame(this.authToken, gameID).game();
+            this.ws = new WebSocketFacade(this.serverURL, this.notificationHandler);
             ws.joinGameAsObserver(authToken, this.username, gameID);
             return "Joined game " + gameID + " as a spectator.\n\n" + boardDrawing;
         } catch (NumberFormatException e) {
@@ -245,7 +245,6 @@ public class ChessClient {
         }
     }
 
-    // Possibly needs to remove the user from the game in the database.
     private String leaveGame() throws ResponseException {
         try {
             if (this.playingGame) {
@@ -262,10 +261,6 @@ public class ChessClient {
     }
 
     private String makeMove(String... params) throws ResponseException {
-        if (!gameActive) {
-            throw new ResponseException(400, "Game has ended. Find other games with the " + SET_TEXT_COLOR_BLUE +
-                    "list " + SET_TEXT_COLOR_RED + "command");
-        }
         if (params.length != 2) {
             throw new ResponseException(400, "Invalid input. Must provide start position <[a-h][1-8]> and end " +
                     "position <[a-h][1-8]>.\n Use command " + SET_TEXT_COLOR_BLUE + "show <POSITION>" +
@@ -310,7 +305,6 @@ public class ChessClient {
     }
 
     private String gameOver(String winner) {
-        this.gameActive = false;
         if (winner.equals("WHITE")) {
             return "White wins!";
         } else if (winner.equals("BLACK")) {
@@ -320,7 +314,6 @@ public class ChessClient {
         }
     }
 
-    // Does not support promotion pieces yet...
     private ChessMove parseChessMove(String... moveStrings) throws ResponseException {
         ChessPosition[] positions = new ChessPosition[2];
         for (int i = 0; i < 2; i++) {

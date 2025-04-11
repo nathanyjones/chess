@@ -21,7 +21,6 @@ public class WebSocketFacade extends Endpoint {
         try {
             url = url.replace("http", "ws");
             URI socketURI = new URI(url + "/ws");
-            System.out.println(socketURI);
             this.notificationHandler = notificationHandler;
 
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
@@ -62,7 +61,7 @@ public class WebSocketFacade extends Endpoint {
     private void joinGame(String authToken, String username,
                           int gameID, String color) throws ResponseException {
         try {
-            var connectCommand = new ConnectCommand(authToken, gameID, username, color);
+            var connectCommand = new UserGameCommand(UserGameCommand.CommandType.CONNECT, authToken, gameID);
             this.session.getBasicRemote().sendText(new Gson().toJson(connectCommand));
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());

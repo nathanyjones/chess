@@ -35,6 +35,7 @@ public class WebSocketHandler {
         UserGameCommand userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
         switch (userGameCommand.getCommandType()) {
             case CONNECT:
+                System.out.println("Connecting in the Websocket Handler.");
                 connect(userGameCommand.getAuthToken(), userGameCommand.getGameID(), session);
                 break;
             case MAKE_MOVE:
