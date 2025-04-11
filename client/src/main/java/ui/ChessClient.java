@@ -8,10 +8,9 @@ import model.UserData;
 import server.ServerFacade;
 import websocket.NotificationHandler;
 import websocket.WebSocketFacade;
-
 import java.util.*;
-
 import static ui.EscapeSequences.*;
+import static ui.HelpStringHelper.*;
 
 public class ChessClient {
     private final ServerFacade server;
@@ -170,7 +169,6 @@ public class ChessClient {
             GameData gameData = server.getGame(this.authToken, gameID);
             this.game = gameData.game();
             this.ws = new WebSocketFacade(this.serverURL, this.notificationHandler);
-
             ws.joinGameAsPlayer(authToken, gameID);
             return "Game " + gameID + " joined as " + color;
         } catch (NumberFormatException e) {
@@ -265,7 +263,6 @@ public class ChessClient {
                     SET_TEXT_COLOR_RED + " to see legal moves for a piece.");
         }
         try {
-
             ChessMove move = parseChessMove(params);
             ws.makeMove(this.authToken, this.gameID, move);
 
@@ -274,7 +271,6 @@ public class ChessClient {
                 return "Move from " + params[0] + " to " + params[1] + " made successfully.\n" + gameOver(winner);
             }
             return "Move from " + params[0] + " to " + params[1] + " made successfully.";
-
         } catch (Exception e) {
             if (e.getClass() == ResponseException.class && (e.getMessage().contains("<[a-h][1-8]>") ||
                     e.getMessage().contains("Not your turn."))) {
@@ -368,22 +364,16 @@ public class ChessClient {
         }
     }
 
-    private String drawBoardWithHighlightedSquares(String color, String startPosition,
-                                                   Set<String> highlightedSquares) {
+    private String drawBoardWithHighlightedSquares(String color,String startPosition,Set<String> highlightedSquares) {
         StringBuilder boardDrawing = new StringBuilder();
         ChessBoard board = this.game.getBoard();
         boolean highlightSquare;
-
         for (int i = 0; i < 10; i += 1) {
             int row = color.equals("BLACK") ? 9-i : i;
             for (int j = 0; j < 10; j++) {
-
                 highlightSquare = highlightedSquares.contains("" + i + j);
-
                 int col = color.equals("BLACK") ? 9-j : j;
                 int colLabelInt = color.equals("BLACK") ? i : (9-i);
-
-
                 boardDrawing.append(SET_BG_COLOR_DARK_GREY);
                 boardDrawing.append(SET_TEXT_COLOR_LIGHT_GREY);
                 if ((j == 0 || j == 9) && i > 0 && i < 9) {
@@ -399,10 +389,8 @@ public class ChessClient {
                     boardDrawing.append("   ");
                     continue;
                 }
-
                 ChessPosition position = new ChessPosition(9-row, col);
                 ChessPiece piece = board.getPiece(position);
-
                 if ((i + j) % 2 == 0) {
                     if (highlightSquare) {
                         boardDrawing.append(SET_BG_COLOR_GREEN);
@@ -419,11 +407,9 @@ public class ChessClient {
                 if (startPosition.equals("" + i + j)) {
                     boardDrawing.append(SET_BG_COLOR_MAGENTA);
                 }
-
                 if (piece != null) {
                     ChessPiece.PieceType pieceType = piece.getPieceType();
                     ChessGame.TeamColor pieceColor = piece.getTeamColor();
-
                     if (pieceColor == ChessGame.TeamColor.WHITE) {
                         boardDrawing.append(SET_TEXT_COLOR_WHITE);
                     } else {
@@ -477,54 +463,6 @@ public class ChessClient {
         } else {
             return getSignedOutHelpString();
         }
-    }
-
-    private static String getSignedOutHelpString() {
-        String template = """
-                \t{{bluet}}register <USERNAME> <PASSWORD> <EMAIL> {{whitet}}- to create an account
-                \t{{bluet}}login <USERNAME> <PASSWORD> {{whitet}}- to play chess
-                \t{{bluet}}quit {{whitet}}- playing chess
-                \t{{bluet}}help {{whitet}}- with possible commands""";
-        String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
-        message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
-        return message;
-    }
-
-    private static String getSignedInHelpString() {
-        String template = """
-                    \t{{bluet}}create <NAME> {{whitet}}- a game
-                    \t{{bluet}}list {{whitet}}- games
-                    \t{{bluet}}join <ID> [WHITE|BLACK] {{whitet}}- a game
-                    \t{{bluet}}observe <ID> {{whitet}}- a game
-                    \t{{bluet}}logout {{whitet}}- when you are done
-                    \t{{bluet}}help {{whitet}}- with possible commands""";
-        String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
-        message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
-        return message;
-    }
-
-    private static String getPlayingGameHelpString() {
-        String template = """
-                    \t{{bluet}}redraw {{whitet}}- redraws the chess board
-                    \t{{bluet}}leave {{whitet}}- your current game
-                    \t{{bluet}}move <Start Position> <End Position> {{whitet}}- a piece (ex. move e2 e4)
-                    \t{{bluet}}resign {{whitet}}- forfeit the game
-                    \t{{bluet}}show <Position> {{whitet}}- highlight legal moves (ex. show f5)
-                    \t{{bluet}}help {{whitet}}- with possible commands""";
-        String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
-        message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
-        return message;
-    }
-
-    private static String getObservingGameHelpString() {
-        String template = """
-                    \t{{bluet}}redraw {{whitet}}- redraws the chess board
-                    \t{{bluet}}leave {{whitet}}- stop observing this game
-                    \t{{bluet}}show <Position> {{whitet}}- highlight legal moves (ex. show f5)
-                    \t{{bluet}}help {{whitet}}- with possible commands""";
-        String message = template.replace("{{bluet}}", SET_TEXT_COLOR_BLUE);
-        message = message.replace("{{whitet}}", SET_TEXT_COLOR_WHITE);
-        return message;
     }
 
     public void updateGame(ChessGame game) throws ResponseException {
