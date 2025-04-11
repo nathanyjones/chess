@@ -30,8 +30,12 @@ public class WebSocketFacade extends Endpoint {
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 @Override
                 public void onMessage(String message) {
-                    NotificationMessage notification = new Gson().fromJson(message, NotificationMessage.class);
-                    notificationHandler.notify(notification);
+                    ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
+                    switch (serverMessage.getServerMessageType()) {
+                        case NOTIFICATION -> notificationHandler.notify((NotificationMessage) serverMessage);
+                        case ERROR -> notificationHandler.handleError((ErrorMessage) serverMessage);
+                        case LOAD_GAME -> notificationHandler.loadGame((LoadGameMessage) serverMessage);
+                    }
                 }
             });
         } catch (DeploymentException | IOException | URISyntaxException ex) {
@@ -73,15 +77,13 @@ public class WebSocketFacade extends Endpoint {
         }
     }
 
-
-//    public void leavePetShop(String visitorName) throws ResponseException {
-//        try {
-//            var action = new Action(Action.Type.EXIT, visitorName);
-//            this.session.getBasicRemote().sendText(new Gson().toJson(action));
-//            this.session.close();
-//        } catch (IOException ex) {
-//            throw new ResponseException(500, ex.getMessage());
-//        }
-//    }
+    public void resign(String authToken, int gameID, String username, String color) throws ResponseException {
+        try {
+            var resignCommand = new ResignCommand(authToken, gameID, username, color);
+            this.session.getBasicRemote().sendText(new Gson().toJson(resignCommand));
+        } catch (IOException ex) {
+            throw new ResponseException(500, ex.getMessage());
+        }
+    }
 
 }

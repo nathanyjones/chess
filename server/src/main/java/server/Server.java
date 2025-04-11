@@ -33,7 +33,7 @@ public class Server {
         final JoinGameHandler joinGameHandler = new JoinGameHandler(gameService);
         final GetGameHandler getGameHandler = new GetGameHandler(gameService);
         final UpdateBoardHandler updateBoardHandler = new UpdateBoardHandler(gameService);
-        final WebSocketHandler webSocketHandler = new WebSocketHandler();
+        final WebSocketHandler webSocketHandler = new WebSocketHandler(userService, gameService);
 
         Spark.port(desiredPort);
 

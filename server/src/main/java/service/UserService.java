@@ -36,6 +36,16 @@ public class UserService {
         }
     }
 
+    public UserData getUser(String authToken) throws DataAccessException {
+        try {
+            AuthData authData = dataAccess.getAuth(authToken);
+            return dataAccess.getUser(authData.username());
+        } catch (Exception e) {
+            throw new DataAccessException("Failed to retrieve user data");
+        }
+
+    }
+
     public Object[] login(LoginRequest loginRequest) {
         if (!loginRequest.validateRequest()) {
             return new Object[] {400, new RegisterResult("Error: bad request")};

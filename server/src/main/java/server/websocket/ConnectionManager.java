@@ -15,7 +15,7 @@ public class ConnectionManager {
     public final ConcurrentHashMap<String, Integer> authGameMap = new ConcurrentHashMap<>();
 
     public void add(String authToken, String username, int gameID, Session session) {
-        var connection = new Connection(username, session);
+        var connection = new Connection(authToken, session);
         connections.put(authToken, connection);
         authUsernameMap.put(authToken, username);
         gameAuthMap.computeIfAbsent(gameID, k -> new HashSet<>()).add(authToken);
@@ -42,18 +42,31 @@ public class ConnectionManager {
         HashSet<String> authsToSend = gameAuthMap.get(gameID);
         for (String authToken : authsToSend) {
             var c = connections.get(authToken);
-            if (c.session.isOpen()) {
+            if (c != null && c.session.isOpen()) {
                 if (!c.authToken.equals(initiatorAuth) || sendToInitiator) {
                     c.send(notification.toString());
                 }
-            } else {
+            } else if (c != null) {
                 removeList.add(c);
             }
         }
 
-        // Clean up any connections that were left open.
         for (var c : removeList) {
             connections.remove(c.authToken);
         }
     }
+
+    public void sendIndividualMessage(String authToken, Object message) throws IOException {
+        Connection c = connections.get(authToken);
+
+        if (c != null && c.session.isOpen()) {
+            String jsonMessage = message.toString();
+            c.send(jsonMessage);
+        } else {
+            if (c != null) {
+                connections.remove(authToken);
+            }
+        }
+    }
+
 }

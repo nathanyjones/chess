@@ -1,6 +1,7 @@
 package server;
 
 import chess.ChessBoard;
+import chess.ChessGame;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import model.AuthData;
