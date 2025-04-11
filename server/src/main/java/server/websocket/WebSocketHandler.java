@@ -180,8 +180,6 @@ public class WebSocketHandler {
         try {
             String username = getUsername(authToken);
 
-            boolean isPlayer = !color.isEmpty();
-
             GameData gameData = (GameData) gameService.getGame(authToken, gameID)[1];
             if (color.equals("WHITE")) {
                 gameService.updateGame(authToken, gameID, new GameData(gameID, null,
@@ -193,9 +191,7 @@ public class WebSocketHandler {
             var message = String.format("%s left the game", username);
             var notification = new NotificationMessage(message);
             System.out.println("The color is: " + color);
-            if (isPlayer) {
-                connections.broadcast(authToken, notification, false);
-            }
+            connections.broadcast(authToken, notification, false);
             connections.remove(authToken);
         } catch (Exception e) {
             throw new IOException();
