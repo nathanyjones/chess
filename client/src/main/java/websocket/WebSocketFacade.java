@@ -32,9 +32,12 @@ public class WebSocketFacade extends Endpoint {
                 public void onMessage(String message) {
                     ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
                     switch (serverMessage.getServerMessageType()) {
-                        case NOTIFICATION -> notificationHandler.notify((NotificationMessage) serverMessage);
-                        case ERROR -> notificationHandler.handleError((ErrorMessage) serverMessage);
-                        case LOAD_GAME -> notificationHandler.loadGame((LoadGameMessage) serverMessage);
+                        case NOTIFICATION -> notificationHandler.notify(new Gson().fromJson(message,
+                                NotificationMessage.class));
+                        case ERROR -> notificationHandler.handleError(new Gson().fromJson(message,
+                                ErrorMessage.class));
+                        case LOAD_GAME -> notificationHandler.loadGame(new Gson().fromJson(message,
+                                LoadGameMessage.class));
                     }
                 }
             });
@@ -46,20 +49,18 @@ public class WebSocketFacade extends Endpoint {
     //Endpoint requires this method, but you don't have to do anything
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
+        System.out.println("Websocket connection opened.");
     }
 
-    public void joinGameAsPlayer(String authToken, String username,
-                                 int gameID, String color) throws ResponseException {
-        joinGame(authToken, username, gameID, color);
+    public void joinGameAsPlayer(String authToken, int gameID) throws ResponseException {
+        joinGame(authToken, gameID);
     }
 
-    public void joinGameAsObserver(String authToken, String username,
-                                 int gameID) throws ResponseException {
-        joinGame(authToken, username, gameID, "");
+    public void joinGameAsObserver(String authToken, int gameID) throws ResponseException {
+        joinGame(authToken, gameID);
     }
 
-    private void joinGame(String authToken, String username,
-                          int gameID, String color) throws ResponseException {
+    private void joinGame(String authToken, int gameID) throws ResponseException {
         try {
             var connectCommand = new UserGameCommand(UserGameCommand.CommandType.CONNECT, authToken, gameID);
             this.session.getBasicRemote().sendText(new Gson().toJson(connectCommand));

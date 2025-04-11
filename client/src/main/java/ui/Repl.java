@@ -54,7 +54,9 @@ public class Repl implements NotificationHandler {
 
     public void loadGame(LoadGameMessage loadGameMessage) {
         try {
+            System.out.println();
             client.updateGame(loadGameMessage.getGame());
+            printPrompt();
         } catch (ResponseException e) {
             this.handleError(new ErrorMessage("Internal Server Error. Check Your Internet " +
                     "Connection and Try Again."));

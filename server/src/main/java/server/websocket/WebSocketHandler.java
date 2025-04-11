@@ -78,6 +78,7 @@ public class WebSocketHandler {
             message += "black.";
         }
         var notification = new NotificationMessage(message);
+        System.out.println("About to broadcast joining the game.");
         connections.broadcast(authToken, notification, false);
 
         try {
@@ -162,7 +163,7 @@ public class WebSocketHandler {
         char startColumn = (char) (move.getStartPosition().getColumn() - 1 + 'a');
         int startRow = move.getStartPosition().getRow();
         char endColumn = (char) (move.getEndPosition().getColumn() - 1 + 'a');
-        int endRow = move.getStartPosition().getRow();
+        int endRow = move.getEndPosition().getRow();
 
         String moveString = "from " + startColumn + startRow + " to " + endColumn + endRow;
         String message = String.format("%s moved " + moveString + ".", username);
@@ -240,9 +241,9 @@ public class WebSocketHandler {
             UserData userData = userService.getUser(authToken);
             String username = userData.username();
             GameData gameData = getGameData(authToken, gameID);
-            if (gameData.blackUsername().equals(username)) {
+            if (gameData.blackUsername() != null && gameData.blackUsername().equals(username)) {
                 return "BLACK";
-            } else if (gameData.whiteUsername().equals(username)) {
+            } else if (gameData.whiteUsername() != null && gameData.whiteUsername().equals(username)) {
                 return "WHITE";
             } else {
                 return "";

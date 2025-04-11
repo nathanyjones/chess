@@ -22,12 +22,10 @@ public class ChessClient {
     private boolean observingGame = false;
     private int gameID;
     private ChessGame game;
-    private GameData gameData;
     private String playerColor;
     private final NotificationHandler notificationHandler;
     private final String serverURL;
     private WebSocketFacade ws;
-
 
     public ChessClient(String serverURL, NotificationHandler notificationHandler) {
         this.server = new ServerFacade(serverURL);
@@ -169,11 +167,12 @@ public class ChessClient {
             this.playerColor = color;
             this.gameID = gameID;
             this.playingGame = true;
-            this.gameData = server.getGame(this.authToken, gameID);
-            this.game = this.gameData.game();
+            GameData gameData = server.getGame(this.authToken, gameID);
+            this.game = gameData.game();
             this.ws = new WebSocketFacade(this.serverURL, this.notificationHandler);
-            ws.joinGameAsPlayer(authToken, this.username, gameID, color);
-            return "Game " + gameID + " joined as " + color + ".\n\n" + drawBoard(color);
+
+            ws.joinGameAsPlayer(authToken, gameID);
+            return "Game " + gameID + " joined as " + color;
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Please provide a valid GameID (number).\nUse command " +
                      SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " to view joinable games, or " +
@@ -197,14 +196,13 @@ public class ChessClient {
         }
         try {
             int gameID = Integer.parseInt(params[0]);
-            String boardDrawing = drawBoard("WHITE");
             this.observingGame = true;
             this.gameID = gameID;
             this.playerColor = "WHITE";
             this.game = server.getGame(this.authToken, gameID).game();
             this.ws = new WebSocketFacade(this.serverURL, this.notificationHandler);
-            ws.joinGameAsObserver(authToken, this.username, gameID);
-            return "Joined game " + gameID + " as a spectator.\n\n" + boardDrawing;
+            ws.joinGameAsObserver(authToken, gameID);
+            return "Joined game " + gameID + " as an observer.";
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Note that <ID> should be an integer.\nUse command " +
                     SET_TEXT_COLOR_BLUE + "list" + SET_TEXT_COLOR_RED + " to view joinable games, or " +
@@ -267,10 +265,11 @@ public class ChessClient {
                     SET_TEXT_COLOR_RED + " to see legal moves for a piece.");
         }
         try {
+
             ChessMove move = parseChessMove(params);
             ws.makeMove(this.authToken, this.gameID, move);
 
-            if (this.game.isGameOver()) {
+            if (this.game.getGameOver()) {
                 String winner = this.game.getWinner();
                 return "Move from " + params[0] + " to " + params[1] + " made successfully.\n" + gameOver(winner);
             }
@@ -319,8 +318,15 @@ public class ChessClient {
         for (int i = 0; i < 2; i++) {
             positions[i] = parseChessPosition(moveStrings[i]);
         }
-        ChessPosition startPosition = new ChessPosition(9-positions[0].getRow(), positions[0].getColumn());
-        ChessPosition endPosition = new ChessPosition(9-positions[1].getRow(), positions[1].getColumn());
+        ChessPosition startPosition;
+        ChessPosition endPosition;
+        if (playerColor.equals("BLACK")) {
+            startPosition = new ChessPosition(positions[0].getRow(), 9-positions[0].getColumn());
+            endPosition = new ChessPosition(positions[1].getRow(), 9-positions[1].getColumn());
+        } else {
+            startPosition = new ChessPosition(9 - positions[0].getRow(), positions[0].getColumn());
+            endPosition = new ChessPosition(9 - positions[1].getRow(), positions[1].getColumn());
+        }
         return new ChessMove(startPosition, endPosition, null);
     }
 
@@ -524,7 +530,7 @@ public class ChessClient {
     public void updateGame(ChessGame game) throws ResponseException {
         this.game = game;
         try {
-            drawBoard(this.playerColor);
+            System.out.println(drawBoard(this.playerColor));
         } catch (ResponseException e) {
             throw new ResponseException(500, "Internal server error. Check your internet connection and try again.");
         }

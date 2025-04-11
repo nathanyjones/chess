@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging websocket resign / game over logic.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Cleaning up code.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/Repl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/server/websocket/WebSocketHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/server/websocket/WebSocketHandler.java" afterDir="false" />
     </list>
@@ -116,7 +117,7 @@
       <recent name="request" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.Main (1)">
     <configuration name="Main (1)" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="client" />
@@ -171,8 +172,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (1)" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.WebSocketTests" />
         <item itemvalue="Application.Main (2)" />
         <item itemvalue="JUnit.WebSocketTests.moveAfterResign" />
@@ -548,7 +549,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744363819738</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Cleaning up code.">
+      <option name="closed" value="true" />
+      <created>1744366242001</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1744366242001</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -563,7 +572,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Debugging password hashing logic in MemoryDataAccess" />
     <MESSAGE value="Debugging CreateGameHandler and usage." />
     <MESSAGE value="Restoring ListGamesResult.java" />
     <MESSAGE value="Correcting REPL and ChessClient formatting and error handling." />
@@ -588,7 +596,8 @@
     <MESSAGE value="Implementing resign websocket logic." />
     <MESSAGE value="Implementing leave websocket logic." />
     <MESSAGE value="Debugging websocket resign / game over logic." />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging websocket resign / game over logic." />
+    <MESSAGE value="Cleaning up code." />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleaning up code." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
