@@ -49,7 +49,6 @@ public class WebSocketFacade extends Endpoint {
     //Endpoint requires this method, but you don't have to do anything
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
-        System.out.println("Websocket connection opened.");
     }
 
     public void joinGameAsPlayer(String authToken, int gameID) throws ResponseException {

@@ -178,8 +178,6 @@ public class ChessClient {
         } catch (ResponseException e) {
             if (e.getStatusCode() == 403) {
                 throw new ResponseException(403, "Color already taken by another user.");
-            } else if (e.getStatusCode() == 500) {
-                throw new ResponseException(500, "Unable to make websocket connection.");
             }
             throw new ResponseException(401, "Game not found. Provided game ID may be invalid or expired.");
         } catch (Exception e) {
@@ -268,9 +266,10 @@ public class ChessClient {
 
             if (this.game.getGameOver()) {
                 String winner = this.game.getWinner();
-                return "Move from " + params[0] + " to " + params[1] + " made successfully.\n" + gameOver(winner);
+                return gameOver(winner);
+            } else {
+                return "";
             }
-            return "Move from " + params[0] + " to " + params[1] + " made successfully.";
         } catch (Exception e) {
             if (e.getClass() == ResponseException.class && (e.getMessage().contains("<[a-h][1-8]>") ||
                     e.getMessage().contains("Not your turn."))) {
@@ -346,11 +345,23 @@ public class ChessClient {
         }
         try {
             ChessPosition position = parseChessPosition(params[0]);
-            Collection<ChessMove> validMoves = this.game.validMoves(position);
+            Collection<ChessMove> validMoves;
+            if (playerColor.equals("BLACK")) {
+                validMoves = this.game.validMoves(new ChessPosition(position.getRow(), 9 - position.getColumn()));
+            } else {
+                validMoves = this.game.validMoves(new ChessPosition(9 - position.getRow(), position.getColumn()));
+            }
+            for (ChessMove move : validMoves) {
+                System.out.println(move);
+            }
             HashSet<String> highlightedSquarePositions = new HashSet<>();
             for (ChessMove move : validMoves) {
                 ChessPosition endPosition = move.getEndPosition();
-                highlightedSquarePositions.add("" + endPosition.getRow() + endPosition.getColumn());
+                if (playerColor.equals("BLACK")) {
+                    highlightedSquarePositions.add("" + (9 - endPosition.getRow()) + (9 - endPosition.getColumn()));
+                } else {
+                    highlightedSquarePositions.add("" + endPosition.getRow() + endPosition.getColumn());
+                }
             }
             String startString = "" + position.getRow() + position.getColumn();
             return drawBoardWithHighlightedSquares(playerColor, startString, highlightedSquarePositions);
@@ -371,7 +382,7 @@ public class ChessClient {
         for (int i = 0; i < 10; i += 1) {
             int row = color.equals("BLACK") ? 9-i : i;
             for (int j = 0; j < 10; j++) {
-                highlightSquare = highlightedSquares.contains("" + i + j);
+                highlightSquare = highlightedSquares.contains("" + (9-i) + j);
                 int col = color.equals("BLACK") ? 9-j : j;
                 int colLabelInt = color.equals("BLACK") ? i : (9-i);
                 boardDrawing.append(SET_BG_COLOR_DARK_GREY);

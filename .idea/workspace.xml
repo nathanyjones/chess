@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Correcting websocket leave logic.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Refactoring Repl help command code.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +115,7 @@
       <recent name="request" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.WebSocketTests">
+  <component name="RunManager" selected="Application.Main (1)">
     <configuration name="Main (1)" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="client" />
@@ -151,29 +152,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WebSocketTests.leaveGame" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="server" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="passoff.server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="passoff.server" />
-      <option name="MAIN_CLASS_NAME" value="passoff.server.WebSocketTests" />
-      <option name="METHOD_NAME" value="leaveGame" />
-      <option name="TEST_OBJECT" value="method" />
+    <configuration name="chess in shared" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="shared" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/shared/src/test/java/passoff/chess" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.WebSocketTests" />
-        <item itemvalue="JUnit.WebSocketTests.leaveGame" />
         <item itemvalue="Application.Main (1)" />
+        <item itemvalue="JUnit.chess in shared" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (2)" />
+        <item itemvalue="JUnit.WebSocketTests" />
       </list>
     </recent_temporary>
   </component>
@@ -570,7 +563,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744372457248</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Refactoring Repl help command code.">
+      <option name="closed" value="true" />
+      <created>1744373367133</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1744373367133</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -585,7 +586,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Correcting REPL and ChessClient formatting and error handling." />
     <MESSAGE value="Setting up Phase 6 for implementation." />
     <MESSAGE value="Implementing redraw Chess Client functionality." />
     <MESSAGE value="Partially implementing leaveGame for client" />
@@ -610,7 +610,8 @@
     <MESSAGE value="Cleaning up code." />
     <MESSAGE value="Debugging websocket logic." />
     <MESSAGE value="Correcting websocket leave logic." />
-    <option name="LAST_COMMIT_MESSAGE" value="Correcting websocket leave logic." />
+    <MESSAGE value="Refactoring Repl help command code." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactoring Repl help command code." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
