@@ -260,10 +260,58 @@ public class ChessClient {
                     "position <[a-h][1-8]>.\n Use command " + SET_TEXT_COLOR_BLUE + "show <POSITION>" +
                     SET_TEXT_COLOR_RED + " to see legal moves for a piece.");
         }
-        try {
-            ChessMove move = parseChessMove(params);
-            ws.makeMove(this.authToken, this.gameID, move);
 
+        ChessMove move = parseChessMove(params);
+        ChessPosition startPos = move.getStartPosition();
+        ChessPosition endPos = move.getEndPosition();
+        try {
+            this.game = server.getGame(this.authToken, this.gameID).game();
+        } catch (Exception e) {
+            throw new ResponseException(500, "Internal Server Error. Check your internet " +
+                    "connection and try again.");
+        }
+        ChessBoard serverBoard = this.game.getBoard();
+
+        if (serverBoard.getPiece(startPos).getPieceType() == ChessPiece.PieceType.PAWN && (
+                this.playerColor.equals("BLACK") && startPos.getRow() == 2 && endPos.getRow() == 1 ||
+                        this.playerColor.equals("WHITE") && startPos.getRow() == 7 && endPos.getRow() == 8)
+                ) {
+            System.out.print("Provide a Promotion Piece: [Q|B|N|R]\n >>>");
+            Scanner scanner = new Scanner(System.in);
+            ChessPiece.PieceType promotionType = null;
+            boolean promotionReceived = false;
+            while (!promotionReceived) {
+                String input = scanner.nextLine();
+                promotionReceived = true;
+                switch (input) {
+                    case "Q": {
+                        promotionType = ChessPiece.PieceType.QUEEN;
+                        break;
+                    }
+                    case "B": {
+                        promotionType = ChessPiece.PieceType.BISHOP;
+                        break;
+                    }
+                    case "N": {
+                        promotionType = ChessPiece.PieceType.KNIGHT;
+                        break;
+                    }
+                    case "R": {
+                        promotionType = ChessPiece.PieceType.ROOK;
+                        break;
+                    }
+                    default: {
+                        System.out.print("Provide a Promotion Piece: [Q|B|N|R]\n >>>");
+                        promotionReceived = false;
+                        break;
+                    }
+                }
+            }
+            move = new ChessMove(startPos, endPos, promotionType);
+        }
+
+        try {
+            ws.makeMove(this.authToken, this.gameID, move);
         } catch (Exception e) {
             if (e.getClass() == ResponseException.class && (e.getMessage().contains("<[a-h][1-8]>") ||
                     e.getMessage().contains("Not your turn."))) {

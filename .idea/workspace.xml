@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging black showMoves client method logic.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Finalizing notification and client logic.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
     </list>
@@ -177,14 +177,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741985192702</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Setting up phase 5 files">
-      <option name="closed" value="true" />
-      <created>1742794837894</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1742794837894</updated>
     </task>
     <task id="LOCAL-00003" summary="Setting up Server Facade, implementing register method">
       <option name="closed" value="true" />
@@ -570,7 +562,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744426262043</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Finalizing notification and client logic.">
+      <option name="closed" value="true" />
+      <created>1744482875542</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1744482875543</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -585,7 +585,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implementing redraw Chess Client functionality." />
     <MESSAGE value="Partially implementing leaveGame for client" />
     <MESSAGE value="Adding help message functions to chess client for playing and observing games." />
     <MESSAGE value="Partial implementation of makeMove client logic with websocket placeholders." />
@@ -610,7 +609,8 @@
     <MESSAGE value="Correcting websocket leave logic." />
     <MESSAGE value="Refactoring Repl help command code." />
     <MESSAGE value="Debugging black showMoves client method logic." />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging black showMoves client method logic." />
+    <MESSAGE value="Finalizing notification and client logic." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalizing notification and client logic." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
