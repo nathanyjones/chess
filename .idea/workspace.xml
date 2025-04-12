@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Finalizing notification and client logic.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Implementing pawn promotion logic.">
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -177,14 +176,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741985192702</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Setting up Server Facade, implementing register method">
-      <option name="closed" value="true" />
-      <created>1742799250569</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1742799250569</updated>
     </task>
     <task id="LOCAL-00004" summary="Implementing clear method for ServerFacade">
       <option name="closed" value="true" />
@@ -570,7 +561,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744482875543</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Implementing pawn promotion logic.">
+      <option name="closed" value="true" />
+      <created>1744486932043</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1744486932043</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -585,7 +584,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Partially implementing leaveGame for client" />
     <MESSAGE value="Adding help message functions to chess client for playing and observing games." />
     <MESSAGE value="Partial implementation of makeMove client logic with websocket placeholders." />
     <MESSAGE value="Implementing updateBoard service / serverFacade method. Implementing makeMove in ChessClient." />
@@ -610,7 +608,8 @@
     <MESSAGE value="Refactoring Repl help command code." />
     <MESSAGE value="Debugging black showMoves client method logic." />
     <MESSAGE value="Finalizing notification and client logic." />
-    <option name="LAST_COMMIT_MESSAGE" value="Finalizing notification and client logic." />
+    <MESSAGE value="Implementing pawn promotion logic." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing pawn promotion logic." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
