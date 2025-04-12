@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Refactoring Repl help command code.">
+    <list default="true" id="96a1096f-2b7d-4320-b65b-20939c32d459" name="Changes" comment="Debugging black showMoves client method logic.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ui/ChessClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/websocket/WebSocketFacade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,9 +162,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main (1)" />
-        <item itemvalue="JUnit.chess in shared" />
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main (2)" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.chess in shared" />
         <item itemvalue="JUnit.WebSocketTests" />
       </list>
     </recent_temporary>
@@ -178,14 +177,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741985192702</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Debugging DataAccess login code, Restoring files">
-      <option name="closed" value="true" />
-      <created>1741986287894</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1741986287894</updated>
     </task>
     <task id="LOCAL-00002" summary="Setting up phase 5 files">
       <option name="closed" value="true" />
@@ -571,7 +562,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744373367133</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Debugging black showMoves client method logic.">
+      <option name="closed" value="true" />
+      <created>1744426262042</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1744426262043</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -586,7 +585,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Setting up Phase 6 for implementation." />
     <MESSAGE value="Implementing redraw Chess Client functionality." />
     <MESSAGE value="Partially implementing leaveGame for client" />
     <MESSAGE value="Adding help message functions to chess client for playing and observing games." />
@@ -611,7 +609,8 @@
     <MESSAGE value="Debugging websocket logic." />
     <MESSAGE value="Correcting websocket leave logic." />
     <MESSAGE value="Refactoring Repl help command code." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring Repl help command code." />
+    <MESSAGE value="Debugging black showMoves client method logic." />
+    <option name="LAST_COMMIT_MESSAGE" value="Debugging black showMoves client method logic." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

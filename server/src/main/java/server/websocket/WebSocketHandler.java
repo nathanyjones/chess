@@ -131,10 +131,12 @@ public class WebSocketHandler {
             ChessGame gameRef = gameData.game();
             if (gameRef.isInCheckmate(ChessGame.TeamColor.WHITE)) {
                 game.setGameOver(true);
+                game.setTeamTurn(ChessGame.TeamColor.BLACK);
                 var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.whiteUsername()));
                 connections.broadcast(authToken, msg, true);
             } else if (gameRef.isInCheckmate(ChessGame.TeamColor.BLACK)) {
                 game.setGameOver(true);
+                game.setTeamTurn(ChessGame.TeamColor.WHITE);
                 var msg = new NotificationMessage(String.format("%s is in checkmate!", gameData.blackUsername()));
                 connections.broadcast(authToken, msg, true);
             } else if (gameRef.isInCheck(ChessGame.TeamColor.WHITE)) {
@@ -212,7 +214,12 @@ public class WebSocketHandler {
                 sendErrorMessage(session, "The game has ended. Cannot resign.");
                 return;
             }
+
+
             gameData.game().setGameOver(true);
+            ChessGame.TeamColor winner = color.equals("WHITE") ? ChessGame.TeamColor.BLACK : ChessGame.TeamColor.WHITE;
+            gameData.game().setTeamTurn(winner);
+
             gameService.updateGame(authToken, gameID, gameData);
             var message = String.format("%s (%s) has resigned.", username, color);
             var notification = new NotificationMessage(message);

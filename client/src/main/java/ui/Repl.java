@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessGame;
 import exception.ResponseException;
 import websocket.NotificationHandler;
 import websocket.messages.ErrorMessage;
@@ -44,6 +45,11 @@ public class Repl implements NotificationHandler {
 
     public void notify(NotificationMessage notification) {
         System.out.println(SET_TEXT_COLOR_MAGENTA + notification.getMessage());
+        String msg = notification.getMessage();
+        if (msg.contains(" has resigned.")) {
+            client.setGameOver();
+
+        }
         printPrompt();
     }
 
@@ -54,8 +60,14 @@ public class Repl implements NotificationHandler {
 
     public void loadGame(LoadGameMessage loadGameMessage) {
         try {
-            System.out.println();
-            client.updateGame(loadGameMessage.getGame());
+            ChessGame game = loadGameMessage.getGame();
+            if (game.getGameOver()) {
+                System.out.println(SET_TEXT_COLOR_MAGENTA + "Game Over!");
+            } else {
+                String colorTurn = game.getTeamTurn() == ChessGame.TeamColor.WHITE ? "White" : "Black";
+                System.out.println(SET_TEXT_COLOR_MAGENTA + colorTurn + "'s Turn.");
+            }
+            client.updateGame(game);
             printPrompt();
         } catch (ResponseException e) {
             this.handleError(new ErrorMessage("Internal Server Error. Check Your Internet " +

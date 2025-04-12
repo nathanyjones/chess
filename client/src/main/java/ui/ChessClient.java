@@ -192,12 +192,12 @@ public class ChessClient {
         }
         try {
             int gameID = Integer.parseInt(params[0]);
-            this.observingGame = true;
-            this.gameID = gameID;
-            this.playerColor = "WHITE";
             this.game = server.getGame(this.authToken, gameID).game();
             this.ws = new WebSocketFacade(this.serverURL, this.notificationHandler);
             ws.joinGameAsObserver(authToken, gameID);
+            this.observingGame = true;
+            this.gameID = gameID;
+            this.playerColor = "WHITE";
             return "Joined game " + gameID + " as an observer.";
         } catch (NumberFormatException e) {
             throw new ResponseException(400, "Invalid GameID. Note that <ID> should be an integer.\nUse command " +
@@ -264,12 +264,6 @@ public class ChessClient {
             ChessMove move = parseChessMove(params);
             ws.makeMove(this.authToken, this.gameID, move);
 
-            if (this.game.getGameOver()) {
-                String winner = this.game.getWinner();
-                return gameOver(winner);
-            } else {
-                return "";
-            }
         } catch (Exception e) {
             if (e.getClass() == ResponseException.class && (e.getMessage().contains("<[a-h][1-8]>") ||
                     e.getMessage().contains("Not your turn."))) {
@@ -279,6 +273,7 @@ public class ChessClient {
                         "connection and try again.");
             }
         }
+        return "";
     }
 
     private String resign() throws ResponseException{
@@ -289,8 +284,6 @@ public class ChessClient {
         if (scanner.nextLine().equals("YES")) {
             try {
                 ws.resign(authToken, gameID, username, playerColor);
-                String winner = playerColor.equals("WHITE") ? "BLACK" : "WHITE";
-                return gameOver(winner);
             } catch (ResponseException e) {
                 throw new ResponseException(500, "Internal Server Error.");
             }
@@ -298,14 +291,8 @@ public class ChessClient {
         return "";
     }
 
-    private String gameOver(String winner) {
-        if (winner.equals("WHITE")) {
-            return "White wins!";
-        } else if (winner.equals("BLACK")) {
-            return "Black wins!";
-        } else {
-            return "It's a Draw!";
-        }
+    public void setGameOver() {
+        this.game.setGameOver(true);
     }
 
     private ChessMove parseChessMove(String... moveStrings) throws ResponseException {
@@ -350,9 +337,6 @@ public class ChessClient {
                 validMoves = this.game.validMoves(new ChessPosition(position.getRow(), 9 - position.getColumn()));
             } else {
                 validMoves = this.game.validMoves(new ChessPosition(9 - position.getRow(), position.getColumn()));
-            }
-            for (ChessMove move : validMoves) {
-                System.out.println(move);
             }
             HashSet<String> highlightedSquarePositions = new HashSet<>();
             for (ChessMove move : validMoves) {
